@@ -1,0 +1,62 @@
+.sign-in {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8f8f8;
+  height: 100vh;
+  width: 100vw;
+}
+.sign-in-container {
+  padding: 40px;
+  text-align: center;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.sign-in-container > img {
+  object-fit: contain;
+  height: 100px;
+  margin-bottom: 15px;
+}
+
+.sign-in-text {
+  margin-bottom: 3rem;
+}
+/* .title {
+  margin: 10px 0;
+} */
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.line {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.line > p {
+  width: 20%;
+}
+.line-1,
+.line-2 {
+  border: 0;
+  border-bottom: 2px solid;
+  width: 100%;
+}
+
+.to-sign-up {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.to-sign-up > p {
+  margin-right: 0.5rem;
+}
+
+.link-sign-up {
+  text-decoration: none;
+  color: blue;
+}

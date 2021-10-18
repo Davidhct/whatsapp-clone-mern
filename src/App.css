@@ -1,0 +1,14 @@
+.app {
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+
+  background: rgb(218, 219, 211);
+}
+.app-body {
+  display: flex;
+  background: #ededed;
+
+  box-shadow: 5px 4px 35px -3px rgb(0 0 0 / 70%);
+}

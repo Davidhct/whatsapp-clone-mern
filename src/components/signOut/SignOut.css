@@ -1,0 +1,9 @@
+.sign-out-wrapper {
+  width: 90vw;
+  height: 5vh;
+}
+.sign-out {
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+}
