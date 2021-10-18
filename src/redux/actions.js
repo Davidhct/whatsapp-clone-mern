@@ -1,5 +1,5 @@
 import * as types from './actionTypes';
-import { auth, googleAuthProvider } from '../firebaseUtils';
+import { auth, googleAuthProvider } from './../firebaseUtils';
 // sign up
 const signUpStart = () => ({
   type: types.SIGNUP_START,
