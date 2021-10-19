@@ -31,18 +31,6 @@ const App = () => {
 
   // console.log(currentUser.uid);
   useEffect(() => {
-    // let user;
-    // if (currentUser) {
-    //   user = {
-    //     userid: currentUser.uid,
-    //     username: currentUser.displayName,
-    //     email: currentUser.email,
-    //     profilePicture: currentUser.photoURL,
-    //   };
-    //   console.log('====================================');
-    //   console.log(user);
-    //   console.log('====================================');
-    // }
     const updateUser = async () => {
       try {
         const res = await axios.post('/api/v1/users', {
