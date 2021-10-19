@@ -8,14 +8,30 @@ import SendIcon from '@material-ui/icons/Send';
 import React, { useState, useEffect } from 'react';
 import './ChatBox.css';
 import { useParams } from 'react-router-dom';
+// import { useDispatch, useSelector } from 'react-redux';
+// import axios from './../../axios';
 // import { db } from '../../firebase.utils';
 // import axios from '../../axios';
 
-const ChatBox = ({ messages, userName }) => {
+const ChatBox = () => {
   const [input, setInput] = useState('');
-  // const { roomId } = useParams();
-  // const [roomName, setRoomName] = useState("");
-
+  // const [conversation, setConversation] = useState([]);
+  // // const { roomId } = useParams();
+  // // const [roomName, setRoomName] = useState("");
+  // const { currentUser } = useSelector((state) => state.user);
+  // const dispatch = useDispatch();
+  // // console.log(currentUser.uid);
+  // useEffect(() => {
+  //   const getConversations = async () => {
+  //     try {
+  //       const res = await axios.get('/api/v1/conversations/' + currentUser.uid);
+  //       setConversation(res.data.data);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
+  //   getConversations();
+  // }, [currentUser.uid]);
   // const [setMessages]
 
   // useEffect(() => {

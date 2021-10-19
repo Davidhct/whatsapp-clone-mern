@@ -5,7 +5,7 @@ import Chat from './components/chat/Chat';
 import SignIn from './components/signIn/SignIn';
 import SignUp from './components/signUp/SignUp';
 import { auth } from './firebaseUtils';
-
+import axios from './axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './redux/actions';
 
@@ -27,7 +27,42 @@ const App = () => {
     });
   }, [dispatch]);
 
-  console.log(currentUser);
+  // const [user, setCurrentUser] = useState([]);
+
+  // console.log(currentUser.uid);
+  useEffect(() => {
+    // let user;
+    // if (currentUser) {
+    //   user = {
+    //     userid: currentUser.uid,
+    //     username: currentUser.displayName,
+    //     email: currentUser.email,
+    //     profilePicture: currentUser.photoURL,
+    //   };
+    //   console.log('====================================');
+    //   console.log(user);
+    //   console.log('====================================');
+    // }
+    const updateUser = async () => {
+      try {
+        const res = await axios.post('/api/v1/users', {
+          userid: currentUser.uid,
+          username: currentUser.displayName,
+          email: currentUser.email,
+          profilePicture: currentUser.photoURL,
+        });
+        // setConversations(res.data);
+        // console.log(user);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    updateUser();
+  }, [currentUser]);
+
+  useEffect(() => {}, [currentUser]);
+
+  // console.log(currentUser);
   return (
     <div className='App'>
       <Switch>

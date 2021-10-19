@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Avatar } from '@material-ui/core';
 
 import './SidebarChat.css';
 // import { db } from '../../firebase.utils';
 import { Link } from 'react-router-dom';
 
-const SidebarChat = ({ id, name, addNewChat }) => {
+const SidebarChat = ({ id, currentUserId, conversation, name, addNewChat }) => {
   const createChat = () => {
     // const roomName = prompt("Please enter name for chat room ");
     // if (roomName) {
@@ -14,6 +14,15 @@ const SidebarChat = ({ id, name, addNewChat }) => {
     //     });
     // }
   };
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // const friendId = conversation.members.find((m) => m !== currentUser);
+    // const getUser = async ()=> {
+    //   const res
+    // }
+    console.log(conversation);
+  }, []);
 
   return !addNewChat ? (
     <Link to={`/users/${id}`}>
