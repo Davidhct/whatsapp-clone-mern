@@ -91,3 +91,10 @@
 /* .chat-footer > .MuiSvgIcon-root {
   padding: 100px;
 } */
+
+.message-box {
+  display: flex;
+  justify-content: center;
+
+  margin-top: 100%;
+}

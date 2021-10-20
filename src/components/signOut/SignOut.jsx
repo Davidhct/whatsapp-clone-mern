@@ -15,7 +15,8 @@ const SignOut = () => {
   return (
     <div className='sign-out-wrapper'>
       <div className='sign-out' onClick={handleAuth}>
-        SIGN OUT
+        <div>Hello, {currentUser.displayName}</div>
+        <div>SIGN OUT</div>
       </div>
     </div>
   );

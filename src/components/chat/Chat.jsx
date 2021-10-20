@@ -6,12 +6,13 @@ import SignOut from '../signOut/SignOut';
 import './Chat.css';
 
 const Chat = () => {
+  const [currentChat, setCurrentChat] = useState(null);
   return (
     <div className='chat'>
       <SignOut />
       <div className='chat-body'>
-        <Sidebar />
-        <ChatBox />
+        <Sidebar setCurrentChat={setCurrentChat} />
+        <ChatBox currentChat={currentChat} />
       </div>
     </div>
   );

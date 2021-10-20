@@ -5,31 +5,33 @@ import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SearchIcon from '@material-ui/icons/Search';
 import SidebarChat from '../sidebarChat/SidebarChat';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import axios from './../../axios';
 
 // import { db } from '../../firebase.utils';
 import './Sidebar.css';
 
-const Sidebar = () => {
-  const [rooms, setRooms] = useState([]);
+const Sidebar = ({ setCurrentChat }) => {
+  // const [rooms, setRooms] = useState([]);
   const [conversations, setConversations] = useState([]);
+  // const [currentChat, setCurrentChat] = useState(null);
+  const [messages, setMessages] = useState([]);
 
   const { currentUser } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // console.log(currentUser.uid);
   useEffect(() => {
     const getConversations = async () => {
       try {
         const res = await axios.get('/api/v1/conversations/' + currentUser.uid);
         setConversations(res.data);
-        console.log(res);
+        // console.log(res);
       } catch (err) {
         console.error(err);
       }
     };
     getConversations();
-  }, [currentUser.uid]);
+  }, [currentUser]);
 
   useEffect(() => {
     // const unsubscribe = db.collection('users').onSnapshot((snapshot) =>
@@ -44,11 +46,11 @@ const Sidebar = () => {
     //   unsubscribe();
     // };
   }, []);
-  console.log(conversations);
+  // console.log(currentUser);
   return (
     <div className='sidebar'>
       <div className='sidebar-header'>
-        <Avatar />
+        <Avatar src={currentUser?.photoURL} />
         <div className='sidebar-header-right'>
           <IconButton>
             <DonutLargeIcon />
@@ -69,15 +71,21 @@ const Sidebar = () => {
         </div>
       </div>
       <div className='sidebar-chats'>
-        <SidebarChat addNewChat />
-        {conversations.map((c) => (
-          <SidebarChat
-            conversation={c}
-            currentUserId={currentUser.uid}
-            id={currentUser.uid}
-            name={currentUser.displayName}
-          />
-        ))}
+        {!conversations ? (
+          <SidebarChat addNewChat />
+        ) : (
+          conversations.map((c) => (
+            <div onClick={() => setCurrentChat(c)}>
+              <SidebarChat
+                conversation={c}
+                currentUser={currentUser}
+                id={currentUser.uid}
+              />
+            </div>
+          ))
+        )}
+        {/*  */}
+        {}
       </div>
     </div>
   );
