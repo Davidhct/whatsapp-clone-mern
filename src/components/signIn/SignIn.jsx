@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import FormInput from '../formInput/FormInput';
 import CustomButton from '../customButton/CustomButton';
-
+import axios from './../../axios';
 import './SignIn.css';
 import { googleSignInInitiate, signInInitiate } from '../../redux/actions';
 
@@ -27,6 +27,24 @@ const SignIn = () => {
   const handleGoogleSignIn = () => {
     dispatch(googleSignInInitiate());
   };
+  // update user in database
+  useEffect(() => {
+    const createUser = async () => {
+      try {
+        await axios.post('/api/v1/users/', {
+          userid: currentUser.uid,
+          username: currentUser.displayName,
+          email: currentUser.email,
+          profilePicture: currentUser.photoURL,
+        });
+        // setConversations(res.data);
+        // console.log(user);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    createUser();
+  }, [currentUser]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
