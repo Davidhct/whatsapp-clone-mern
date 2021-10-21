@@ -4,9 +4,11 @@ const messageSchema = new mongoose.Schema(
   {
     conversationId: {
       type: String,
+      unique: false,
     },
     sender: {
       type: String,
+      unique: false,
     },
     text: {
       type: String,
