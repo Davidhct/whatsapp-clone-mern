@@ -5,12 +5,11 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import MicIcon from '@material-ui/icons/Mic';
 import SendIcon from '@material-ui/icons/Send';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './ChatBox.css';
-// import { useParams } from 'react-router-dom';
+
 import { useSelector } from 'react-redux';
-// import axios from './../../axios';
-// import { db } from '../../firebase.utils';
+
 import axios from '../../axios';
 import { format } from 'timeago.js';
 
@@ -19,18 +18,30 @@ const ChatBox = ({ currentChat }) => {
   // const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const { currentUser } = useSelector((state) => state.user);
-
+  const scrollRef = useRef();
   useEffect(() => {
     const getMessages = async () => {
       try {
-        console.log(currentChat.members[0]);
-        const friendId = currentChat.members.find((m) => m !== currentUser.uid);
+        console.log(currentChat.members[1]);
+        let friendId;
+        if (currentChat.members[0] === currentUser.uid)
+          friendId = currentChat.members[1];
+        else if (currentChat.members[1] === currentUser.uid)
+          friendId = currentChat.members[0];
+        // const friendId = currentChat.members.find((m) => m !== currentUser.uid);
 
-        const res = await axios.get(
-          '/api/v1/messages/' + currentChat.members[0]
+        const res = await axios.get('/api/v1/messages/' + friendId);
+        let conve = [...res.data];
+
+        let updateConve = conve.filter(
+          (c) =>
+            c.conversationId === currentUser.uid || c.sender === currentUser.uid
         );
-        // setMessages(res.data);
-        console.log(res.data);
+
+        console.log(conve);
+        console.log(updateConve);
+        setMessages(updateConve);
+        // console.log(res.data);
       } catch (err) {
         console.error(err.message);
       }
@@ -38,9 +49,33 @@ const ChatBox = ({ currentChat }) => {
     getMessages();
   }, [currentChat]);
 
-  const sendMessage = (e) => {};
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
-  console.log(messages);
+  const sendMessage = async (event) => {
+    event.preventDefault();
+    // const newMessage = {
+    //   sender: currentUser.uid,
+    //   text: input,
+    //   conversationId: currentChat.members[1],
+    // };
+    try {
+      const res = await axios.post('/api/v1/messages', {
+        conversationId: currentChat.members[0],
+        sender: currentUser.uid,
+        text: input,
+      });
+
+      setMessages([...messages, res.data]);
+      setInput('');
+      console.log(res.data);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  // console.log(messages);
 
   return (
     <div className='chat-box'>
@@ -66,16 +101,18 @@ const ChatBox = ({ currentChat }) => {
 
           <div className='chat-box-body'>
             {messages.map((message) => (
-              <p
-                className={`chat-box-message 
-                ${message.sender && 'chat-box-reciever'}`}
-              >
-                <span className='chat-box-name'>tmp</span>
-                {message.text}
-                <span className='chat-box-timestamp'>
-                  {format(message.updatedAt)}
-                </span>
-              </p>
+              <div ref={scrollRef}>
+                <p
+                  className={`chat-box-message 
+                ${message.sender === currentUser.uid && 'chat-box-reciever'}`}
+                >
+                  <span className='chat-box-name'>tmp</span>
+                  {message.text}
+                  <span className='chat-box-timestamp'>
+                    {format(message.updatedAt)}
+                  </span>
+                </p>
+              </div>
             ))}
           </div>
           <div className='chat-box-footer'>

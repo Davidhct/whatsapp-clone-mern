@@ -25,13 +25,13 @@ const Sidebar = ({ setCurrentChat }) => {
       try {
         const res = await axios.get('/api/v1/conversations/' + currentUser.uid);
         setConversations(res.data);
-        // console.log(res);
+        console.log(res.data);
       } catch (err) {
         console.error(err);
       }
     };
     getConversations();
-  }, [currentUser]);
+  }, [currentUser.uid]);
 
   useEffect(() => {
     // const unsubscribe = db.collection('users').onSnapshot((snapshot) =>
