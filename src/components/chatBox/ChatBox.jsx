@@ -18,37 +18,35 @@ const ChatBox = ({ currentChat }) => {
   // const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const { currentUser } = useSelector((state) => state.user);
+  const [currentMessages, setCurrentMessages] = useState([]);
+  const [members, setMembers] = useState([]);
   const scrollRef = useRef();
+  // useEffect(() => {
+  //   const getMessages = async () => {
+  //     try {
+  //       console.log(currentChat.members[1]);
+  //       // let friendId;
+  //       // if (currentChat.members[0] === currentUser.uid)
+  //       //   friendId = currentChat.members[1];
+  //       // else if (currentChat.members[1] === currentUser.uid)
+  //       //   friendId = currentChat.members[0];
+  //       // const friendId = currentChat.members.find((m) => m !== currentUser.uid);
+
+  //       const res = await axios.patch('/api/v1/private/' + friendId);
+  //       let conve = [...res.data];
+
+  //     } catch (err) {
+  //       console.error(err.message);
+  //     }
+  //   };
+  //   getMessages();
+  // }, [currentChat]);
+
   useEffect(() => {
-    const getMessages = async () => {
-      try {
-        console.log(currentChat.members[1]);
-        let friendId;
-        if (currentChat.members[0] === currentUser.uid)
-          friendId = currentChat.members[1];
-        else if (currentChat.members[1] === currentUser.uid)
-          friendId = currentChat.members[0];
-        // const friendId = currentChat.members.find((m) => m !== currentUser.uid);
-
-        const res = await axios.get('/api/v1/messages/' + friendId);
-        let conve = [...res.data];
-
-        let updateConve = conve.filter(
-          (c) =>
-            c.conversationId === currentUser.uid || c.sender === currentUser.uid
-        );
-
-        console.log(conve);
-        console.log(updateConve);
-        setMessages(updateConve);
-        // console.log(res.data);
-      } catch (err) {
-        console.error(err.message);
-      }
-    };
-    getMessages();
+    console.log(currentChat.members);
+    setCurrentMessages([...currentChat.messages]);
+    setMembers([...currentChat.members]);
   }, [currentChat]);
-
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -61,13 +59,12 @@ const ChatBox = ({ currentChat }) => {
     //   conversationId: currentChat.members[1],
     // };
     try {
-      const res = await axios.post('/api/v1/messages', {
-        conversationId: currentChat.members[0],
-        sender: currentUser.uid,
-        text: input,
+      setMessages([...currentMessages, input]);
+      const res = await axios.patch('/api/v1/private', {
+        members: members,
+        messages: [input],
       });
 
-      setMessages([...messages, res.data]);
       setInput('');
       console.log(res.data);
     } catch (err) {
@@ -75,7 +72,7 @@ const ChatBox = ({ currentChat }) => {
     }
   };
 
-  // console.log(messages);
+  console.log(currentChat);
 
   return (
     <div className='chat-box'>
@@ -100,16 +97,20 @@ const ChatBox = ({ currentChat }) => {
           </div>
 
           <div className='chat-box-body'>
-            {messages.map((message) => (
+            {currentMessages.map((message) => (
               <div ref={scrollRef}>
                 <p
                   className={`chat-box-message 
-                ${message.sender === currentUser.uid && 'chat-box-reciever'}`}
+                ${
+                  (members[0] === currentUser.uid ||
+                    members[1] === currentUser.uid) &&
+                  'chat-box-reciever'
+                }`}
                 >
                   <span className='chat-box-name'>tmp</span>
-                  {message.text}
+                  {message}
                   <span className='chat-box-timestamp'>
-                    {format(message.updatedAt)}
+                    {format(currentChat.updatedAt)}
                   </span>
                 </p>
               </div>

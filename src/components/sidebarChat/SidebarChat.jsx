@@ -6,7 +6,7 @@ import './SidebarChat.css';
 // import { Link } from 'react-router-dom';
 import axios from './../../axios';
 
-const SidebarChat = ({ currentUser, conversation, addNewChat }) => {
+const SidebarChat = ({ currentUser, members, messages, addNewChat }) => {
   const createChat = () => {
     // const roomName = prompt("Please enter name for chat room ");
     // if (roomName) {
@@ -18,7 +18,8 @@ const SidebarChat = ({ currentUser, conversation, addNewChat }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const friendId = conversation.members.find((m) => m !== currentUser.uid);
+    console.log(members.find((mbr) => mbr !== currentUser.uid));
+    const friendId = members.find((mbr) => mbr !== currentUser.uid);
     // console.log('====================================');
     // console.log(friendId, '....', currentUser.uid);
     // console.log('====================================');
@@ -35,7 +36,7 @@ const SidebarChat = ({ currentUser, conversation, addNewChat }) => {
     getUser();
 
     // console.log(conversation);
-  }, [conversation, currentUser]);
+  }, [members, currentUser]);
 
   return !addNewChat ? (
     <div className='sidebarChat'>

@@ -15,7 +15,7 @@ const Sidebar = ({ setCurrentChat }) => {
   // const [rooms, setRooms] = useState([]);
   const [conversations, setConversations] = useState([]);
   // const [currentChat, setCurrentChat] = useState(null);
-  const [messages, setMessages] = useState([]);
+  // const [messages, setMessages] = useState([]);
 
   const { currentUser } = useSelector((state) => state.user);
   // const dispatch = useDispatch();
@@ -23,9 +23,9 @@ const Sidebar = ({ setCurrentChat }) => {
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const res = await axios.get('/api/v1/conversations/' + currentUser.uid);
-        setConversations(res.data);
-        console.log(res.data);
+        const res = await axios.get('/api/v1/private/' + currentUser.uid);
+        setConversations(res.data?.data);
+        console.log(res.data?.data);
       } catch (err) {
         console.error(err);
       }
@@ -47,6 +47,7 @@ const Sidebar = ({ setCurrentChat }) => {
     // };
   }, []);
   // console.log(currentUser);
+  console.log(conversations?.data);
   return (
     <div className='sidebar'>
       <div className='sidebar-header'>
@@ -71,21 +72,20 @@ const Sidebar = ({ setCurrentChat }) => {
         </div>
       </div>
       <div className='sidebar-chats'>
-        {!conversations ? (
-          <SidebarChat addNewChat />
-        ) : (
-          conversations.map((c) => (
-            <div onClick={() => setCurrentChat(c)}>
+        {conversations ? (
+          conversations.map((msg) => (
+            <div onClick={() => setCurrentChat(msg)}>
               <SidebarChat
-                conversation={c}
+                members={msg.members}
+                messages={msg.messages}
                 currentUser={currentUser}
                 id={currentUser.uid}
               />
             </div>
           ))
+        ) : (
+          <div>there is no users</div>
         )}
-        {/*  */}
-        {}
       </div>
     </div>
   );
