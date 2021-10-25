@@ -6,9 +6,12 @@ const router = express.Router();
 router
   .route('/')
   .get(privateConvController.getAllMessages)
-  .post(privateConvController.createMessage)
-  .patch(privateConvController.updateMesssages);
+  .post(privateConvController.createMessage);
+// .patch(privateConvController.updateMesssages);
 
-router.route('/:userId').get(privateConvController.getMessage);
+router
+  .route('/:userId')
+  .get(privateConvController.getMessage)
+  .patch(privateConvController.updateMesssages);
 
 module.exports = router;
