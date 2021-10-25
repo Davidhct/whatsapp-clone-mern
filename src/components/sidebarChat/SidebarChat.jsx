@@ -6,7 +6,13 @@ import './SidebarChat.css';
 // import { Link } from 'react-router-dom';
 import axios from './../../axios';
 
-const SidebarChat = ({ currentUser, members, messages, addNewChat }) => {
+const SidebarChat = ({
+  currentUser,
+  conversation,
+  addNewChat,
+  currentChat,
+  lastMessage,
+}) => {
   const createChat = () => {
     // const roomName = prompt("Please enter name for chat room ");
     // if (roomName) {
@@ -18,15 +24,15 @@ const SidebarChat = ({ currentUser, members, messages, addNewChat }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    console.log(members.find((mbr) => mbr !== currentUser.uid));
-    const friendId = members.find((mbr) => mbr !== currentUser.uid);
-    // console.log('====================================');
-    // console.log(friendId, '....', currentUser.uid);
-    // console.log('====================================');
+    // console.log(conversation.members.find((mbr) => mbr !== currentUser.uid));
+    const friendId = conversation.members.find(
+      (mbr) => mbr !== currentUser.uid
+    );
+
     const getUser = async () => {
       try {
         const res = await axios.get('/api/v1/users/?userId=' + friendId);
-        // console.log(res.data);
+        console.log(res.data);
 
         setUser(res.data);
       } catch (err) {
@@ -36,14 +42,14 @@ const SidebarChat = ({ currentUser, members, messages, addNewChat }) => {
     getUser();
 
     // console.log(conversation);
-  }, [members, currentUser]);
+  }, [conversation, currentUser]);
 
   return !addNewChat ? (
     <div className='sidebarChat'>
       <Avatar src={user?.profilePicture} />
       <div className='sidebarChat-info'>
         <h2>{user?.username}</h2>
-        <p>The last message in the room</p>
+        <p>{lastMessage}</p>
       </div>
     </div>
   ) : (

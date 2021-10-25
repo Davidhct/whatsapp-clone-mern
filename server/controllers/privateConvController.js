@@ -1,7 +1,3 @@
-// router.route('/').get(privateConvController.getAllMessages).post(privateConvController.createMessage);
-
-// router.route('/:conversationId').get(privateConvController.getMessage).patch(privateConvController.updateMesssages);
-
 const PrivateConve = require('./../models/PrivateConvModel');
 
 exports.createMessage = async (req, res) => {
@@ -31,7 +27,6 @@ exports.getMessage = async (req, res) => {
     const message = await PrivateConve.find({
       members: { $in: [req.params.userId] },
     });
-
     res.status(200).json({
       status: 'success',
       data: message,
@@ -62,18 +57,13 @@ exports.getAllMessages = async (req, res) => {
 };
 
 exports.updateMesssages = async (req, res) => {
-  console.log(req.body.members);
-  //   const conversation = await PrivateConve.find({
-  //     members: { $in: [req.body.members] },
-  //   });
-  //   console.log("////////'''''''", conversation);
+  console.log(req.params);
+  console.log(req.body);
+
   try {
     PrivateConve.syncIndexes();
-    // console.log(req.body);
-
-    // const oldMessages = await PrivateConve.find(req.body.members);
-    const message = await PrivateConve.findOneAndUpdate(
-      { $in: { members: req.body.members } },
+    const message = await PrivateConve.findByIdAndUpdate(
+      req.params.userId,
       { $push: { messages: req.body.messages } },
       {
         new: true,

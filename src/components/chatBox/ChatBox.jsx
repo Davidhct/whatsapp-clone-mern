@@ -15,71 +15,64 @@ import { format } from 'timeago.js';
 
 const ChatBox = ({ currentChat }) => {
   const [input, setInput] = useState('');
-  // const [currentChat, setCurrentChat] = useState(null);
+
   const [messages, setMessages] = useState([]);
+  const [sender, setSender] = useState('');
   const { currentUser } = useSelector((state) => state.user);
-  const [currentMessages, setCurrentMessages] = useState([]);
-  const [members, setMembers] = useState([]);
+
   const scrollRef = useRef();
-  // useEffect(() => {
-  //   const getMessages = async () => {
-  //     try {
-  //       console.log(currentChat.members[1]);
-  //       // let friendId;
-  //       // if (currentChat.members[0] === currentUser.uid)
-  //       //   friendId = currentChat.members[1];
-  //       // else if (currentChat.members[1] === currentUser.uid)
-  //       //   friendId = currentChat.members[0];
-  //       // const friendId = currentChat.members.find((m) => m !== currentUser.uid);
 
-  //       const res = await axios.patch('/api/v1/private/' + friendId);
-  //       let conve = [...res.data];
-
-  //     } catch (err) {
-  //       console.error(err.message);
-  //     }
-  //   };
-  //   getMessages();
-  // }, [currentChat]);
-
-  useEffect(() => {
-    console.log(currentChat.members);
-    setCurrentMessages([...currentChat.messages]);
-    setMembers([...currentChat.members]);
-  }, [currentChat]);
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   const sendMessage = async (event) => {
     event.preventDefault();
-    // const newMessage = {
-    //   sender: currentUser.uid,
-    //   text: input,
-    //   conversationId: currentChat.members[1],
-    // };
+
     try {
-      setMessages([...currentMessages, input]);
-      const res = await axios.patch('/api/v1/private', {
-        members: members,
-        messages: [input],
+      const res = await axios.patch('/api/v1/private/' + currentChat._id, {
+        messages: [
+          {
+            sender: currentUser.uid,
+            text: input,
+            isRead: false,
+            date: new Date().toISOString(),
+          },
+        ],
       });
 
       setInput('');
-      console.log(res.data);
+      console.log(res.data?.data);
+      setMessages([...messages, input]);
     } catch (err) {
       console.error(err.message);
     }
   };
 
-  console.log(currentChat);
+  const findUserName = (sender) => {
+    return currentChat.userInfo.map((usr) => {
+      if (usr.userid === sender) {
+        return usr.username;
+      }
+    });
+  };
+
+  const findeAvatar = () => {
+    return currentChat.userInfo.map((usr) => {
+      if (usr.userid !== currentUser.uid) {
+        return usr.profilePicture;
+      }
+    });
+  };
+
+  // console.log(currentChat);
 
   return (
     <div className='chat-box'>
       {currentChat ? (
         <>
           <div className='chat-box-header'>
-            <Avatar />
+            <Avatar src={`${findeAvatar()}`} />
 
             <div className='chat-box-header-info'>
               {/* <h3>{roomName}</h3>
@@ -97,20 +90,18 @@ const ChatBox = ({ currentChat }) => {
           </div>
 
           <div className='chat-box-body'>
-            {currentMessages.map((message) => (
+            {currentChat.messages.map((message) => (
               <div ref={scrollRef}>
                 <p
                   className={`chat-box-message 
-                ${
-                  (members[0] === currentUser.uid ||
-                    members[1] === currentUser.uid) &&
-                  'chat-box-reciever'
-                }`}
+                ${message.sender === currentUser.uid && 'chat-box-reciever'}`}
                 >
-                  <span className='chat-box-name'>tmp</span>
-                  {message}
+                  <span className='chat-box-name'>
+                    {findUserName(message.sender)}
+                  </span>
+                  {message.text}
                   <span className='chat-box-timestamp'>
-                    {format(currentChat.updatedAt)}
+                    {format(message.date)}
                   </span>
                 </p>
               </div>

@@ -11,13 +11,14 @@ import axios from './../../axios';
 // import { db } from '../../firebase.utils';
 import './Sidebar.css';
 
-const Sidebar = ({ setCurrentChat }) => {
+const Sidebar = ({ currentChat, setCurrentChat }) => {
   // const [rooms, setRooms] = useState([]);
   const [conversations, setConversations] = useState([]);
   // const [currentChat, setCurrentChat] = useState(null);
   // const [messages, setMessages] = useState([]);
 
   const { currentUser } = useSelector((state) => state.user);
+  // const [lastMessage, setLastMessage] = useState('');
   // const dispatch = useDispatch();
   // console.log(currentUser.uid);
   useEffect(() => {
@@ -32,22 +33,21 @@ const Sidebar = ({ setCurrentChat }) => {
     };
     getConversations();
   }, [currentUser.uid]);
+  // useEffect(() => {
+  //   let lastMsg = currentChat?.messages[currentChat?.messages.length - 1];
+  //   if (lastMsg.sender === user?.userid) {
+  //     setLastMessage(lastMsg.text);
+  //   } else if (lastMsg.sender === currentUser.uid) {
+  //     setLastMessage(lastMsg.text);
+  //   }
+  // }, [currentChat, user]);
+  const findeLastMessage = (msg) => {
+    let lastMsg = msg.messages[msg.messages.length - 1];
+    return lastMsg.text;
+  };
 
-  useEffect(() => {
-    // const unsubscribe = db.collection('users').onSnapshot((snapshot) =>
-    //   setRooms(
-    //     snapshot.docs.map((doc) => ({
-    //       id: doc.id,
-    //       data: doc.data(),
-    //     }))
-    //   )
-    // );
-    // return () => {
-    //   unsubscribe();
-    // };
-  }, []);
   // console.log(currentUser);
-  console.log(conversations?.data);
+  console.log(conversations);
   return (
     <div className='sidebar'>
       <div className='sidebar-header'>
@@ -76,10 +76,12 @@ const Sidebar = ({ setCurrentChat }) => {
           conversations.map((msg) => (
             <div onClick={() => setCurrentChat(msg)}>
               <SidebarChat
-                members={msg.members}
-                messages={msg.messages}
+                key={msg._id}
+                conversation={msg}
                 currentUser={currentUser}
-                id={currentUser.uid}
+                id={msg._id}
+                currentChat={currentChat}
+                lastMessage={findeLastMessage(msg)}
               />
             </div>
           ))
