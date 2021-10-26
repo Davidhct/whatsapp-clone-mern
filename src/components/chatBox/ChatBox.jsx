@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 import axios from '../../axios';
 import { format } from 'timeago.js';
 
-const ChatBox = ({ currentChat }) => {
+const ChatBox = ({ currentChat, userPic }) => {
   const [input, setInput] = useState('');
 
   const [messages, setMessages] = useState([]);
@@ -43,7 +43,7 @@ const ChatBox = ({ currentChat }) => {
 
       setInput('');
       console.log(res.data?.data);
-      setMessages([...messages, input]);
+      setMessages([...messages, res.data?.data]);
     } catch (err) {
       console.error(err.message);
     }
@@ -57,22 +57,21 @@ const ChatBox = ({ currentChat }) => {
     });
   };
 
-  const findeAvatar = () => {
-    return currentChat.userInfo.map((usr) => {
-      if (usr.userid !== currentUser.uid) {
-        return usr.profilePicture;
-      }
-    });
-  };
-
-  // console.log(currentChat);
+  // const findeAvatar = () => {
+  //   return currentChat.userInfo.map((usr) => {
+  //     if (usr.userid !== currentUser.uid) {
+  //       console.log(usr.profilePicture);
+  //       return usr.profilePicture;
+  //     }
+  //   });
+  // };
 
   return (
     <div className='chat-box'>
       {currentChat ? (
         <>
           <div className='chat-box-header'>
-            <Avatar src={`${findeAvatar()}`} />
+            <Avatar src={userPic} />
 
             <div className='chat-box-header-info'>
               {/* <h3>{roomName}</h3>
