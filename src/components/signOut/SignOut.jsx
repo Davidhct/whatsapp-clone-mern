@@ -14,11 +14,13 @@ const SignOut = () => {
   };
   return (
     <div className='sign-out-wrapper'>
-      <div className='sign-out' onClick={handleAuth}>
+      <div className='sign-out-header'>
         <div>
           Hello, {currentUser.displayName}, id= {currentUser.uid}
         </div>
-        <div>SIGN OUT</div>
+        <div className='sign-out' onClick={handleAuth}>
+          SIGN OUT
+        </div>
       </div>
     </div>
   );

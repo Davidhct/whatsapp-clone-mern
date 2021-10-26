@@ -11,7 +11,7 @@ import axios from './../../axios';
 // import { db } from '../../firebase.utils';
 import './Sidebar.css';
 
-const Sidebar = ({ currentChat, setCurrentChat }) => {
+const Sidebar = ({ currentChat, setCurrentChat, setUserPic }) => {
   // const [rooms, setRooms] = useState([]);
   const [conversations, setConversations] = useState([]);
   // const [currentChat, setCurrentChat] = useState(null);
@@ -46,8 +46,21 @@ const Sidebar = ({ currentChat, setCurrentChat }) => {
     return lastMsg.text;
   };
 
-  // console.log(currentUser);
-  console.log(conversations);
+  const handleClick = (e, msg) => {
+    setCurrentChat(msg);
+    // console.log(msg.userInfo, 'ccccccccccccccccccccccccccccccccc');
+    if (msg.userInfo.length < 3) {
+      msg.userInfo.map((u) => {
+        if (u.userid !== currentUser) {
+          setUserPic(u.profilePicture);
+          // console.log(u.profilePicture);
+        }
+      });
+    }
+  };
+
+  console.log(currentChat);
+  // console.log(conversations);
   return (
     <div className='sidebar'>
       <div className='sidebar-header'>
@@ -74,8 +87,9 @@ const Sidebar = ({ currentChat, setCurrentChat }) => {
       <div className='sidebar-chats'>
         {conversations ? (
           conversations.map((msg) => (
-            <div onClick={() => setCurrentChat(msg)}>
+            <div onClick={(e) => handleClick(e, msg)}>
               <SidebarChat
+                value={msg._id}
                 key={msg._id}
                 conversation={msg}
                 currentUser={currentUser}

@@ -7,13 +7,18 @@ import './Chat.css';
 
 const Chat = () => {
   const [currentChat, setCurrentChat] = useState(null);
+  const [userPic, setUserPic] = useState([]);
 
   return (
     <div className='chat'>
       <SignOut />
       <div className='chat-body'>
-        <Sidebar setCurrentChat={setCurrentChat} currentChat={currentChat} />
-        <ChatBox currentChat={currentChat} />
+        <Sidebar
+          setCurrentChat={setCurrentChat}
+          currentChat={currentChat}
+          setUserPic={setUserPic}
+        />
+        <ChatBox currentChat={currentChat} userPic={userPic} />
       </div>
     </div>
   );
