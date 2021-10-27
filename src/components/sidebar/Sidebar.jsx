@@ -7,7 +7,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import SidebarChat from '../sidebarChat/SidebarChat';
 import { useSelector } from 'react-redux';
 import axios from './../../axios';
-
+import MenuDropdown from '../menuDropdown/MenuDropdown';
 // import { db } from '../../firebase.utils';
 import './Sidebar.css';
 
@@ -58,6 +58,9 @@ const Sidebar = ({ currentChat, setCurrentChat, setUserPic }) => {
       });
     }
   };
+  const test = () => {
+    console.log('test');
+  };
 
   console.log(currentChat);
   // console.log(conversations);
@@ -73,8 +76,9 @@ const Sidebar = ({ currentChat, setCurrentChat, setUserPic }) => {
             <ChatIcon />
           </IconButton>
           <IconButton>
-            <MoreVertIcon />
+            <MoreVertIcon onClick={test} />
           </IconButton>
+          <MenuDropdown />
         </div>
       </div>
 
