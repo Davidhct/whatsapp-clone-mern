@@ -1,0 +1,29 @@
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-list {
+  position: relative;
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
+  display: block;
+  height: 40px;
+  font-size: 14.5px;
+  line-height: 14.5px;
+
+  white-space: nowrap;
+  cursor: pointer;
+  color: #4a4a4a;
+  padding-right: 58px;
+  padding-left: 24px;
+  padding-top: 13px;
+}
+
+.menu-list:hover {
+  background: rgb(245, 245, 245);
+}

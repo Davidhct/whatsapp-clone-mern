@@ -13,11 +13,11 @@ import { useSelector } from 'react-redux';
 import axios from '../../axios';
 import { format } from 'timeago.js';
 
-const ChatBox = ({ currentChat, userPic }) => {
+const ChatBox = ({ currentChat, userPic, userNam }) => {
   const [input, setInput] = useState('');
 
   const [messages, setMessages] = useState([]);
-  const [sender, setSender] = useState('');
+  // const [sender, setSender] = useState('');
   const { currentUser } = useSelector((state) => state.user);
 
   const scrollRef = useRef();
@@ -42,8 +42,10 @@ const ChatBox = ({ currentChat, userPic }) => {
       });
 
       setInput('');
-      console.log(res.data?.data);
-      setMessages([...messages, res.data?.data]);
+      let lastMsg = res.data?.data.messages;
+      console.log(lastMsg);
+
+      setMessages([...messages, lastMsg]);
     } catch (err) {
       console.error(err.message);
     }
@@ -74,6 +76,7 @@ const ChatBox = ({ currentChat, userPic }) => {
             <Avatar src={userPic} />
 
             <div className='chat-box-header-info'>
+              <h3>{userNam}</h3>
               {/* <h3>{roomName}</h3>
                     <p>last seen {messages[messages.length - 1]._id ? date(messages[messages.length - 1]._id) : console.log(messages[messages.length - 1].timestamp)}</p> */}
             </div>

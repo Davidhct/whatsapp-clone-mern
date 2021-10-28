@@ -1,0 +1,9 @@
+.header-wrapper {
+  width: 90vw;
+  height: 5vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}

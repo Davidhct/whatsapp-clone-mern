@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, IconButton } from '@material-ui/core';
+import { Avatar, IconButton, makeStyles } from '@material-ui/core';
 import ChatIcon from '@material-ui/icons/Chat';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -7,13 +7,21 @@ import SearchIcon from '@material-ui/icons/Search';
 import SidebarChat from '../sidebarChat/SidebarChat';
 import { useSelector } from 'react-redux';
 import axios from './../../axios';
-
+import MenuDropdown from '../menuDropdown/MenuDropdown';
 // import { db } from '../../firebase.utils';
 import './Sidebar.css';
 
-const Sidebar = ({ currentChat, setCurrentChat, setUserPic }) => {
+const useStyles = makeStyles({
+  moreVert: {
+    backgroundColor: '#d4d4df',
+  },
+});
+
+const Sidebar = ({ currentChat, setCurrentChat, setUserPic, setUserName }) => {
   // const [rooms, setRooms] = useState([]);
+  const classes = useStyles();
   const [conversations, setConversations] = useState([]);
+  const [menuDrop, setMenuDrop] = useState(false);
   // const [currentChat, setCurrentChat] = useState(null);
   // const [messages, setMessages] = useState([]);
 
@@ -53,14 +61,15 @@ const Sidebar = ({ currentChat, setCurrentChat, setUserPic }) => {
       msg.userInfo.map((u) => {
         if (u.userid !== currentUser) {
           setUserPic(u.profilePicture);
-          // console.log(u.profilePicture);
+          setUserName(u.username);
+          console.log(u);
         }
       });
     }
   };
 
   console.log(currentChat);
-  // console.log(conversations);
+  console.log(conversations);
   return (
     <div className='sidebar'>
       <div className='sidebar-header'>
@@ -72,9 +81,12 @@ const Sidebar = ({ currentChat, setCurrentChat, setUserPic }) => {
           <IconButton>
             <ChatIcon />
           </IconButton>
-          <IconButton>
-            <MoreVertIcon />
+          <IconButton className={menuDrop ? classes.moreVert : null}>
+            <MoreVertIcon onClick={() => setMenuDrop(!menuDrop)} />
           </IconButton>
+          <div className={menuDrop ? 'menu-drop' : 'hidden'}>
+            <MenuDropdown menuDrop={menuDrop} />
+          </div>
         </div>
       </div>
 
