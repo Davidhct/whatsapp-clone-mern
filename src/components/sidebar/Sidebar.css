@@ -1,7 +1,9 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  flex: 0.3;
+  /* flex: 0.3; */
+  width: 300px;
+  position: relative;
 }
 
 .sidebar-header {
@@ -16,7 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-width: 10vw;
+  /* min-width: 10vw; */
 }
 
 .sidebar-search {
@@ -51,4 +53,23 @@
   flex: 1;
   background: white;
   overflow-y: scroll;
+}
+
+.menu-drop {
+  position: absolute;
+  z-index: 10000;
+  max-width: 340px;
+  width: 175.66px;
+  height: 124px;
+  padding: 9px 0;
+
+  border-radius: 3px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26), 0 2px 10px 0 rgba(0, 0, 0, 0.16);
+  background: rgb(255, 255, 255);
+  top: 63px;
+  left: 109px;
+  overflow: visible;
+}
+.hidden {
+  display: none;
 }

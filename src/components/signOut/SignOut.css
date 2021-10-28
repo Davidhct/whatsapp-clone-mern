@@ -10,3 +10,7 @@
 .sign-out {
   cursor: pointer;
 }
+.sign-out-upper {
+  text-transform: uppercase;
+  cursor: pointer;
+}
