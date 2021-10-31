@@ -100,3 +100,8 @@
   justify-content: center;
   margin-top: 170px;
 }
+
+.chat-box-footer-left {
+  display: flex;
+  align-items: center;
+}

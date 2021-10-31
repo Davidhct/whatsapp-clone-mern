@@ -34,7 +34,7 @@ const Sidebar = ({ currentChat, setCurrentChat, setUserPic, setUserName }) => {
       try {
         const res = await axios.get('/api/v1/private/' + currentUser.uid);
         setConversations(res.data?.data);
-        console.log(res.data?.data);
+        // console.log(res.data?.data);
       } catch (err) {
         console.error(err);
       }
@@ -62,14 +62,14 @@ const Sidebar = ({ currentChat, setCurrentChat, setUserPic, setUserName }) => {
         if (u.userid !== currentUser) {
           setUserPic(u.profilePicture);
           setUserName(u.username);
-          console.log(u);
+          // console.log(u);
         }
       });
     }
   };
 
-  console.log(currentChat);
-  console.log(conversations);
+  // console.log(currentChat);
+  // console.log(conversations);
   return (
     <div className='sidebar'>
       <div className='sidebar-header'>
