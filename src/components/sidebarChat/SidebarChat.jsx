@@ -32,7 +32,7 @@ const SidebarChat = ({
     const getUser = async () => {
       try {
         const res = await axios.get('/api/v1/users/?userId=' + friendId);
-        console.log(res.data);
+        // console.log(res.data);
 
         setUser(res.data);
       } catch (err) {
