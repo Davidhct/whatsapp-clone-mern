@@ -37,3 +37,23 @@ exports.getUser = async (req, res) => {
     res.status(500).json(err.message);
   }
 };
+//get a user
+exports.checkAndGetUser = async (req, res) => {
+  try {
+    await User.syncIndexes();
+
+    const user = await User.find();
+    let targetUser;
+    user.map((m) => {
+      if (m.email === req.params.email) {
+        targetUser = m;
+        return;
+      }
+    });
+
+    // console.log(targetUser);
+    res.status(200).json(targetUser);
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+};

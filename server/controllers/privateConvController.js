@@ -3,8 +3,21 @@ const PrivateConve = require('./../models/PrivateConvModel');
 exports.createMessage = async (req, res) => {
   try {
     PrivateConve.syncIndexes();
-    const newMessage = await PrivateConve.create(req.body);
 
+    const conve = await PrivateConve.find();
+
+    conve.map((c) => {
+      if (c.members[0] === req.body.members[0]) {
+        if (c.members[1] === req.body.members[1]) {
+          throw new Error('The chat already exist');
+        }
+      } else if (c.members[0] === req.body.members[1]) {
+        if (c.members[1] === req.body.members[0]) {
+          throw new Error('The chat already exist');
+        }
+      }
+    });
+    const newMessage = await PrivateConve.create(req.body);
     // const saveMessage = await newMessage.save();
     res.status(201).json({
       status: 'success',
@@ -17,6 +30,23 @@ exports.createMessage = async (req, res) => {
     });
   }
 };
+// exports.createMessage = async (req, res) => {
+//   try {
+//     PrivateConve.syncIndexes();
+//     const newMessage = await PrivateConve.create(req.body);
+
+//     // const saveMessage = await newMessage.save();
+//     res.status(201).json({
+//       status: 'success',
+//       data: newMessage,
+//     });
+//   } catch (err) {
+//     res.status(400).json({
+//       status: 'fail',
+//       message: err.message,
+//     });
+//   }
+// };
 
 exports.getMessage = async (req, res) => {
   try {
