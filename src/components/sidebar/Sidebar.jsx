@@ -17,7 +17,13 @@ const useStyles = makeStyles({
   },
 });
 
-const Sidebar = ({ currentChat, setCurrentChat, setUserPic, setUserName }) => {
+const Sidebar = ({
+  currentChat,
+  setCurrentChat,
+  setUserPic,
+  setUserName,
+  setModal,
+}) => {
   // const [rooms, setRooms] = useState([]);
   const classes = useStyles();
   const [conversations, setConversations] = useState([]);
@@ -34,7 +40,6 @@ const Sidebar = ({ currentChat, setCurrentChat, setUserPic, setUserName }) => {
       try {
         const res = await axios.get('/api/v1/private/' + currentUser.uid);
         setConversations(res.data?.data);
-        // console.log(res.data?.data);
       } catch (err) {
         console.error(err);
       }
@@ -85,7 +90,7 @@ const Sidebar = ({ currentChat, setCurrentChat, setUserPic, setUserName }) => {
             <MoreVertIcon onClick={() => setMenuDrop(!menuDrop)} />
           </IconButton>
           <div className={menuDrop ? 'menu-drop' : 'hidden'}>
-            <MenuDropdown menuDrop={menuDrop} />
+            <MenuDropdown setModal={setModal} />
           </div>
         </div>
       </div>

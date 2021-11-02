@@ -59,15 +59,6 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
     });
   };
 
-  // const findeAvatar = () => {
-  //   return currentChat.userInfo.map((usr) => {
-  //     if (usr.userid !== currentUser.uid) {
-  //       console.log(usr.profilePicture);
-  //       return usr.profilePicture;
-  //     }
-  //   });
-  // };
-
   return (
     <div className='chat-box'>
       {currentChat ? (
@@ -92,22 +83,24 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
           </div>
 
           <div className='chat-box-body'>
-            {currentChat.messages.map((message) => (
-              <div ref={scrollRef}>
-                <p
-                  className={`chat-box-message 
+            {currentChat.messages.map((message) =>
+              message.sender ? (
+                <div ref={scrollRef}>
+                  <p
+                    className={`chat-box-message 
                 ${message.sender === currentUser.uid && 'chat-box-reciever'}`}
-                >
-                  <span className='chat-box-name'>
-                    {findUserName(message.sender)}
-                  </span>
-                  {message.text}
-                  <span className='chat-box-timestamp'>
-                    {format(message.date)}
-                  </span>
-                </p>
-              </div>
-            ))}
+                  >
+                    <span className='chat-box-name'>
+                      {findUserName(message.sender)}
+                    </span>
+                    {message.text}
+                    <span className='chat-box-timestamp'>
+                      {format(message.date)}
+                    </span>
+                  </p>
+                </div>
+              ) : null
+            )}
           </div>
           <div className='chat-box-footer'>
             <div className='chat-box-footer-left'>

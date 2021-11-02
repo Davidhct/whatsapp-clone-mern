@@ -2,7 +2,7 @@ import React from 'react';
 import SignOut from '../signOut/SignOut';
 import './MenuDropdown.css';
 
-const MenuDropdown = ({ menuDrop }) => {
+const MenuDropdown = ({ setModal }) => {
   return (
     <div className='menu-dropdown'>
       <div className='menu-items'>
@@ -11,7 +11,9 @@ const MenuDropdown = ({ menuDrop }) => {
             <div className='menu-list'>New group</div>
           </li>
           <li>
-            <div className='menu-list'>New chat</div>
+            <div className='menu-list' onClick={() => setModal(true)}>
+              New chat
+            </div>
           </li>
           <li>
             <div className='menu-list'>

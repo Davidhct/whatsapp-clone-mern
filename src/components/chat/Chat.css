@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: rgb(218, 219, 211);
+  background: rgb(248 249 240);
 }
 .chat-body {
   display: flex;
@@ -15,4 +15,28 @@
   width: 90vw;
   height: 90vh;
   box-shadow: 5px 4px 35px -3px rgb(0 0 0 / 70%);
+}
+
+.chat-body-modal {
+  background: rgb(218, 219, 211);
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+}
+
+.new-message {
+  position: absolute;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background: #f8f8f8; */
+  backdrop-filter: blur(5px);
+  width: 90vw;
+  height: 90vh;
+}
+
+.hidden {
+  display: none;
 }

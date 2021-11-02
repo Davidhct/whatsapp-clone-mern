@@ -28,7 +28,7 @@
   top: 10px;
   transition: 300ms ease all;
 }
-.form-input:focus,
+/* .form-input:focus, */
 .form-input-label:focus,
 .shrink {
   top: -14px;
