@@ -68,10 +68,11 @@ const NewMessageModal = ({ typeInput, message, setModal, showModal }) => {
   return (
     <div className='new-msg-container'>
       <div className='exit'>
-        <IconButton className={classes.iconButton}>
-          <button className='exit-button' onClick={() => setModal(!showModal)}>
-            &times;
-          </button>
+        <IconButton
+          className={classes.iconButton}
+          onClick={() => setModal(!showModal)}
+        >
+          <div className='exit-button'>&times;</div>
         </IconButton>
       </div>
       <div className='new-msg-modal'>

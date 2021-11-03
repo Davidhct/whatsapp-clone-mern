@@ -86,11 +86,14 @@ const Sidebar = ({
           <IconButton>
             <ChatIcon />
           </IconButton>
-          <IconButton className={menuDrop ? classes.moreVert : null}>
-            <MoreVertIcon onClick={() => setMenuDrop(!menuDrop)} />
+          <IconButton
+            className={menuDrop ? classes.moreVert : null}
+            onClick={() => setMenuDrop(!menuDrop)}
+          >
+            <MoreVertIcon />
           </IconButton>
-          <div className={menuDrop ? 'menu-drop' : 'hidden'}>
-            <MenuDropdown setModal={setModal} />
+          <div className={menuDrop ? 'menu-drop-sidebar' : 'hidden'}>
+            <MenuDropdown setModal={setModal} isGroup={undefined} />
           </div>
         </div>
       </div>
@@ -103,11 +106,11 @@ const Sidebar = ({
       </div>
       <div className='sidebar-chats'>
         {conversations ? (
-          conversations.map((msg) => (
+          conversations.map((msg, i) => (
             <div onClick={(e) => handleClick(e, msg)}>
               <SidebarChat
                 value={msg._id}
-                key={msg._id}
+                key={i}
                 conversation={msg}
                 currentUser={currentUser}
                 id={msg._id}
