@@ -27,3 +27,7 @@ ul {
 .menu-list:hover {
   background: rgb(245, 245, 245);
 }
+
+.hidden {
+  display: none;
+}

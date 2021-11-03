@@ -1,4 +1,4 @@
-import { Avatar, IconButton } from '@material-ui/core';
+import { Avatar, IconButton, makeStyles } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SearchIcon from '@material-ui/icons/Search';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
@@ -6,6 +6,7 @@ import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import MicIcon from '@material-ui/icons/Mic';
 import SendIcon from '@material-ui/icons/Send';
 import React, { useState, useEffect, useRef } from 'react';
+import MenuDropdown from '../menuDropdown/MenuDropdown';
 import './ChatBox.css';
 
 import { useSelector } from 'react-redux';
@@ -13,10 +14,19 @@ import { useSelector } from 'react-redux';
 import axios from '../../axios';
 import { format } from 'timeago.js';
 
+const useStyles = makeStyles({
+  moreVert: {
+    backgroundColor: '#d4d4df',
+  },
+});
+
 const ChatBox = ({ currentChat, userPic, userNam }) => {
+  const classes = useStyles();
   const [input, setInput] = useState('');
 
   const [messages, setMessages] = useState([]);
+  const [menuDrop, setMenuDrop] = useState(false);
+  const [isGroup, setGroup] = useState(false);
   // const [sender, setSender] = useState('');
   const { currentUser } = useSelector((state) => state.user);
 
@@ -76,9 +86,23 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
               <IconButton>
                 <SearchIcon />
               </IconButton>
-              <IconButton>
+              <IconButton
+                className={menuDrop ? classes.moreVert : null}
+                onClick={() => setMenuDrop(!menuDrop)}
+              >
                 <MoreVertIcon />
               </IconButton>
+              <div
+                className={
+                  menuDrop
+                    ? `menu-drop-cahtbox ${
+                        !isGroup ? 'menu-drop-cahtbox-group' : ''
+                      }`
+                    : 'hidden'
+                }
+              >
+                <MenuDropdown setModal={undefined} isGroup={isGroup} />
+              </div>
             </div>
           </div>
 
@@ -141,15 +165,3 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
 };
 
 export default ChatBox;
-
-/* //   <p className={`chat-message ${message.received && 'chat-reciever'}`}>
-        //     <span className='chat-name'>john</span>
-
-        //     <span className='chat-timestamp'>9:00</span>
-        //   </p>
-          // <p className={ `chat-message ${ message.received && "chat-reciever"}` }>
-          // <span className="chat-name">{message.name}</span>
-          // {message.message}
-          // <span className="chat-timestamp">{message._id ?date(message._id) : message.timestamp}</span>
-          // </p>
-          ))} */
