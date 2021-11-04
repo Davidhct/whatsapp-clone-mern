@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 
-const privateConvSchema = new mongoose.Schema(
+const groupConvSchema = new mongoose.Schema(
   {
+    admin: { type: [String], require: true },
+    groupName: { type: String, require: true },
+    isGroup: { type: Boolean, default: true },
     members: { type: [String], require: true, unique: false },
     userInfo: {
       type: [
@@ -41,4 +44,4 @@ const privateConvSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Privates', privateConvSchema);
+module.exports = mongoose.model('Groups', groupConvSchema);
