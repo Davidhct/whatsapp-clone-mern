@@ -6,8 +6,8 @@ const router = express.Router();
 router
   .route('/')
   .get(privateConvController.getAllMessages)
-  .post(privateConvController.createMessage);
-// .patch(privateConvController.updateMesssages);
+  .post(privateConvController.createMessage)
+  .patch(privateConvController.updatePerson);
 
 router
   .route('/:userId')

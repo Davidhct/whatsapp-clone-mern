@@ -32,6 +32,8 @@ const Chat = () => {
           currentChat={currentChat}
           setUserPic={setUserPic}
           setUserName={setUserName}
+          userNam={userNam}
+          userPic={userPic}
           setModal={setModal}
         />
         <ChatBox

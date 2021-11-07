@@ -27,28 +27,58 @@ const NewMessageModal = ({ typeInput, message, setModal, showModal }) => {
     event.preventDefault();
 
     const getUser = async () => {
+      let flag = true;
+      let addPerson = undefined;
       try {
         const resUser = await axios.get('/api/v1/users/' + input);
         console.log(currentUser);
         if (resUser?.data !== '') {
-          const res = await axios.post('/api/v1/private/', {
-            members: [currentUser.uid, resUser?.data.userid],
-            userInfo: [
-              {
-                userid: currentUser.uid,
-                username: currentUser.displayName,
-                profilePicture: currentUser.photoURL,
-              },
-              {
-                userid: resUser?.data.userid,
-                username: resUser?.data.username,
-                profilePicture: resUser?.data.profilePicture,
-              },
-            ],
-            messages: [{ sender: null, text: null, isRead: false }],
+          const resPrv = await axios.get('/api/v1/private');
+          console.log(resPrv?.data);
+          const convePrv = resPrv?.data.data;
+          convePrv.map((cp) => {
+            if (cp.members.length === 1) {
+              // console.log(cp);
+              if (cp.members[0] === resUser?.data.userid) {
+                console.log(cp);
+                addPerson = cp;
+
+                flag = false;
+                return;
+              }
+            }
+            // console.log(res?.data);
           });
         }
-        console.log(resUser?.data);
+        if (addPerson !== undefined) {
+          console.log(addPerson);
+          const res = await axios.patch(
+            '/api/v1/private/?chatId=' + addPerson._id,
+            {
+              members: [currentUser.uid],
+            }
+          );
+        }
+        //joun@example.com
+        // if (resUser?.data !== '' && flag) {
+        //   const res = await axios.post('/api/v1/private/', {
+        //     members: [currentUser.uid, resUser?.data.userid],
+        //     userInfo: [
+        //       {
+        //         userid: currentUser.uid,
+        //         username: currentUser.displayName,
+        //         profilePicture: currentUser.photoURL,
+        //       },
+        //       {
+        //         userid: resUser?.data.userid,
+        //         username: resUser?.data.username,
+        //         profilePicture: resUser?.data.profilePicture,
+        //       },
+        //     ],
+        //     messages: [{ sender: null, text: null, isRead: false }],
+        //   });
+        // }
+        // console.log(resUser?.data);
       } catch (err) {
         console.error(err.message);
       }
