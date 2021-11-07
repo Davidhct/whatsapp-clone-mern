@@ -23,6 +23,8 @@ const Sidebar = ({
   setUserPic,
   setUserName,
   setModal,
+  userNam,
+  userPic,
 }) => {
   // const [rooms, setRooms] = useState([]);
   const classes = useStyles();

@@ -2,7 +2,7 @@ import React from 'react';
 import SignOut from '../signOut/SignOut';
 import './MenuDropdown.css';
 
-const MenuDropdown = ({ setModal, isGroup }) => {
+const MenuDropdown = ({ setModal, isGroup, setDeleteChat }) => {
   return (
     <div className='menu-dropdown'>
       {setModal ? (
@@ -30,7 +30,9 @@ const MenuDropdown = ({ setModal, isGroup }) => {
               <div className='menu-list'>Add person</div>
             </li>
             <li>
-              <div className='menu-list'>Delete chat</div>
+              <div className='menu-list' onClick={() => setDeleteChat(true)}>
+                Delete chat
+              </div>
             </li>
           </ul>
         </div>

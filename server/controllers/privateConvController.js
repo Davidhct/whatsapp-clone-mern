@@ -17,12 +17,14 @@ exports.createMessage = async (req, res) => {
         }
       }
     });
+    console.log(req.body);
     const newMessage = await PrivateConve.create(req.body);
-    // const saveMessage = await newMessage.save();
     res.status(201).json({
       status: 'success',
       data: newMessage,
     });
+
+    // const saveMessage = await newMessage.save();
   } catch (err) {
     res.status(400).json({
       status: 'fail',
@@ -112,3 +114,62 @@ exports.updateMesssages = async (req, res) => {
     });
   }
 };
+exports.updatePerson = async (req, res) => {
+  // console.log(req.params);
+  // console.log(req.body);
+
+  try {
+    PrivateConve.syncIndexes();
+    let members;
+    if (req.body.delId) {
+      members = await PrivateConve.findByIdAndUpdate(
+        req.query.chatId,
+        { $pull: { members: req.body.delId } },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    } else {
+      members = await PrivateConve.findByIdAndUpdate(
+        req.query.chatId,
+        { $push: { members: req.body.members } },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    }
+    // console.log('members:::::::', members);
+
+    res.status(200).json({
+      status: 'success',
+      data: members,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
+
+// exports.deleteChat = async (req, res) => {
+//   try {
+//     PrivateConve.syncIndexes();
+//     const members = await PrivateConve.findByIdAndUpdate(req.query.chatId, {
+//       members: { $in: [req.body.delId] },
+//     });
+//     // console.log('members:::::::', members);
+
+//     res.status(200).json({
+//       status: 'success',
+//       data: members,
+//     });
+//   } catch (err) {
+//     res.status(400).json({
+//       status: 'fail',
+//       message: err.message,
+//     });
+//   }
+// };

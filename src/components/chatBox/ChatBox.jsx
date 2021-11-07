@@ -27,6 +27,7 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
   const [messages, setMessages] = useState([]);
   const [menuDrop, setMenuDrop] = useState(false);
   const [isGroup, setGroup] = useState(false);
+  const [deleteChat, setDeleteChat] = useState(false);
   // const [sender, setSender] = useState('');
   const { currentUser } = useSelector((state) => state.user);
 
@@ -60,6 +61,26 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
       console.error(err.message);
     }
   };
+
+  useEffect(() => {
+    console.log(currentChat);
+    const delChat = async () => {
+      try {
+        const res = await axios.patch(
+          '/api/v1/private/?chatId=' + currentChat._id,
+          {
+            delId: currentUser.uid,
+          }
+        );
+        // console.log(res.data);
+
+        setDeleteChat(false);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    delChat();
+  }, [deleteChat]);
 
   const findUserName = (sender) => {
     return currentChat.userInfo.map((usr) => {
@@ -101,7 +122,11 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
                     : 'hidden'
                 }
               >
-                <MenuDropdown setModal={undefined} isGroup={isGroup} />
+                <MenuDropdown
+                  setModal={undefined}
+                  isGroup={isGroup}
+                  setDeleteChat={setDeleteChat}
+                />
               </div>
             </div>
           </div>
