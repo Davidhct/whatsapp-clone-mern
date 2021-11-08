@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const userRouter = require('./routes/userRoutes');
 const conversationRouter = require('./routes/conversationRoutes');
-const messageRouter = require('./routes/messageRoutes');
+// const messageRouter = require('./routes/messageRoutes');
 const privateConvRouter = require('./routes/privateConvRoutes');
 const app = express();
 
@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 //3) ROUTES
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/conversations', conversationRouter);
-app.use('/api/v1/messages', messageRouter);
+// app.use('/api/v1/messages', messageRouter);
 app.use('/api/v1/private', privateConvRouter);
 
 // 4) START SERVER

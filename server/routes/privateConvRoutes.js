@@ -10,8 +10,9 @@ router
   .patch(privateConvController.updatePerson);
 
 router
-  .route('/:userId')
+  .route('/:id')
   .get(privateConvController.getMessage)
-  .patch(privateConvController.updateMesssages);
+  .patch(privateConvController.updateMesssages)
+  .delete(privateConvController.deleteChat);
 
 module.exports = router;

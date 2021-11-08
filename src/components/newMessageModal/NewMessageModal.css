@@ -9,6 +9,10 @@
   box-shadow: 0px 0px 16px rgb(0 0 0 / 44%);
   padding: 3px;
 }
+.new-group-msg-container {
+  justify-content: flex-start;
+  height: 99%;
+}
 .new-msg-modal {
   /* display: flex;
   justify-content: center;
@@ -21,8 +25,22 @@
   flex-direction: column; */
   /* box-shadow: 0px 0px 16px rgb(0 0 0 / 44%); */
 }
+.new-group-msg-input {
+  height: 234px;
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+  /* border: solid; */
+}
 .new-msg-button {
   display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+.exit-wrapper {
+  display: flex;
+  width: 99%;
+  flex-direction: row;
   justify-content: center;
 }
 

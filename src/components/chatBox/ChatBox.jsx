@@ -26,7 +26,7 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
 
   const [messages, setMessages] = useState([]);
   const [menuDrop, setMenuDrop] = useState(false);
-  const [isGroup, setGroup] = useState(false);
+  const [chatGroup, setChatGroup] = useState(false);
   const [deleteChat, setDeleteChat] = useState(false);
   // const [sender, setSender] = useState('');
   const { currentUser } = useSelector((state) => state.user);
@@ -41,7 +41,7 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
     event.preventDefault();
 
     try {
-      const res = await axios.patch('/api/v1/private/' + currentChat._id, {
+      const res = await axios.patch('/api/v1/private/' + currentChat?._id, {
         messages: [
           {
             sender: currentUser.uid,
@@ -117,14 +117,14 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
                 className={
                   menuDrop
                     ? `menu-drop-cahtbox ${
-                        !isGroup ? 'menu-drop-cahtbox-group' : ''
+                        !chatGroup ? 'menu-drop-cahtbox-group' : ''
                       }`
                     : 'hidden'
                 }
               >
                 <MenuDropdown
                   setModal={undefined}
-                  isGroup={isGroup}
+                  chatGroup={chatGroup}
                   setDeleteChat={setDeleteChat}
                 />
               </div>
