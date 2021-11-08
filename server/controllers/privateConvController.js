@@ -57,7 +57,7 @@ exports.getMessage = async (req, res) => {
     //   conversationId: req.params.conversationId,
     // });
     const message = await PrivateConve.find({
-      members: { $in: [req.params.userId] },
+      members: { $in: [req.params.id] },
     });
     res.status(200).json({
       status: 'success',
@@ -95,7 +95,7 @@ exports.updateMesssages = async (req, res) => {
   try {
     PrivateConve.syncIndexes();
     const message = await PrivateConve.findByIdAndUpdate(
-      req.params.userId,
+      req.params.id,
       { $push: { messages: req.body.messages } },
       {
         new: true,
@@ -154,22 +154,20 @@ exports.updatePerson = async (req, res) => {
   }
 };
 
-// exports.deleteChat = async (req, res) => {
-//   try {
-//     PrivateConve.syncIndexes();
-//     const members = await PrivateConve.findByIdAndUpdate(req.query.chatId, {
-//       members: { $in: [req.body.delId] },
-//     });
-//     // console.log('members:::::::', members);
+exports.deleteChat = async (req, res) => {
+  try {
+    PrivateConve.syncIndexes();
+    await PrivateConve.findByIdAndDelete(req.params.id);
+    // console.log('members:::::::', members);
 
-//     res.status(200).json({
-//       status: 'success',
-//       data: members,
-//     });
-//   } catch (err) {
-//     res.status(400).json({
-//       status: 'fail',
-//       message: err.message,
-//     });
-//   }
-// };
+    res.status(204).json({
+      status: 'success',
+      data: null,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};

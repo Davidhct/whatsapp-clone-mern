@@ -18,25 +18,18 @@ const useStyles = makeStyles({
 });
 
 const Sidebar = ({
-  currentChat,
   setCurrentChat,
   setUserPic,
   setUserName,
   setModal,
-  userNam,
-  userPic,
+  setGroup,
 }) => {
-  // const [rooms, setRooms] = useState([]);
   const classes = useStyles();
   const [conversations, setConversations] = useState([]);
   const [menuDrop, setMenuDrop] = useState(false);
-  // const [currentChat, setCurrentChat] = useState(null);
-  // const [messages, setMessages] = useState([]);
 
   const { currentUser } = useSelector((state) => state.user);
-  // const [lastMessage, setLastMessage] = useState('');
-  // const dispatch = useDispatch();
-  // console.log(currentUser.uid);
+
   useEffect(() => {
     const getConversations = async () => {
       try {
@@ -48,25 +41,30 @@ const Sidebar = ({
     };
     getConversations();
   }, [currentUser.uid]);
-  // useEffect(() => {
-  //   let lastMsg = currentChat?.messages[currentChat?.messages.length - 1];
-  //   if (lastMsg.sender === user?.userid) {
-  //     setLastMessage(lastMsg.text);
-  //   } else if (lastMsg.sender === currentUser.uid) {
-  //     setLastMessage(lastMsg.text);
-  //   }
-  // }, [currentChat, user]);
+
   const findeLastMessage = (msg) => {
+    console.log(msg);
     let lastMsg = msg.messages[msg.messages.length - 1];
     return lastMsg.text;
   };
 
-  const handleClick = (e, msg) => {
+  const findUserInfo = (msg) => {
+    let userIn;
+    for (let i = 0; i < msg.userInfo.length; i++) {
+      if (msg.userInfo[i].userid !== currentUser.uid) {
+        userIn = msg.userInfo[i];
+        break;
+      }
+    }
+    return userIn;
+  };
+
+  const handleClick = (msg) => {
     setCurrentChat(msg);
     // console.log(msg.userInfo, 'ccccccccccccccccccccccccccccccccc');
     if (msg.userInfo.length < 3) {
       msg.userInfo.map((u) => {
-        if (u.userid !== currentUser) {
+        if (u.userid !== currentUser.uid) {
           setUserPic(u.profilePicture);
           setUserName(u.username);
           // console.log(u);
@@ -74,9 +72,7 @@ const Sidebar = ({
       });
     }
   };
-
-  // console.log(currentChat);
-  // console.log(conversations);
+  console.log(conversations);
   return (
     <div className='sidebar'>
       <div className='sidebar-header'>
@@ -95,7 +91,7 @@ const Sidebar = ({
             <MoreVertIcon />
           </IconButton>
           <div className={menuDrop ? 'menu-drop-sidebar' : 'hidden'}>
-            <MenuDropdown setModal={setModal} isGroup={undefined} />
+            <MenuDropdown setModal={setModal} setGroup={setGroup} />
           </div>
         </div>
       </div>
@@ -109,14 +105,10 @@ const Sidebar = ({
       <div className='sidebar-chats'>
         {conversations ? (
           conversations.map((msg, i) => (
-            <div onClick={(e) => handleClick(e, msg)}>
+            <div onClick={() => handleClick(msg)}>
               <SidebarChat
-                value={msg._id}
                 key={i}
-                conversation={msg}
-                currentUser={currentUser}
-                id={msg._id}
-                currentChat={currentChat}
+                userInfo={findUserInfo(msg)}
                 lastMessage={findeLastMessage(msg)}
               />
             </div>
