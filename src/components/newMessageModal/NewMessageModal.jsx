@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, IconButton } from '@material-ui/core';
 import GroupAddRoundedIcon from '@material-ui/icons/GroupAddRounded';
-
+import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded';
 import FormInput from '../formInput/FormInput';
 import CustomButton from '../customButton/CustomButton';
 import axios from './../../axios';
@@ -23,16 +23,21 @@ const useStyles = makeStyles({
       backgroundColor: '#c3c3c7',
     },
   },
+  deleteBtn: {
+    color: 'black',
+    '&:hover': {
+      backgroundColor: '#ff9191',
+    },
+  },
 });
 
-const NewMessageModal = ({ setModal, showModal, isGroup, setGroup }) => {
+const NewMessageModal = ({ setModal, showModal, isGroup }) => {
   const classes = useStyles();
   const { currentUser } = useSelector((state) => state.user);
   const [input, setinput] = useState('');
   const [isOnePerson, setMorePersons] = useState(-1);
-  const [renderInput, setRenderInput] = useState([]);
-  const [inputId, setInputId] = useState(0);
-  const [groupInput, setGroupInput] = useState(['']);
+  const [groupName, setGroupName] = useState('');
+  const [groupList, setGroupList] = useState([]);
 
   const handleChatSubmit = (event) => {
     event.preventDefault();
@@ -42,7 +47,7 @@ const NewMessageModal = ({ setModal, showModal, isGroup, setGroup }) => {
       let addPerson = undefined;
       try {
         const resUser = await axios.get('/api/v1/users/' + input);
-        console.log(currentUser);
+        console.log(resUser?.data);
         if (resUser?.data !== '') {
           const resPrv = await axios.get('/api/v1/private');
           // console.log(resPrv?.data);
@@ -127,36 +132,70 @@ const NewMessageModal = ({ setModal, showModal, isGroup, setGroup }) => {
 
   const handleGroupSubmit = (event) => {
     event.preventDefault();
+    const getUser = async () => {
+      try {
+        const resUser = await axios.put('/api/v1/users/', {
+          group: true,
+          groupList: groupList,
+        });
+        console.log(resUser?.data);
+        if (resUser?.data.length !== 0) {
+          const res = await axios.post('/api/v1/conversations/', {
+            groupName: groupName.trim(),
+            isGroup: true,
+            members: [currentUser.uid, ...resUser?.data.userid],
+
+            userInfo: [
+              {
+                userid: currentUser.uid,
+                username: currentUser.displayName,
+                profilePicture: currentUser.photoURL,
+              },
+              {
+                userid: resUser?.data.userid,
+                username: resUser?.data.username,
+                profilePicture: resUser?.data.profilePicture,
+              },
+            ],
+            messages: [{ sender: null, text: null, isRead: false }],
+          });
+        }
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    getUser();
+
     // setGroup(false);
   };
 
   const handleChange = (event) => {
     event.preventDefault();
-
-    console.log(event.target);
-    setinput(event.target.value);
-    if (isGroup === true) {
-      // let tmp = groupInput[event.target.id] + input;
-      console.log(event.target.value);
-      // setGroupInput(tmp);
+    const { name, value } = event.target;
+    console.log(name);
+    if (name === 'email') {
+      setinput(value);
+    } else {
+      setGroupName(value);
     }
   };
 
-  const renderFormatInput = () => {
-    setInputId(inputId + 1);
-    setRenderInput([
-      ...renderInput,
-      <FormInput
-        id={inputId}
-        type='email'
-        name='email'
-        label='email'
-        value={groupInput[inputId]}
-        handleChange={handleChange}
-      />,
-    ]);
+  const renderGroupList = (event) => {
+    event.preventDefault();
+    if (input.includes('@') && input.includes('.')) {
+      const list = [...groupList];
+      setGroupList([input, ...list]);
+    }
+    setinput('');
   };
-  console.log(isGroup);
+
+  const handleDeleteClick = (event, i) => {
+    event.preventDefault();
+    const list = [...groupList];
+    list.splice(i, 1);
+    setGroupList([...list]);
+  };
+
   return (
     <div className='new-msg-container new-group-msg-container'>
       <div className='exit-wrapper'>
@@ -169,7 +208,7 @@ const NewMessageModal = ({ setModal, showModal, isGroup, setGroup }) => {
           </IconButton>
         </div>
       </div>
-      <div>
+      <div className='title-modal'>
         <h2>Start chatting</h2>
       </div>
       {!isGroup ? (
@@ -192,25 +231,55 @@ const NewMessageModal = ({ setModal, showModal, isGroup, setGroup }) => {
       ) : (
         <div className='new-msg-modal new-group-msg-modal'>
           <form onSubmit={handleGroupSubmit}>
-            <div className='new-msg-input new-group-msg-input'>
-              <FormInput
-                id={inputId}
-                type='email'
-                name='email'
-                label='email'
-                value={groupInput[inputId]}
-                handleChange={handleChange}
-              />
-              {renderInput}
+            <div className='group-input-wrapper'>
+              <div className='new-input-mail'>
+                <>
+                  <FormInput
+                    type='email'
+                    name='email'
+                    label='email'
+                    value={input}
+                    handleChange={handleChange}
+                  />
+                </>
+                <div className='new-msg-group-button'>
+                  <IconButton
+                    className={classes.addGroupBtn}
+                    onClick={renderGroupList}
+                  >
+                    <GroupAddRoundedIcon />
+                  </IconButton>
+                </div>
+              </div>
+              <div className='group-name'>
+                <FormInput
+                  type='text'
+                  name='group name'
+                  label='group name'
+                  value={groupName}
+                  handleChange={handleChange}
+                />
+              </div>
             </div>
-            <div className='new-msg-button new-group-msg-button'>
+            <div className='new-msg-input new-group-msg-input'>
+              {groupList.map((item, i) => {
+                return (
+                  <div key={i} className='item-group'>
+                    <div className='item-wrapper'>{item}</div>
+                    <div className='delete-btn'>
+                      <IconButton
+                        className={classes.deleteBtn}
+                        onClick={(e) => handleDeleteClick(e, i)}
+                      >
+                        <HighlightOffRoundedIcon />
+                      </IconButton>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className='new-msg-button'>
               <CustomButton type='submit'>Add</CustomButton>
-              <IconButton
-                className={classes.addGroupBtn}
-                onClick={() => renderFormatInput()}
-              >
-                <GroupAddRoundedIcon />
-              </IconButton>
             </div>
           </form>
         </div>

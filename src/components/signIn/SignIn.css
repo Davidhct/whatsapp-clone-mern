@@ -7,7 +7,7 @@
   width: 100vw;
 }
 .sign-in-container {
-  padding: 40px;
+  padding: 25px;
   text-align: center;
   background: white;
   border-radius: 10px;
@@ -17,11 +17,11 @@
 .sign-in-container > img {
   object-fit: contain;
   height: 100px;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
 }
 
 .sign-in-text {
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
 }
 /* .title {
   margin: 10px 0;
