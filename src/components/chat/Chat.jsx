@@ -36,7 +36,6 @@ const Chat = () => {
               setModal={setModal}
               showModal={showModal}
               isGroup={isGroup}
-              setGroup={setGroup}
             />
           </div>
         </div>

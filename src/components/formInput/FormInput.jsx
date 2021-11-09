@@ -1,14 +1,23 @@
-import React from "react";
+import React, { useState } from 'react';
 
-import "./FormInput.css";
+import './FormInput.css';
 
-const FormInput = ({ handleChange, label, ...otherProps }) => (
-    <div className="group">
-      <input className="form-input" onChange={handleChange} {...otherProps} />
+const FormInput = ({ handleChange, label, ...otherProps }) => {
+  const [isFocus, setFocus] = useState(false);
+
+  return (
+    <div className='group'>
+      <input
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        className='form-input'
+        onChange={handleChange}
+        {...otherProps}
+      />
       {label ? (
         <label
           className={`${
-            otherProps.value.length ? "shrink" : ""
+            isFocus || otherProps.value.length ? 'shrink' : ''
           } form-input-label`}
         >
           {label}
@@ -16,5 +25,6 @@ const FormInput = ({ handleChange, label, ...otherProps }) => (
       ) : null}
     </div>
   );
-  
-  export default FormInput;
+};
+
+export default FormInput;

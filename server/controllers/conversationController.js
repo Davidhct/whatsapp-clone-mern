@@ -94,7 +94,7 @@ exports.updateMesssages = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: 'fail',
-      message: err.nessage,
+      message: err.message,
     });
   }
 };
