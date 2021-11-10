@@ -33,7 +33,7 @@ const Sidebar = ({
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const res = await axios.get('/api/v1/private/' + currentUser.uid);
+        const res = await axios.get('/api/v1/conversations/' + currentUser.uid);
         setConversations(res.data?.data);
       } catch (err) {
         console.error(err);
@@ -43,26 +43,33 @@ const Sidebar = ({
   }, [currentUser.uid]);
 
   const findeLastMessage = (msg) => {
-    console.log(msg);
+    // console.log(msg);
     let lastMsg = msg.messages[msg.messages.length - 1];
     return lastMsg.text;
   };
 
   const findUserInfo = (msg) => {
     let userIn;
-    for (let i = 0; i < msg.userInfo.length; i++) {
-      if (msg.userInfo[i].userid !== currentUser.uid) {
-        userIn = msg.userInfo[i];
-        break;
+    if (!msg.isGroup) {
+      for (let i = 0; i < msg.userInfo.length; i++) {
+        if (msg.userInfo[i].userid !== currentUser.uid) {
+          userIn = msg.userInfo[i];
+          break;
+        }
       }
+    } else if (msg.isGroup) {
+      userIn = {
+        username: msg.groupName,
+        profilePicture: msg.profilePicture,
+      };
     }
     return userIn;
   };
 
   const handleClick = (msg) => {
     setCurrentChat(msg);
-    // console.log(msg.userInfo, 'ccccccccccccccccccccccccccccccccc');
-    if (msg.userInfo.length < 3) {
+    // console.log(msg, 'ccccccccccccccccccccccccccccccccc');
+    if (!msg.isGroup) {
       msg.userInfo.map((u) => {
         if (u.userid !== currentUser.uid) {
           setUserPic(u.profilePicture);
@@ -70,9 +77,12 @@ const Sidebar = ({
           // console.log(u);
         }
       });
+    } else if (msg.isGroup) {
+      setUserName(msg.groupName);
+      setUserPic(msg.profilePicture);
     }
   };
-  console.log(conversations);
+  // console.log(conversations);
   return (
     <div className='sidebar'>
       <div className='sidebar-header'>

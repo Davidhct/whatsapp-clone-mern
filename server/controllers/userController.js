@@ -64,30 +64,43 @@ exports.checkAndGetUser = async (req, res) => {
     });
   }
 };
+
+const createUserInfo = (user) => {
+  let userInfo = {
+    userid: user.userid,
+    username: user.username,
+    profilePicture: user.profilePicture,
+  };
+  return userInfo;
+};
 exports.checkAndGetGroupUsers = async (req, res) => {
   try {
     await User.syncIndexes();
     let targetUser;
     let list = [];
-    console.log(req.body);
+    // console.log(req.body);
     const user = await User.find();
 
     user.map((m) => {
       if (req.body.group === true) {
-        req.body.groupList.map((g) => {
-          if (g === m.email) {
-            let newUsr = { userid: m.userid, username: m.username };
-            list.push(newUsr);
+        req.body.friendsList.map((g) => {
+          if (req.body.group === true) {
+            if (g === m.email) {
+              let newUser = createUserInfo(m);
+              list.push(newUser);
+            }
           }
         });
-      } else {
-        return;
+      } else if (req.body.group === false) {
+        if (req.body.friendsList === m.email) {
+          let newUser = createUserInfo(m);
+
+          list.push(newUser);
+          return;
+        }
       }
     });
-    // if (list.length === 0) {
-    //   throw new Error('These emails do not exist on the site');
-    // } else {
-    // }
+
     targetUser = [...list];
     console.log(targetUser);
     // res.status(200).json(targetUser);

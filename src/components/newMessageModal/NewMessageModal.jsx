@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles, IconButton } from '@material-ui/core';
 import GroupAddRoundedIcon from '@material-ui/icons/GroupAddRounded';
 import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded';
@@ -39,86 +39,60 @@ const NewMessageModal = ({ setModal, showModal, isGroup }) => {
   const [groupName, setGroupName] = useState('');
   const [groupList, setGroupList] = useState([]);
 
+  const reconnectMember = async (user) => {
+    await axios.patch('/api/v1/conversations/?chatId=' + user._id, {
+      members: [currentUser.uid],
+    });
+  };
+  const deleteMember = async (user) => {
+    await axios.delete('/api/v1/conversations/' + user._id);
+  };
+
   const handleChatSubmit = (event) => {
     event.preventDefault();
 
     const getUser = async () => {
-      // let flag = true;
       let addPerson = undefined;
       try {
-        const resUser = await axios.get('/api/v1/users/' + input);
+        const resUser = await axios.put('/api/v1/users/', {
+          group: false,
+          friendsList: input,
+        });
         console.log(resUser?.data);
-        if (resUser?.data !== '') {
-          const resPrv = await axios.get('/api/v1/private');
+        if (resUser?.data.length > 0) {
+          const resPrv = await axios.get('/api/v1/conversations/');
           // console.log(resPrv?.data);
           const convePrv = resPrv?.data.data;
-          // console.log(convePrv.length);
-          for (let i = 0; i < convePrv.length; i++) {
-            if (convePrv[i].members.length === 1) {
-              // console.log(convePrv);
-              if (convePrv[i].members[0] === resUser?.data.userid) {
-                console.log(convePrv);
-                addPerson = convePrv[i];
+          if (convePrv.length > 0) {
+            for (let i = 0; i < convePrv.length; i++) {
+              if (convePrv[i].members.length === 1) {
+                console.log(resUser?.data[0].userid);
+                if (convePrv[i].members[0] === resUser?.data[0].userid) {
+                  console.log(convePrv);
+                  // addPerson = convePrv[i];
+                  await reconnectMember(convePrv[i]);
+                  // setMorePersons(2);
+                  return;
+                } else if (convePrv[i].members[0] === currentUser.uid) {
+                  // addPerson = convePrv[i];
+                  deleteMember(convePrv[i]);
+                  // setMorePersons(0);
+                  break;
+                }
+              }
 
-                setMorePersons(2);
-                break;
-              } else if (convePrv[i].members[0] === currentUser.uid) {
-                addPerson = convePrv[i];
-                setMorePersons(0);
-                break;
+              if (i === convePrv.length - 1) {
+                console.log(isOnePerson);
+                const res = await createFreindship(false, resUser?.data);
+                console.log('from chat: ', res);
               }
             }
-
-            if (i === convePrv.length - 1) {
-              console.log(isOnePerson);
-              setMorePersons(1);
-            }
+          } else {
+            const res = await createFreindship(false, resUser?.data);
+            console.log('from chat: ', res);
           }
-          // convePrv.map((convePrv) => {
-
-          //   // console.log(res?.data);
-          // });
         }
-        console.log(isOnePerson);
-        if (isOnePerson === 2) {
-          console.log(isOnePerson);
-          const res = await axios.patch(
-            '/api/v1/private/?chatId=' + addPerson._id,
-            {
-              members: [currentUser.uid],
-            }
-          );
-          // setMorePersons(1);
-        }
-        if (isOnePerson === 0) {
-          console.log(isOnePerson);
-          const res = await axios.delete('/api/v1/private/' + addPerson._id);
-          // setMorePersons(1);
-        }
-
         //joun@example.com
-        if (resUser?.data !== '' && isOnePerson === 1) {
-          console.log(isOnePerson);
-          const res = await axios.post('/api/v1/private/', {
-            groupName: resUser?.data.username,
-            isGroup: false,
-            members: [currentUser.uid, resUser?.data.userid],
-            userInfo: [
-              {
-                userid: currentUser.uid,
-                username: currentUser.displayName,
-                profilePicture: currentUser.photoURL,
-              },
-              {
-                userid: resUser?.data.userid,
-                username: resUser?.data.username,
-                profilePicture: resUser?.data.profilePicture,
-              },
-            ],
-            messages: [{ sender: null, text: null, isRead: false }],
-          });
-        }
-        // console.log(resUser?.data);
       } catch (err) {
         console.error(err.message);
       }
@@ -126,8 +100,45 @@ const NewMessageModal = ({ setModal, showModal, isGroup }) => {
     getUser();
     setModal(!showModal);
     setinput('');
-    setMorePersons(-1);
+
     // console.log(conversation);
+  };
+
+  const createFreindship = async (group, data) => {
+    let usersIds = [];
+    let isAdmin = [];
+    let grName;
+    data.map((usr) => {
+      usersIds.push(usr.userid);
+    });
+    if (!group) {
+      grName = data[0].username;
+    } else if (group) {
+      grName = groupName;
+      isAdmin.push(currentUser.uid);
+      if (groupName.length === 0) {
+        grName = 'New group';
+      }
+    }
+    console.log(usersIds);
+
+    const res = await axios.post('/api/v1/conversations/', {
+      admin: isAdmin,
+      groupName: grName,
+      isGroup: group,
+      members: [currentUser.uid, ...usersIds],
+      userInfo: [
+        {
+          userid: currentUser.uid,
+          username: currentUser.displayName,
+          profilePicture: currentUser.photoURL,
+        },
+        ...data,
+      ],
+      messages: [{ sender: null, text: null, isRead: false }],
+    });
+    setMorePersons(-1);
+    return res;
   };
 
   const handleGroupSubmit = (event) => {
@@ -136,36 +147,20 @@ const NewMessageModal = ({ setModal, showModal, isGroup }) => {
       try {
         const resUser = await axios.put('/api/v1/users/', {
           group: true,
-          groupList: groupList,
+          friendsList: groupList,
         });
         console.log(resUser?.data);
         if (resUser?.data.length !== 0) {
-          const res = await axios.post('/api/v1/conversations/', {
-            groupName: groupName.trim(),
-            isGroup: true,
-            members: [currentUser.uid, ...resUser?.data.userid],
-
-            userInfo: [
-              {
-                userid: currentUser.uid,
-                username: currentUser.displayName,
-                profilePicture: currentUser.photoURL,
-              },
-              {
-                userid: resUser?.data.userid,
-                username: resUser?.data.username,
-                profilePicture: resUser?.data.profilePicture,
-              },
-            ],
-            messages: [{ sender: null, text: null, isRead: false }],
-          });
+          const res = createFreindship(true, resUser?.data);
+          console.log('from group: ', res);
         }
       } catch (err) {
         console.error(err.message);
       }
     };
     getUser();
-
+    setGroupName('');
+    setGroupList([]);
     // setGroup(false);
   };
 

@@ -26,8 +26,8 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
 
   const [messages, setMessages] = useState([]);
   const [menuDrop, setMenuDrop] = useState(false);
-  const [chatGroup, setChatGroup] = useState(false);
-  const [deleteChat, setDeleteChat] = useState(false);
+
+  // const [deleteChat, setDeleteChat] = useState(false);
   // const [sender, setSender] = useState('');
   const { currentUser } = useSelector((state) => state.user);
 
@@ -41,16 +41,19 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
     event.preventDefault();
 
     try {
-      const res = await axios.patch('/api/v1/private/' + currentChat?._id, {
-        messages: [
-          {
-            sender: currentUser.uid,
-            text: input,
-            isRead: false,
-            date: new Date().toISOString(),
-          },
-        ],
-      });
+      const res = await axios.patch(
+        '/api/v1/conversations/' + currentChat?._id,
+        {
+          messages: [
+            {
+              sender: currentUser.uid,
+              text: input,
+              isRead: false,
+              date: new Date().toISOString(),
+            },
+          ],
+        }
+      );
 
       setInput('');
       let lastMsg = res.data?.data.messages;
@@ -62,33 +65,49 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
     }
   };
 
-  useEffect(() => {
-    console.log(currentChat);
-    const delChat = async () => {
-      try {
-        const res = await axios.patch(
-          '/api/v1/private/?chatId=' + currentChat._id,
-          {
-            delId: currentUser.uid,
-          }
-        );
-        // console.log(res.data);
+  // useEffect(() => {
+  //   // console.log(currentChat);
+  //   const delChat = async () => {
+  //     try {
+  //       await axios.patch('/api/v1/conversations/?chatId=' + currentChat?._id, {
+  //         delId: currentUser.uid,
+  //       });
+  //       // console.log(res.data);
 
-        setDeleteChat(false);
-      } catch (err) {
-        console.error(err.message);
-      }
-    };
-    delChat();
-  }, [deleteChat]);
+  //       setDeleteChat(false);
+  //     } catch (err) {
+  //       console.error(err.message);
+  //     }
+  //   };
+  //   delChat();
+  // }, [deleteChat]);
 
   const findUserName = (sender) => {
     return currentChat.userInfo.map((usr) => {
       if (usr.userid === sender) {
         return usr.username;
       }
+      return;
     });
   };
+
+  const displayMembersNames = () => {
+    let info = currentChat?.userInfo;
+    const membersNames = [];
+    for (let i = 0; i < info.length; i++) {
+      if (info[i].userid === currentUser.uid) {
+        return info[i].username;
+        membersNames.push('you');
+      } else {
+        membersNames.push(info[i].username);
+      }
+      if (i === 6) {
+        break;
+      }
+    }
+    return membersNames;
+  };
+  console.log(currentChat);
 
   return (
     <div className='chat-box'>
@@ -99,8 +118,12 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
 
             <div className='chat-box-header-info'>
               <h3>{userNam}</h3>
-              {/* <h3>{roomName}</h3>
-                    <p>last seen {messages[messages.length - 1]._id ? date(messages[messages.length - 1]._id) : console.log(messages[messages.length - 1].timestamp)}</p> */}
+
+              <div className={currentChat?.isGroup ? 'names-group' : 'hidden'}>
+                {currentChat?.userInfo.map((m) => (
+                  <p className='name-person'>{m.username},</p>
+                ))}
+              </div>
             </div>
 
             <div className='chat-box-header-right'>
@@ -117,15 +140,15 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
                 className={
                   menuDrop
                     ? `menu-drop-cahtbox ${
-                        !chatGroup ? 'menu-drop-cahtbox-group' : ''
+                        !currentChat?.isGroup ? 'menu-drop-cahtbox-group' : ''
                       }`
                     : 'hidden'
                 }
               >
                 <MenuDropdown
                   setModal={undefined}
-                  chatGroup={chatGroup}
-                  setDeleteChat={setDeleteChat}
+                  chatGroup={currentChat?.isGroup}
+                  currentChat={currentChat}
                 />
               </div>
             </div>

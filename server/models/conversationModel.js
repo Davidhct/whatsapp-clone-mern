@@ -3,6 +3,11 @@ const mongoose = require('mongoose');
 const conversationSchema = new mongoose.Schema(
   {
     admin: { type: [String], require: false },
+    profilePicture: {
+      type: String,
+      require: false,
+      default: '',
+    },
     groupName: { type: String, require: false, default: 'New group' },
     isGroup: { type: Boolean, default: false, require: true },
     members: { type: [String], require: true, unique: false },
@@ -17,6 +22,7 @@ const conversationSchema = new mongoose.Schema(
           },
           profilePicture: {
             type: String,
+            require: false,
           },
         },
       ],

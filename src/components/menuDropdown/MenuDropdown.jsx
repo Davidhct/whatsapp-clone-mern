@@ -1,8 +1,24 @@
 import React from 'react';
 import SignOut from '../signOut/SignOut';
+import { useSelector } from 'react-redux';
+import axios from '../../axios';
 import './MenuDropdown.css';
 
-const MenuDropdown = ({ setModal, chatGroup, setDeleteChat, setGroup }) => {
+const MenuDropdown = ({ setModal, chatGroup, setGroup, currentChat }) => {
+  const { currentUser } = useSelector((state) => state.user);
+
+  const handleDeleteClick = async (event) => {
+    event.preventDefault();
+    try {
+      await axios.patch('/api/v1/conversations/?chatId=' + currentChat?._id, {
+        delId: currentUser.uid,
+      });
+      // console.log(res.data);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
   const handleClick = (event) => {
     setModal(true);
     console.log(event.target.id);
@@ -41,7 +57,7 @@ const MenuDropdown = ({ setModal, chatGroup, setDeleteChat, setGroup }) => {
               <div className='menu-list'>Add person</div>
             </li>
             <li>
-              <div className='menu-list' onClick={() => setDeleteChat(true)}>
+              <div className='menu-list' onClick={handleDeleteClick}>
                 Delete chat
               </div>
             </li>
