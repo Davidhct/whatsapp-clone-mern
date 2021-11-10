@@ -3,7 +3,7 @@ const ConversationModel = require('../models/conversationModel');
 exports.createMessage = async (req, res) => {
   try {
     ConversationModel.syncIndexes();
-    if (req.body.isGroup === true) {
+    if (req.body.isGroup === false) {
       const conve = await ConversationModel.find();
 
       conve.map((c) => {
@@ -99,8 +99,8 @@ exports.updateMesssages = async (req, res) => {
   }
 };
 exports.updatePerson = async (req, res) => {
-  // console.log(req.params);
-  // console.log(req.body);
+  console.log(req.params);
+  console.log(req.body);
 
   try {
     ConversationModel.syncIndexes();
