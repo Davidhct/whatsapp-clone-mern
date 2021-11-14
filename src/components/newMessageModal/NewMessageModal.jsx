@@ -31,43 +31,86 @@ const useStyles = makeStyles({
   },
 });
 
-const NewMessageModal = ({ setModal, showModal, isGroup }) => {
+const NewMessageModal = ({
+  setModal,
+  showModal,
+  isGroup,
+  addPerson,
+  setPerson,
+  currentChat,
+}) => {
   const classes = useStyles();
   const { currentUser } = useSelector((state) => state.user);
   const [input, setinput] = useState('');
-  const [isOnePerson, setMorePersons] = useState(-1);
+  // const [isOnePerson, setMorePersons] = useState(-1);
   const [groupName, setGroupName] = useState('');
   const [groupList, setGroupList] = useState([]);
 
   const reconnectMember = async (user) => {
-    await axios.patch('/api/v1/conversations/?chatId=' + user._id, {
-      members: [currentUser.uid],
-    });
+    try {
+      await axios.patch('/api/v1/conversations/?chatId=' + user._id, {
+        reconnect: true,
+        members: [currentUser.uid],
+      });
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+  const addNewMember = async (user) => {
+    console.log(user);
+    try {
+      const res = await axios.patch(
+        '/api/v1/conversations/?chatId=' + currentChat?._id,
+        {
+          addPerson: true,
+          members: [user.userid],
+          userInfo: [user],
+        }
+      );
+      console.log(res.data);
+    } catch (err) {
+      console.error(err.message);
+    }
   };
   const deleteMember = async (user) => {
-    await axios.delete('/api/v1/conversations/' + user._id);
+    try {
+      await axios.delete('/api/v1/conversations/' + user._id);
+      // console.log(res.data);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+  const checkGetUser = async () => {
+    let data;
+    try {
+      const res = await axios.put('/api/v1/users/', {
+        group: false,
+        friendsList: input,
+      });
+      data = res?.data;
+    } catch (err) {
+      console.error(err.message);
+    }
+    return data;
   };
 
   const handleChatSubmit = (event) => {
     event.preventDefault();
 
     const getUser = async () => {
-      let addPerson = undefined;
+      // let addPerson = undefined;
       try {
-        const resUser = await axios.put('/api/v1/users/', {
-          group: false,
-          friendsList: input,
-        });
-        console.log(resUser?.data);
-        if (resUser?.data.length > 0) {
+        const resUser = await checkGetUser();
+        console.log(resUser);
+        if (resUser?.length > 0) {
           const resPrv = await axios.get('/api/v1/conversations/');
           // console.log(resPrv?.data);
           const convePrv = resPrv?.data.data;
           if (convePrv.length > 0) {
             for (let i = 0; i < convePrv.length; i++) {
               if (convePrv[i].members.length === 1) {
-                console.log(resUser?.data[0].userid);
-                if (convePrv[i].members[0] === resUser?.data[0].userid) {
+                console.log(resUser[0].userid);
+                if (convePrv[i].members[0] === resUser[0].userid) {
                   console.log(convePrv);
                   // addPerson = convePrv[i];
                   await reconnectMember(convePrv[i]);
@@ -82,13 +125,12 @@ const NewMessageModal = ({ setModal, showModal, isGroup }) => {
               }
 
               if (i === convePrv.length - 1) {
-                console.log(isOnePerson);
-                const res = await createFreindship(false, resUser?.data);
+                const res = await createFreindship(false, resUser);
                 console.log('from chat: ', res);
               }
             }
           } else {
-            const res = await createFreindship(false, resUser?.data);
+            const res = await createFreindship(false, resUser);
             console.log('from chat: ', res);
           }
         }
@@ -97,7 +139,21 @@ const NewMessageModal = ({ setModal, showModal, isGroup }) => {
         console.error(err.message);
       }
     };
-    getUser();
+    if (addPerson === true) {
+      const addUser = async () => {
+        try {
+          const resUser = await checkGetUser();
+          await addNewMember(resUser[0]);
+          console.log(resUser);
+        } catch (err) {
+          console.error(err.message);
+        }
+      };
+      addUser();
+    } else {
+      getUser();
+    }
+    setPerson(false);
     setModal(!showModal);
     setinput('');
 
@@ -120,6 +176,8 @@ const NewMessageModal = ({ setModal, showModal, isGroup }) => {
         grName = 'New group';
       }
     }
+    console.log(group);
+    console.log(grName);
     console.log(usersIds);
 
     const res = await axios.post('/api/v1/conversations/', {
@@ -137,7 +195,7 @@ const NewMessageModal = ({ setModal, showModal, isGroup }) => {
       ],
       messages: [{ sender: null, text: null, isRead: false }],
     });
-    setMorePersons(-1);
+
     return res;
   };
 
@@ -161,6 +219,7 @@ const NewMessageModal = ({ setModal, showModal, isGroup }) => {
     getUser();
     setGroupName('');
     setGroupList([]);
+    setModal(!showModal);
     // setGroup(false);
   };
 

@@ -70,6 +70,7 @@ const createUserInfo = (user) => {
     userid: user.userid,
     username: user.username,
     profilePicture: user.profilePicture,
+    useremail: user.email,
   };
   return userInfo;
 };

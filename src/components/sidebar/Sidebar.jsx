@@ -101,7 +101,11 @@ const Sidebar = ({
             <MoreVertIcon />
           </IconButton>
           <div className={menuDrop ? 'menu-drop-sidebar' : 'hidden'}>
-            <MenuDropdown setModal={setModal} setGroup={setGroup} />
+            <MenuDropdown
+              isSidebar={true}
+              setModal={setModal}
+              setGroup={setGroup}
+            />
           </div>
         </div>
       </div>

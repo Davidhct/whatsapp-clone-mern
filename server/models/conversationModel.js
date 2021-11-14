@@ -24,6 +24,7 @@ const conversationSchema = new mongoose.Schema(
             type: String,
             require: false,
           },
+          useremail: { type: String, require: true },
         },
       ],
       unique: false,
