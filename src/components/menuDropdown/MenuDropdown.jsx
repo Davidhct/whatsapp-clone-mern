@@ -4,7 +4,14 @@ import { useSelector } from 'react-redux';
 import axios from '../../axios';
 import './MenuDropdown.css';
 
-const MenuDropdown = ({ setModal, chatGroup, setGroup, currentChat }) => {
+const MenuDropdown = ({
+  setModal,
+  chatGroup,
+  setGroup,
+  currentChat,
+  isSidebar,
+  setPerson,
+}) => {
   const { currentUser } = useSelector((state) => state.user);
 
   const handleDeleteClick = async (event) => {
@@ -19,6 +26,12 @@ const MenuDropdown = ({ setModal, chatGroup, setGroup, currentChat }) => {
     }
   };
 
+  const handleAddClick = async (event) => {
+    event.preventDefault();
+    setModal(true);
+    setPerson(true);
+  };
+
   const handleClick = (event) => {
     setModal(true);
     console.log(event.target.id);
@@ -28,9 +41,10 @@ const MenuDropdown = ({ setModal, chatGroup, setGroup, currentChat }) => {
       setGroup(false);
     }
   };
+  console.log(currentChat);
   return (
     <div className='menu-dropdown'>
-      {setModal ? (
+      {isSidebar ? (
         <div className='menu-items'>
           <ul>
             <li>
@@ -54,7 +68,9 @@ const MenuDropdown = ({ setModal, chatGroup, setGroup, currentChat }) => {
         <div className='menu-items'>
           <ul>
             <li className={chatGroup ? '' : 'hidden'}>
-              <div className='menu-list'>Add person</div>
+              <div className='menu-list' onClick={handleAddClick}>
+                Add person
+              </div>
             </li>
             <li>
               <div className='menu-list' onClick={handleDeleteClick}>

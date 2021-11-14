@@ -20,18 +20,31 @@ const useStyles = makeStyles({
   },
 });
 
-const ChatBox = ({ currentChat, userPic, userNam }) => {
+const ChatBox = ({ currentChat, userPic, userNam, setModal, setPerson }) => {
   const classes = useStyles();
   const [input, setInput] = useState('');
 
   const [messages, setMessages] = useState([]);
   const [menuDrop, setMenuDrop] = useState(false);
+  const [isGroupAdmin, setIsGroupAdmin] = useState(false);
 
   // const [deleteChat, setDeleteChat] = useState(false);
   // const [sender, setSender] = useState('');
   const { currentUser } = useSelector((state) => state.user);
 
   const scrollRef = useRef();
+
+  useEffect(() => {
+    if (currentChat?.isGroup) {
+      currentChat?.admin.forEach((a) => {
+        if (a === currentUser.uid) {
+          setIsGroupAdmin(true);
+        }
+      });
+    } else {
+      setIsGroupAdmin(false);
+    }
+  }, [currentChat]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -91,22 +104,22 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
     });
   };
 
-  const displayMembersNames = () => {
-    let info = currentChat?.userInfo;
-    const membersNames = [];
-    for (let i = 0; i < info.length; i++) {
-      if (info[i].userid === currentUser.uid) {
-        return info[i].username;
-        membersNames.push('you');
-      } else {
-        membersNames.push(info[i].username);
-      }
-      if (i === 6) {
-        break;
-      }
-    }
-    return membersNames;
-  };
+  // const displayMembersNames = () => {
+  //   let info = currentChat?.userInfo;
+  //   const membersNames = [];
+  //   for (let i = 0; i < info.length; i++) {
+  //     if (info[i].userid === currentUser.uid) {
+  //       return info[i].username;
+  //       membersNames.push('you');
+  //     } else {
+  //       membersNames.push(info[i].username);
+  //     }
+  //     if (i === 6) {
+  //       break;
+  //     }
+  //   }
+  //   return membersNames;
+  // };
   console.log(currentChat);
 
   return (
@@ -140,15 +153,17 @@ const ChatBox = ({ currentChat, userPic, userNam }) => {
                 className={
                   menuDrop
                     ? `menu-drop-cahtbox ${
-                        !currentChat?.isGroup ? 'menu-drop-cahtbox-group' : ''
+                        !isGroupAdmin ? 'menu-drop-cahtbox-group' : ''
                       }`
                     : 'hidden'
                 }
               >
                 <MenuDropdown
-                  setModal={undefined}
-                  chatGroup={currentChat?.isGroup}
+                  isSidebar={false}
+                  setModal={setModal}
+                  chatGroup={isGroupAdmin}
                   currentChat={currentChat}
+                  setPerson={setPerson}
                 />
               </div>
             </div>

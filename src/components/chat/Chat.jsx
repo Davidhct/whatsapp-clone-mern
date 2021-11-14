@@ -12,6 +12,7 @@ const Chat = () => {
   const [userNam, setUserName] = useState([]);
   const [showModal, setModal] = useState(null);
   const [isGroup, setGroup] = useState(null);
+  const [addPerson, setPerson] = useState(false);
 
   return (
     <div className='chat'>
@@ -29,6 +30,8 @@ const Chat = () => {
           currentChat={currentChat}
           userPic={userPic}
           userNam={userNam}
+          setModal={setModal}
+          setPerson={setPerson}
         />
         <div className={showModal ? 'new-message' : 'hidden'}>
           <div className='chat-body-modal'>
@@ -36,6 +39,9 @@ const Chat = () => {
               setModal={setModal}
               showModal={showModal}
               isGroup={isGroup}
+              addPerson={addPerson}
+              setPerson={setPerson}
+              currentChat={currentChat}
             />
           </div>
         </div>

@@ -7,18 +7,22 @@ exports.createMessage = async (req, res) => {
       const conve = await ConversationModel.find();
 
       conve.map((c) => {
-        if (c.members[0] === req.body.members[0]) {
-          if (c.members[1] === req.body.members[1]) {
-            throw new Error('The chat already exist');
-          }
-        } else if (c.members[0] === req.body.members[1]) {
-          if (c.members[1] === req.body.members[0]) {
-            throw new Error('The chat already exist');
+        if (!c.isGroup) {
+          if (c.members[0] === req.body.members[0]) {
+            if (c.members[1] === req.body.members[1]) {
+              console.log('---->>>', c);
+              throw new Error('The chat already exist');
+            }
+          } else if (c.members[0] === req.body.members[1]) {
+            console.log('ooooooo', c.members[1] === req.body.members[0]);
+            if (c.members[1] === req.body.members[0]) {
+              throw new Error('The chat already exist');
+            }
           }
         }
       });
     }
-    console.log(req.body);
+    console.log(conve);
     const newMessage = await ConversationModel.create(req.body);
     res.status(201).json({
       status: 'success',
@@ -114,7 +118,20 @@ exports.updatePerson = async (req, res) => {
           runValidators: true,
         }
       );
-    } else {
+    } else if (req.body.addPerson) {
+      members = await ConversationModel.findByIdAndUpdate(
+        req.query.chatId,
+        {
+          $push: { members: req.body.members },
+          $push: { userInfo: req.body.userInfo },
+        },
+
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    } else if (req.body.reconnect) {
       members = await ConversationModel.findByIdAndUpdate(
         req.query.chatId,
         { $push: { members: req.body.members } },
