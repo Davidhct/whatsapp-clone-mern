@@ -21,8 +21,16 @@ const Sidebar = ({
   setCurrentChat,
   setUserPic,
   setUserName,
-  setModal,
-  setGroup,
+
+  groupModal,
+  setGroupModal,
+  chatModal,
+  setChatModal,
+  setGroupName,
+  groupName,
+  setGroupList,
+  groupList,
+  setModalInput,
 }) => {
   const classes = useStyles();
   const [conversations, setConversations] = useState([]);
@@ -103,8 +111,8 @@ const Sidebar = ({
           <div className={menuDrop ? 'menu-drop-sidebar' : 'hidden'}>
             <MenuDropdown
               isSidebar={true}
-              setModal={setModal}
-              setGroup={setGroup}
+              setChatModal={setChatModal}
+              setGroupModal={setGroupModal}
             />
           </div>
         </div>

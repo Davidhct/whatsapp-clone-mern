@@ -7,7 +7,7 @@ import CustomButton from '../customButton/CustomButton';
 import axios from './../../axios';
 import { useSelector } from 'react-redux';
 
-import './NewMessageModal.css';
+import './GroupModal.css';
 
 const useStyles = makeStyles({
   iconButton: {
@@ -31,18 +31,14 @@ const useStyles = makeStyles({
   },
 });
 
-const NewMessageModal = ({
-  setModal,
-  showModal,
-  isGroup,
-  isPrivate,
-  addPerson,
-  setPerson,
-  currentChat,
+const GroupModal = ({
   setGroupName,
   setGroupList,
   groupName,
   groupList,
+  setGroupModal,
+  groupModal,
+  setModalInput,
 }) => {
   const classes = useStyles();
   const { currentUser } = useSelector((state) => state.user);
@@ -159,7 +155,7 @@ const NewMessageModal = ({
   //     getUser();
   //   }
   //   setPerson(false);
-  //   setModal(!showModal);
+  //   setGroupModal(!groupModal);
   //   setinput('');
 
   //   // console.log(conversation);
@@ -224,16 +220,13 @@ const NewMessageModal = ({
   //   getUser();
   //   setGroupName('');
   //   setGroupList([]);
-  //   setModal(!showModal);
+  //   setGroupModal(!groupModal);
   //   // setGroup(false);
   // };
-  const handleGroupSubmit = (event) => {
-    event.preventDefault();
-    setModal(!showModal);
-  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    setModal(!showModal);
+    setGroupModal(!groupModal);
     setinput('');
   };
 
@@ -243,6 +236,7 @@ const NewMessageModal = ({
     console.log(name);
     if (name === 'email') {
       setinput(value);
+      setModalInput(value);
     } else {
       setGroupName(value);
     }
@@ -270,7 +264,7 @@ const NewMessageModal = ({
         <div className='exit'>
           <IconButton
             className={classes.iconButton}
-            onClick={() => setModal(!showModal)}
+            onClick={() => setGroupModal(!groupModal)}
           >
             <div className='exit-button'>&times;</div>
           </IconButton>
@@ -279,26 +273,8 @@ const NewMessageModal = ({
       <div className='title-modal'>
         <h2>Start chatting</h2>
       </div>
-
-      <div className='new-msg-modal'>
-        <form onSubmit={handleSubmit}>
-          <div className='new-msg-input'>
-            <FormInput
-              type='email'
-              name='email'
-              label='email'
-              value={input}
-              handleChange={handleChange}
-            />
-          </div>
-          <div className='new-msg-button'>
-            <CustomButton type='submit'>Add</CustomButton>
-          </div>
-        </form>
-      </div>
-
       <div className='new-msg-modal new-group-msg-modal'>
-        <form onSubmit={handleGroupSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className='group-input-wrapper'>
             <div className='new-input-mail'>
               <>
@@ -355,4 +331,4 @@ const NewMessageModal = ({
   );
 };
 
-export default NewMessageModal;
+export default GroupModal;
