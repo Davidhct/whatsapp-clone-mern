@@ -20,13 +20,26 @@ const useStyles = makeStyles({
   },
 });
 
-const ChatBox = ({ currentChat, userPic, userNam, setModal, setPerson }) => {
+const ChatBox = ({
+  currentChat,
+  userPic,
+  userNam,
+  chatModal,
+  setChatModal,
+  setGroupModal,
+  setGroupName,
+  groupName,
+  setGroupList,
+  groupList,
+  setModalInput,
+}) => {
   const classes = useStyles();
   const [input, setInput] = useState('');
 
   const [messages, setMessages] = useState([]);
   const [menuDrop, setMenuDrop] = useState(false);
   const [isGroupAdmin, setIsGroupAdmin] = useState(false);
+  const [addPerson, setPerson] = useState(false);
 
   // const [deleteChat, setDeleteChat] = useState(false);
   // const [sender, setSender] = useState('');
@@ -78,23 +91,6 @@ const ChatBox = ({ currentChat, userPic, userNam, setModal, setPerson }) => {
     }
   };
 
-  // useEffect(() => {
-  //   // console.log(currentChat);
-  //   const delChat = async () => {
-  //     try {
-  //       await axios.patch('/api/v1/conversations/?chatId=' + currentChat?._id, {
-  //         delId: currentUser.uid,
-  //       });
-  //       // console.log(res.data);
-
-  //       setDeleteChat(false);
-  //     } catch (err) {
-  //       console.error(err.message);
-  //     }
-  //   };
-  //   delChat();
-  // }, [deleteChat]);
-
   const findUserName = (sender) => {
     return currentChat.userInfo.map((usr) => {
       if (usr.userid === sender) {
@@ -104,22 +100,6 @@ const ChatBox = ({ currentChat, userPic, userNam, setModal, setPerson }) => {
     });
   };
 
-  // const displayMembersNames = () => {
-  //   let info = currentChat?.userInfo;
-  //   const membersNames = [];
-  //   for (let i = 0; i < info.length; i++) {
-  //     if (info[i].userid === currentUser.uid) {
-  //       return info[i].username;
-  //       membersNames.push('you');
-  //     } else {
-  //       membersNames.push(info[i].username);
-  //     }
-  //     if (i === 6) {
-  //       break;
-  //     }
-  //   }
-  //   return membersNames;
-  // };
   console.log(currentChat);
 
   return (
@@ -160,10 +140,12 @@ const ChatBox = ({ currentChat, userPic, userNam, setModal, setPerson }) => {
               >
                 <MenuDropdown
                   isSidebar={false}
-                  setModal={setModal}
                   chatGroup={isGroupAdmin}
                   currentChat={currentChat}
                   setPerson={setPerson}
+                  setGroupModal={setGroupModal}
+                  setChatModal={setChatModal}
+                  chatModal={chatModal}
                 />
               </div>
             </div>

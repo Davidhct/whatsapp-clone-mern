@@ -5,12 +5,15 @@ import axios from '../../axios';
 import './MenuDropdown.css';
 
 const MenuDropdown = ({
-  setModal,
+  // setModal,
   chatGroup,
-  setGroup,
   currentChat,
   isSidebar,
   setPerson,
+  setChatModal,
+  setGroupModal,
+
+  // showModal,
 }) => {
   const { currentUser } = useSelector((state) => state.user);
 
@@ -26,19 +29,20 @@ const MenuDropdown = ({
     }
   };
 
-  const handleAddClick = async (event) => {
-    event.preventDefault();
-    setModal(true);
-    setPerson(true);
-  };
-
   const handleClick = (event) => {
-    setModal(true);
+    event.preventDefault();
+
     console.log(event.target.id);
     if (event.target.id === 'group') {
-      setGroup(true);
+      setGroupModal(true);
+      setChatModal(false);
     } else if (event.target.id === 'private') {
-      setGroup(false);
+      setChatModal(true);
+      setGroupModal(false);
+    } else {
+      setChatModal(true);
+      setGroupModal(false);
+      setPerson(true);
     }
   };
   console.log(currentChat);
@@ -68,7 +72,7 @@ const MenuDropdown = ({
         <div className='menu-items'>
           <ul>
             <li className={chatGroup ? '' : 'hidden'}>
-              <div className='menu-list' onClick={handleAddClick}>
+              <div className='menu-list' id='addPerson' onClick={handleClick}>
                 Add person
               </div>
             </li>
