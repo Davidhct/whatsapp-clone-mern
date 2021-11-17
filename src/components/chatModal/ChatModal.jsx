@@ -3,6 +3,7 @@ import { makeStyles, IconButton } from '@material-ui/core';
 
 import FormInput from '../formInput/FormInput';
 import CustomButton from '../customButton/CustomButton';
+import axios from '../../axios';
 
 import { useSelector } from 'react-redux';
 
@@ -18,7 +19,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ChatModal = ({ setChatModal, chatModal, setModalInput }) => {
+const ChatModal = ({ setChatModal, chatModal }) => {
   const classes = useStyles();
   const { currentUser } = useSelector((state) => state.user);
   const [input, setinput] = useState('');
@@ -26,9 +27,212 @@ const ChatModal = ({ setChatModal, chatModal, setModalInput }) => {
   // const [groupName, setGroupName] = useState('');
   // const [groupList, setGroupList] = useState([]);
 
+  // const reconnectMember = async (user) => {
+  //   try {
+  //     await axios.patch('/api/v1/conversations/?chatId=' + user._id, {
+  //       reconnect: true,
+  //       members: [currentUser.uid],
+  //     });
+  //   } catch (err) {
+  //     console.error(err.message);
+  //   }
+  // };
+  // const addNewMember = async (user) => {
+  //   console.log(user);
+  //   try {
+  //     const res = await axios.patch(
+  //       '/api/v1/conversations/?chatId=' + currentChat?._id,
+  //       {
+  //         addPerson: true,
+  //         members: [user.userid],
+  //         userInfo: [user],
+  //       }
+  //     );
+  //     console.log(res.data);
+  //   } catch (err) {
+  //     console.error(err.message);
+  //   }
+  // };
+  // const deleteMember = async (user) => {
+  //   try {
+  //     await axios.delete('/api/v1/conversations/' + user._id);
+  //     // console.log(res.data);
+  //   } catch (err) {
+  //     console.error(err.message);
+  //   }
+  // };
+  // const checkGetUser = async () => {
+  //   let data;
+  //   try {
+  //     const res = await axios.put('/api/v1/users/', {
+  //       group: false,
+  //       friendsList: input,
+  //     });
+  //     data = res?.data;
+  //   } catch (err) {
+  //     console.error(err.message);
+  //   }
+  //   return data;
+  // };
+
+  // const handleChatSubmit = (event) => {
+  //   event.preventDefault();
+
+  //   const getUser = async () => {
+  //     // let addPerson = undefined;
+  //     try {
+  //       const resUser = await checkGetUser();
+  //       console.log(resUser);
+  //       if (resUser?.length > 0) {
+  //         const resPrv = await axios.get('/api/v1/conversations/');
+  //         // console.log(resPrv?.data);
+  //         const convePrv = resPrv?.data.data;
+  //         if (convePrv.length > 0) {
+  //           for (let i = 0; i < convePrv.length; i++) {
+  //             if (convePrv[i].members.length === 1) {
+  //               console.log(resUser[0].userid);
+  //               if (convePrv[i].members[0] === resUser[0].userid) {
+  //                 console.log(convePrv);
+  //                 // addPerson = convePrv[i];
+  //                 await reconnectMember(convePrv[i]);
+  //                 // setMorePersons(2);
+  //                 return;
+  //               } else if (convePrv[i].members[0] === currentUser.uid) {
+  //                 // addPerson = convePrv[i];
+  //                 deleteMember(convePrv[i]);
+  //                 // setMorePersons(0);
+  //                 break;
+  //               }
+  //             }
+
+  //             if (i === convePrv.length - 1) {
+  //               const res = await createFreindship(false, resUser);
+  //               console.log('from chat: ', res);
+  //             }
+  //           }
+  //         } else {
+  //           const res = await createFreindship(false, resUser);
+  //           console.log('from chat: ', res);
+  //         }
+  //       }
+  //       //joun@example.com
+  //     } catch (err) {
+  //       console.error(err.message);
+  //     }
+  //   };
+  //   if (addPerson === true) {
+  //     const addUser = async () => {
+  //       try {
+  //         const resUser = await checkGetUser();
+  //         await addNewMember(resUser[0]);
+  //         console.log(resUser);
+  //       } catch (err) {
+  //         console.error(err.message);
+  //       }
+  //     };
+  //     addUser();
+  //   } else {
+  //     getUser();
+  //   }
+  //   setPerson(false);
+  //   setGroupModal(!groupModal);
+  //   setinput('');
+
+  //   // console.log(conversation);
+  // };
+  const createFreindship = async (data) => {
+    console.log('data: ', data);
+    const res = await axios.post('/api/v1/conversations/', {
+      admin: [],
+      groupName: data.username,
+      isGroup: false,
+      members: [currentUser.uid, data.userid],
+      userInfo: [
+        {
+          userid: currentUser.uid,
+          username: currentUser.displayName,
+          profilePicture: currentUser.photoURL,
+          useremail: currentUser.email,
+        },
+        ...data,
+      ],
+      messages: [{ sender: null, text: null, isRead: false }],
+    });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setChatModal(!chatModal);
+
+    const getUser = async () => {
+      try {
+        // check if the user is in the database
+        const resUser = await axios.put('/api/v1/users/', {
+          group: false,
+          friendsList: input,
+        });
+        console.log(resUser?.data);
+        if (resUser?.data.length > 0) {
+          // get all conversation
+          const resPrv = await axios.get('/api/v1/conversations/');
+          console.log(resPrv?.data.data);
+          const convers = resPrv?.data.data;
+          if (convers.length > 0) {
+            console.log(convers);
+            for (let i = 0; i < convers.length; i++) {
+              if (!convers[i].isGroup && convers[i].members.length === 1) {
+                // console.log(convers);
+                const friend = convers[i].userInfo.find(
+                  (usr) => usr.userid !== input
+                );
+                // connct to old conversation
+                friend &&
+                  (await axios.patch(
+                    '/api/v1/conversations/?chatId=' + convers[i]._id,
+                    {
+                      reconnect: true,
+                      members: [currentUser.uid],
+                    }
+                  ));
+                return;
+              } else if (i === convers.length - 1) {
+                createFreindship(resUser?.data);
+                return;
+              }
+            }
+          }
+        } else {
+          createFreindship(resUser?.data);
+          return;
+        }
+
+        //         }
+        //       } else {
+        //         const res = await createFreindship(false, resUser);
+        //         console.log('from chat: ', res);
+
+        //     //joun@example.com
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    // if (addPerson === true) {
+    //   const addUser = async () => {
+    //     try {
+    //       const resUser = await checkGetUser();
+    //       await addNewMember(resUser[0]);
+    //       console.log(resUser);
+    //     } catch (err) {
+    //       console.error(err.message);
+    //     }
+    //   };
+    //   addUser();
+    // } else {
+    //   getUser();
+    // }
+    getUser();
+    // setPerson(false);
+
     setinput('');
   };
 
@@ -38,7 +242,6 @@ const ChatModal = ({ setChatModal, chatModal, setModalInput }) => {
     console.log(name);
     if (name === 'email') {
       setinput(value);
-      setModalInput(value);
     }
   };
 

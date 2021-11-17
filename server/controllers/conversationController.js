@@ -1,32 +1,32 @@
 const ConversationModel = require('../models/conversationModel');
 
-exports.createMessage = async (req, res) => {
+exports.createConversation = async (req, res) => {
   try {
     ConversationModel.syncIndexes();
-    if (req.body.isGroup === false) {
-      const conve = await ConversationModel.find();
+    // if (req.body.isGroup === false) {
+    //   const conve = await ConversationModel.find();
 
-      conve.map((c) => {
-        if (!c.isGroup) {
-          if (c.members[0] === req.body.members[0]) {
-            if (c.members[1] === req.body.members[1]) {
-              console.log('---->>>', c);
-              throw new Error('The chat already exist');
-            }
-          } else if (c.members[0] === req.body.members[1]) {
-            console.log('ooooooo', c.members[1] === req.body.members[0]);
-            if (c.members[1] === req.body.members[0]) {
-              throw new Error('The chat already exist');
-            }
-          }
-        }
-      });
-    }
-    console.log(conve);
-    const newMessage = await ConversationModel.create(req.body);
+    //   conve.map((c) => {
+    //     if (!c.isGroup) {
+    //       if (c.members[0] === req.body.members[0]) {
+    //         if (c.members[1] === req.body.members[1]) {
+    //           console.log('---->>>', c);
+    //           throw new Error('The chat already exist');
+    //         }
+    //       } else if (c.members[0] === req.body.members[1]) {
+    //         console.log('ooooooo', c.members[1] === req.body.members[0]);
+    //         if (c.members[1] === req.body.members[0]) {
+    //           throw new Error('The chat already exist');
+    //         }
+    //       }
+    //     }
+    //   });
+    // }
+    console.log(req.body);
+    const newConversation = await ConversationModel.create(req.body);
     res.status(201).json({
       status: 'success',
-      data: newMessage,
+      data: newConversation,
     });
 
     // const saveMessage = await newMessage.save();
@@ -38,18 +38,20 @@ exports.createMessage = async (req, res) => {
   }
 };
 
-exports.getMessage = async (req, res) => {
+exports.getConversation = async (req, res) => {
   try {
     ConversationModel.syncIndexes();
     // const messages = await ConversationModel.find({
     //   conversationId: req.params.conversationId,
+    // members: { $in: [req.params.id] }
     // });
-    const message = await ConversationModel.find({
-      members: { $in: [req.params.id] },
+    const conversation = await ConversationModel.find({
+      members: req.params.id,
     });
+    console.log(conversation);
     res.status(200).json({
       status: 'success',
-      data: message,
+      data: conversation,
     });
   } catch (err) {
     res.status(400).json({
