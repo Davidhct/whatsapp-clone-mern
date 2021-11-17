@@ -26,11 +26,6 @@ const Sidebar = ({
   setGroupModal,
   chatModal,
   setChatModal,
-  setGroupName,
-  groupName,
-  setGroupList,
-  groupList,
-  setModalInput,
 }) => {
   const classes = useStyles();
   const [conversations, setConversations] = useState([]);

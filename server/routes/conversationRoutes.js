@@ -6,12 +6,12 @@ const router = express.Router();
 router
   .route('/')
   .get(conversationController.getAllMessages)
-  .post(conversationController.createMessage)
+  .post(conversationController.createConversation)
   .patch(conversationController.updatePerson);
 
 router
   .route('/:id')
-  .get(conversationController.getMessage)
+  .get(conversationController.getConversation)
   .patch(conversationController.updateMesssages)
   .delete(conversationController.deleteChat);
 

@@ -27,11 +27,6 @@ const ChatBox = ({
   chatModal,
   setChatModal,
   setGroupModal,
-  setGroupName,
-  groupName,
-  setGroupList,
-  groupList,
-  setModalInput,
 }) => {
   const classes = useStyles();
   const [input, setInput] = useState('');

@@ -12,10 +12,6 @@ const Chat = () => {
   const [userPic, setUserPic] = useState([]);
   const [userNam, setUserName] = useState([]);
 
-  const [modalInput, setModalInput] = useState('');
-
-  const [groupName, setGroupName] = useState('');
-  const [groupList, setGroupList] = useState([]);
   const [chatModal, setChatModal] = useState(null);
   const [groupModal, setGroupModal] = useState(null);
 
@@ -32,12 +28,6 @@ const Chat = () => {
           chatModal={chatModal}
           setGroupModal={setGroupModal}
           groupModal={groupModal}
-          //////////
-          setGroupName={setGroupName}
-          groupName={groupName}
-          groupList={groupList}
-          setGroupList={setGroupList}
-          setModalInput={setModalInput}
         />
         <ChatBox
           currentChat={currentChat}
@@ -46,29 +36,15 @@ const Chat = () => {
           setChatModal={setChatModal}
           chatModal={chatModal}
           setGroupModal={setGroupModal}
-          setGroupName={setGroupName}
-          groupName={groupName}
-          setGroupList={setGroupList}
-          groupList={groupList}
-          setModalInput={setModalInput}
         />
         <div className={chatModal || groupModal ? 'new-message' : 'hidden'}>
           <div className='chat-body-modal'>
             {chatModal ? (
-              <ChatModal
-                setChatModal={setChatModal}
-                chatModal={chatModal}
-                setModalInput={setModalInput}
-              />
+              <ChatModal setChatModal={setChatModal} chatModal={chatModal} />
             ) : (
               <GroupModal
-                setGroupName={setGroupName}
-                groupName={groupName}
-                setGroupList={setGroupList}
-                groupList={groupList}
                 setGroupModal={setGroupModal}
                 groupModal={groupModal}
-                setModalInput={setModalInput}
               />
             )}
           </div>
