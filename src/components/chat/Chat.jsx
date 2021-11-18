@@ -5,13 +5,14 @@ import Sidebar from '../sidebar/Sidebar';
 import Header from '../header/Header';
 import GroupModal from '../groupModal/GroupModal';
 import ChatModal from '../chatModal/ChatModal';
+
 import './Chat.css';
 
 const Chat = () => {
   const [currentChat, setCurrentChat] = useState(null);
   const [userPic, setUserPic] = useState([]);
   const [userNam, setUserName] = useState([]);
-
+  const [addPerson, setAddPerson] = useState(null);
   const [chatModal, setChatModal] = useState(null);
   const [groupModal, setGroupModal] = useState(null);
 
@@ -36,11 +37,18 @@ const Chat = () => {
           setChatModal={setChatModal}
           chatModal={chatModal}
           setGroupModal={setGroupModal}
+          setAddPerson={setAddPerson}
         />
         <div className={chatModal || groupModal ? 'new-message' : 'hidden'}>
           <div className='chat-body-modal'>
             {chatModal ? (
-              <ChatModal setChatModal={setChatModal} chatModal={chatModal} />
+              <ChatModal
+                currentChat={currentChat}
+                setChatModal={setChatModal}
+                chatModal={chatModal}
+                addPerson={addPerson}
+                setAddPerson={setAddPerson}
+              />
             ) : (
               <GroupModal
                 setGroupModal={setGroupModal}

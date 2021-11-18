@@ -8,7 +8,7 @@ const conversationSchema = new mongoose.Schema(
       require: false,
       default: '',
     },
-    groupName: { type: String, require: false, default: 'New group' },
+    groupName: { type: String, require: true },
     isGroup: { type: Boolean, default: false, require: true },
     members: { type: [String], require: true, unique: false },
     userInfo: {

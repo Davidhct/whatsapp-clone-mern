@@ -3,26 +3,24 @@ const ConversationModel = require('../models/conversationModel');
 exports.createConversation = async (req, res) => {
   try {
     ConversationModel.syncIndexes();
-    // if (req.body.isGroup === false) {
-    //   const conve = await ConversationModel.find();
-
-    //   conve.map((c) => {
-    //     if (!c.isGroup) {
-    //       if (c.members[0] === req.body.members[0]) {
-    //         if (c.members[1] === req.body.members[1]) {
-    //           console.log('---->>>', c);
-    //           throw new Error('The chat already exist');
-    //         }
-    //       } else if (c.members[0] === req.body.members[1]) {
-    //         console.log('ooooooo', c.members[1] === req.body.members[0]);
-    //         if (c.members[1] === req.body.members[0]) {
-    //           throw new Error('The chat already exist');
-    //         }
-    //       }
-    //     }
-    //   });
-    // }
-    console.log(req.body);
+    if (req.body.isGroup === false) {
+      const conve = await ConversationModel.find();
+      // chack if the conversation exist
+      conve.map((c) => {
+        if (!c.isGroup) {
+          if (c.members[0] === req.body.members[0]) {
+            if (c.members[1] === req.body.members[1]) {
+              throw new Error('The chat already exist');
+            }
+          } else if (c.members[0] === req.body.members[1]) {
+            if (c.members[1] === req.body.members[0]) {
+              throw new Error('The chat already exist');
+            }
+          }
+        }
+      });
+    }
+    // console.log(req.body);
     const newConversation = await ConversationModel.create(req.body);
     res.status(201).json({
       status: 'success',
@@ -48,7 +46,7 @@ exports.getConversation = async (req, res) => {
     const conversation = await ConversationModel.find({
       members: req.params.id,
     });
-    console.log(conversation);
+    // console.log(conversation);
     res.status(200).json({
       status: 'success',
       data: conversation,
@@ -84,9 +82,11 @@ exports.updateMesssages = async (req, res) => {
 
   try {
     ConversationModel.syncIndexes();
-    const message = await ConversationModel.findByIdAndUpdate(
+    let message = await ConversationModel.findByIdAndUpdate(
       req.params.id,
-      { $push: { messages: req.body.messages } },
+      {
+        $push: { messages: req.body.messages },
+      },
       {
         new: true,
         runValidators: true,
@@ -110,7 +110,7 @@ exports.updatePerson = async (req, res) => {
 
   try {
     ConversationModel.syncIndexes();
-    let members;
+    let members, status;
     if (req.body.delId) {
       members = await ConversationModel.findByIdAndUpdate(
         req.query.chatId,
@@ -120,11 +120,37 @@ exports.updatePerson = async (req, res) => {
           runValidators: true,
         }
       );
+      if (req.body.isGroup) {
+        members = await ConversationModel.findByIdAndUpdate(
+          req.query.chatId,
+          { $pull: { userInfo: { $in: [...req.body.userInfo] } } },
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+      }
+      statusCode = 200;
+      if (members.members.length === 0) {
+        await ConversationModel.findByIdAndDelete(req.query.chatId);
+        members = null;
+        statusCode = 204;
+      }
     } else if (req.body.addPerson) {
       members = await ConversationModel.findByIdAndUpdate(
         req.query.chatId,
         {
           $push: { members: req.body.members },
+        },
+
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+      members = await ConversationModel.findByIdAndUpdate(
+        req.query.chatId,
+        {
           $push: { userInfo: req.body.userInfo },
         },
 
@@ -133,6 +159,7 @@ exports.updatePerson = async (req, res) => {
           runValidators: true,
         }
       );
+      statusCode = 200;
     } else if (req.body.reconnect) {
       members = await ConversationModel.findByIdAndUpdate(
         req.query.chatId,
@@ -142,10 +169,11 @@ exports.updatePerson = async (req, res) => {
           runValidators: true,
         }
       );
+      statusCode = 200;
     }
     // console.log('members:::::::', members);
 
-    res.status(200).json({
+    res.status(statusCode).json({
       status: 'success',
       data: members,
     });
