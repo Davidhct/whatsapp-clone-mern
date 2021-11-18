@@ -9,7 +9,7 @@ const MenuDropdown = ({
   chatGroup,
   currentChat,
   isSidebar,
-  setPerson,
+  setAddPerson,
   setChatModal,
   setGroupModal,
 
@@ -18,11 +18,15 @@ const MenuDropdown = ({
   const { currentUser } = useSelector((state) => state.user);
 
   const handleDeleteClick = async (event) => {
+    const users = [...currentChat?.userInfo];
+    console.log(users);
     event.preventDefault();
     try {
-      await axios.patch('/api/v1/conversations/?chatId=' + currentChat?._id, {
-        delId: currentUser.uid,
-      });
+      // await axios.patch('/api/v1/conversations/?chatId=' + currentChat?._id, {
+      //   isGroup: currentChat?.isGroup,
+      //   delId: currentUser.uid,
+      //   userInfo: currentChat?.userInfo,
+      // });
       // console.log(res.data);
     } catch (err) {
       console.error(err.message);
@@ -39,10 +43,10 @@ const MenuDropdown = ({
     } else if (event.target.id === 'private') {
       setChatModal(true);
       setGroupModal(false);
-    } else {
+    } else if (event.target.id === 'addPerson') {
       setChatModal(true);
       setGroupModal(false);
-      setPerson(true);
+      setAddPerson(true);
     }
   };
   console.log(currentChat);

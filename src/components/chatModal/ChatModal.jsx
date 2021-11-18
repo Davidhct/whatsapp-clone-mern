@@ -19,7 +19,13 @@ const useStyles = makeStyles({
   },
 });
 
-const ChatModal = ({ setChatModal, chatModal }) => {
+const ChatModal = ({
+  setChatModal,
+  chatModal,
+  addPerson,
+  setAddPerson,
+  currentChat,
+}) => {
   const classes = useStyles();
   const { currentUser } = useSelector((state) => state.user);
   const [input, setinput] = useState('');
@@ -141,12 +147,11 @@ const ChatModal = ({ setChatModal, chatModal }) => {
   //   // console.log(conversation);
   // };
   const createFreindship = async (data) => {
-    console.log('data: ', data);
+    console.log('data: ', data.username);
     const res = await axios.post('/api/v1/conversations/', {
-      admin: [],
-      groupName: data.username,
+      groupName: data[0].username,
       isGroup: false,
-      members: [currentUser.uid, data.userid],
+      members: [currentUser.uid, data[0].userid],
       userInfo: [
         {
           userid: currentUser.uid,
@@ -163,20 +168,20 @@ const ChatModal = ({ setChatModal, chatModal }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setChatModal(!chatModal);
-
+    let resUser;
     const getUser = async () => {
       try {
         // check if the user is in the database
-        const resUser = await axios.put('/api/v1/users/', {
+        resUser = await axios.put('/api/v1/users/', {
           group: false,
           friendsList: input,
         });
         console.log(resUser?.data);
-        if (resUser?.data.length > 0) {
+        if (!addPerson && resUser?.data.length > 0) {
           // get all conversation
-          const resPrv = await axios.get('/api/v1/conversations/');
-          console.log(resPrv?.data.data);
-          const convers = resPrv?.data.data;
+          const resConvers = await axios.get('/api/v1/conversations/');
+          console.log(resConvers?.data.data);
+          const convers = resConvers?.data.data;
           if (convers.length > 0) {
             console.log(convers);
             for (let i = 0; i < convers.length; i++) {
@@ -201,21 +206,30 @@ const ChatModal = ({ setChatModal, chatModal }) => {
               }
             }
           }
+        } else if (addPerson) {
+          console.log('dddddd', resUser?.data[0].userid);
+          console.log('dddddd', resUser?.data);
+          await axios.patch(
+            '/api/v1/conversations/?chatId=' + currentChat?._id,
+            {
+              addPerson: true,
+              members: [resUser?.data[0].userid],
+              userInfo: [...resUser?.data],
+            }
+          );
+          setAddPerson(false);
+          return;
         } else {
           createFreindship(resUser?.data);
           return;
         }
-
-        //         }
-        //       } else {
-        //         const res = await createFreindship(false, resUser);
-        //         console.log('from chat: ', res);
 
         //     //joun@example.com
       } catch (err) {
         console.error(err.message);
       }
     };
+
     // if (addPerson === true) {
     //   const addUser = async () => {
     //     try {
@@ -245,20 +259,22 @@ const ChatModal = ({ setChatModal, chatModal }) => {
     }
   };
 
+  const closeModal = () => {
+    setChatModal(!chatModal);
+    setAddPerson(false);
+  };
+
   return (
     <div className='new-msg-container'>
       <div className='exit-wrapper'>
         <div className='exit'>
-          <IconButton
-            className={classes.iconButton}
-            onClick={() => setChatModal(!chatModal)}
-          >
+          <IconButton className={classes.iconButton} onClick={closeModal}>
             <div className='exit-button'>&times;</div>
           </IconButton>
         </div>
       </div>
       <div className='title-modal'>
-        <h2>Start chatting</h2>
+        <h2>{addPerson ? 'Add person' : 'Start chatting'}</h2>
       </div>
 
       <div className='new-msg-modal'>

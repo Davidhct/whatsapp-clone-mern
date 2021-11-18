@@ -27,6 +27,7 @@ const ChatBox = ({
   chatModal,
   setChatModal,
   setGroupModal,
+  setAddPerson,
 }) => {
   const classes = useStyles();
   const [input, setInput] = useState('');
@@ -56,7 +57,22 @@ const ChatBox = ({
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, currentChat]);
+
+  const reconnectMember = async () => {
+    try {
+      let friendId = currentChat?.userInfo.find(
+        (el) => el.userid !== currentUser.uid
+      );
+
+      await axios.patch('/api/v1/conversations/?chatId=' + currentChat?._id, {
+        reconnect: true,
+        members: [friendId.userid],
+      });
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   const sendMessage = async (event) => {
     event.preventDefault();
@@ -75,12 +91,14 @@ const ChatBox = ({
           ],
         }
       );
-
       setInput('');
       let lastMsg = res.data?.data.messages;
       console.log(lastMsg);
 
       setMessages([...messages, lastMsg]);
+      if (!currentChat?.isGroup && currentChat?.members.length === 1) {
+        reconnectMember();
+      }
     } catch (err) {
       console.error(err.message);
     }
@@ -137,7 +155,7 @@ const ChatBox = ({
                   isSidebar={false}
                   chatGroup={isGroupAdmin}
                   currentChat={currentChat}
-                  setPerson={setPerson}
+                  setAddPerson={setAddPerson}
                   setGroupModal={setGroupModal}
                   setChatModal={setChatModal}
                   chatModal={chatModal}
@@ -147,9 +165,9 @@ const ChatBox = ({
           </div>
 
           <div className='chat-box-body'>
-            {currentChat.messages.map((message) =>
+            {currentChat.messages.map((message, i) =>
               message.sender ? (
-                <div ref={scrollRef}>
+                <div key={i} ref={scrollRef}>
                   <p
                     className={`chat-box-message 
                 ${message.sender === currentUser.uid && 'chat-box-reciever'}`}
