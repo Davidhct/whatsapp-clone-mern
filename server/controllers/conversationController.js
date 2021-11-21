@@ -121,10 +121,25 @@ exports.updatePerson = async (req, res) => {
         }
       );
       if (req.body.isGroup) {
+        const { userid, username, profilePicture, useremail } = {
+          ...req.body.userInfo,
+        };
+        console.log(userid, username, profilePicture, useremail);
         members = await ConversationModel.findByIdAndUpdate(
           req.query.chatId,
-          { $pull: { userInfo: { $in: [...req.body.userInfo] } } },
           {
+            $pull: {
+              userInfo: {
+                userid: userid,
+                username: username,
+                profilePicture: profilePicture || '',
+                useremail: useremail,
+              },
+            },
+          },
+          {
+            upsert: false,
+            multi: true,
             new: true,
             runValidators: true,
           }

@@ -122,7 +122,11 @@ const ChatBox = ({
           <div className='chat-box-header'>
             <Avatar src={userPic} />
 
-            <div className='chat-box-header-info'>
+            <div
+              className={`chat-box-header-info ${
+                currentChat?.isGroup ? '' : 'single-person-info'
+              }`}
+            >
               <h3>{userNam}</h3>
 
               <div className={currentChat?.isGroup ? 'names-group' : 'hidden'}>
@@ -175,7 +179,9 @@ const ChatBox = ({
                     <span className='chat-box-name'>
                       {findUserName(message.sender)}
                     </span>
+
                     {message.text}
+
                     <span className='chat-box-timestamp'>
                       {format(message.date)}
                     </span>

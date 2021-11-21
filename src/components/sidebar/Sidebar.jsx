@@ -37,7 +37,7 @@ const Sidebar = ({
     const getConversations = async () => {
       try {
         const res = await axios.get('/api/v1/conversations/' + currentUser.uid);
-        setConversations(res.data?.data);
+        setConversations(res.data?.data.slice().reverse());
       } catch (err) {
         console.error(err);
       }
@@ -85,7 +85,7 @@ const Sidebar = ({
       setUserPic(msg.profilePicture);
     }
   };
-  // console.log(conversations);
+  console.log(conversations);
   return (
     <div className='sidebar'>
       <div className='sidebar-header'>
