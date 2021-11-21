@@ -9,11 +9,22 @@
 .sidebarChat:hover {
   background: rgb(235, 235, 235);
 }
-.sidebarChat-info > h2 {
-  font-size: 16px;
+.sidebarChat-info {
   margin-bottom: 8px;
 }
 
-.sidebarChat-info {
+.title-name > h2,
+.last-message > p {
+  font-size: 16px;
+  margin: 0px;
   margin-left: 15px;
+}
+.sidebarChat-inner-info {
+  display: flex;
+  flex-direction: column;
+  padding-top: 7px;
+}
+
+.empty-last-message {
+  margin: 10.5px;
 }

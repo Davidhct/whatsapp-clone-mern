@@ -23,6 +23,10 @@
   /* border: solid; */
   width: 0px;
 }
+.single-person-info {
+  display: flex;
+  align-items: center;
+}
 
 .chat-box-header-info > h3 {
   /* margin-bottom: 3px; */
@@ -66,7 +70,9 @@
 
 .chat-box-message {
   position: relative;
-  font-size: 16px;
+  /* font-size: 16px; */
+  font-size: 20px;
+
   padding: 10px;
   border-radius: 10px;
   width: fit-content;
@@ -75,15 +81,21 @@
 }
 
 .chat-box-name {
-  position: absolute;
+  /* position: absolute;
   top: -15px;
   font-weight: 800;
-  font-size: xx-small;
+  font-size: xx-small; */
+  position: absolute;
+  top: -20px;
+  font-weight: 750;
+  font-size: small;
 }
 
 .chat-box-timestamp {
   margin-left: 10px;
   font-size: xx-small;
+  /*///////////////*/
+  color: rgb(128, 128, 128);
 }
 
 .chat-box-reciever {

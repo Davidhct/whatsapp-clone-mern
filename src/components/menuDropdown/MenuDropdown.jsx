@@ -18,15 +18,21 @@ const MenuDropdown = ({
   const { currentUser } = useSelector((state) => state.user);
 
   const handleDeleteClick = async (event) => {
-    const users = [...currentChat?.userInfo];
-    console.log(users);
     event.preventDefault();
+    let user;
     try {
-      // await axios.patch('/api/v1/conversations/?chatId=' + currentChat?._id, {
-      //   isGroup: currentChat?.isGroup,
-      //   delId: currentUser.uid,
-      //   userInfo: currentChat?.userInfo,
-      // });
+      currentChat?.userInfo.forEach((info, i) => {
+        if (info.userid === currentUser.uid) {
+          user = info;
+        }
+      });
+      const { userid, username, profilePicture, useremail } = { ...user };
+
+      await axios.patch('/api/v1/conversations/?chatId=' + currentChat?._id, {
+        isGroup: currentChat?.isGroup,
+        delId: currentUser.uid,
+        userInfo: { userid, username, profilePicture, useremail },
+      });
       // console.log(res.data);
     } catch (err) {
       console.error(err.message);
