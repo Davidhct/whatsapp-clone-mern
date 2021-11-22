@@ -42,13 +42,21 @@
   /* border: solid; */
   font-size: 13px;
 }
+.wrapper {
+  display: flex;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
 .names-group {
   display: flex;
   /* border: solid; */
   /* display: block; */
   width: 100%;
-  overflow: hidden;
+
   white-space: nowrap;
+  overflow: hidden !important;
   text-overflow: ellipsis;
 }
 
@@ -158,6 +166,12 @@
   height: 41px;
   padding: 3px 0;
 }
+
+.chat-box-emoji {
+  position: absolute;
+  bottom: 62px;
+}
+
 .hidden {
   display: none;
 }

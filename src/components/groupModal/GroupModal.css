@@ -9,10 +9,7 @@
   box-shadow: 0px 0px 16px rgb(0 0 0 / 44%);
   padding: 3px;
 }
-.new-group-msg-container {
-  justify-content: flex-start;
-  height: 99%;
-}
+
 .new-msg-modal {
   display: flex;
   /* 

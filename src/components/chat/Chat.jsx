@@ -5,6 +5,7 @@ import Sidebar from '../sidebar/Sidebar';
 import Header from '../header/Header';
 import GroupModal from '../groupModal/GroupModal';
 import ChatModal from '../chatModal/ChatModal';
+import BackModal from '../backModal/BackModal';
 
 import './Chat.css';
 
@@ -41,7 +42,17 @@ const Chat = () => {
         />
         <div className={chatModal || groupModal ? 'new-message' : 'hidden'}>
           <div className='chat-body-modal'>
-            {chatModal ? (
+            <BackModal
+              currentChat={currentChat}
+              setChatModal={setChatModal}
+              chatModal={chatModal}
+              addPerson={addPerson}
+              setAddPerson={setAddPerson}
+              groupModal={groupModal}
+              setGroupModal={setGroupModal}
+            />
+
+            {/* {chatModal ? (
               <ChatModal
                 currentChat={currentChat}
                 setChatModal={setChatModal}
@@ -54,7 +65,7 @@ const Chat = () => {
                 setGroupModal={setGroupModal}
                 groupModal={groupModal}
               />
-            )}
+            )} */}
           </div>
         </div>
       </div>

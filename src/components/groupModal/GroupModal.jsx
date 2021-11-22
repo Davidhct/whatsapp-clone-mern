@@ -127,7 +127,7 @@ const GroupModal = ({ setGroupModal, groupModal }) => {
   };
 
   return (
-    <div className='new-msg-container new-group-msg-container'>
+    <div className='new-msg-container'>
       <div className='exit-wrapper'>
         <div className='exit'>
           <IconButton

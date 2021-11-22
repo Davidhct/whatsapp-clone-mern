@@ -19,6 +19,12 @@
   margin: 0px;
   margin-left: 15px;
 }
+.last-message > p {
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
 .sidebarChat-inner-info {
   display: flex;
   flex-direction: column;
@@ -27,4 +33,5 @@
 
 .empty-last-message {
   margin: 10.5px;
+  margin-left: 0px;
 }

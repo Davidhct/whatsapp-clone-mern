@@ -1,0 +1,27 @@
+.back-modal-body {
+  /* background: rgb(218, 219, 211); */
+  display: flex;
+  /* flex-direction: column;
+  border-radius: 10px;
+  align-items: center; */
+}
+.back-modal {
+  position: absolute;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90vw;
+  height: 90vh;
+  backdrop-filter: blur(5px);
+}
+
+.modals {
+  /* z-index: 200; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90vw;
+  height: 90vh;
+  /* backdrop-filter: blur(5px); */
+}
