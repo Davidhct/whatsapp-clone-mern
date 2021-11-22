@@ -35,27 +35,29 @@ const App = () => {
 
   // console.log(currentUser);
   return (
-    <div className='App'>
-      <Switch>
-        <Redirect exact from='/' to='/signIn' />
+    <div className='app'>
+      <div className='app-body'>
+        <Switch>
+          <Redirect exact from='/' to='/signIn' />
 
-        <Route
-          exact
-          path='/chat'
-          render={() =>
-            currentUser ? (
-              <Redirect exact from='/' to='/chat' /> && (
-                <Route path='/chat' component={Chat} />
+          <Route
+            exact
+            path='/chat'
+            render={() =>
+              currentUser ? (
+                <Redirect exact from='/' to='/chat' /> && (
+                  <Route path='/chat' component={Chat} />
+                )
+              ) : (
+                <Redirect exact from='/' to='/signIn' />
               )
-            ) : (
-              <Redirect exact from='/' to='/signIn' />
-            )
-          }
-        />
+            }
+          />
 
-        <Route path='/signIn' component={SignIn} />
-        <Route path='/signUp' component={SignUp} />
-      </Switch>
+          <Route path='/signIn' component={SignIn} />
+          <Route path='/signUp' component={SignUp} />
+        </Switch>
+      </div>
     </div>
   );
 };

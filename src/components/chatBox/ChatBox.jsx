@@ -5,8 +5,9 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import MicIcon from '@material-ui/icons/Mic';
 import SendIcon from '@material-ui/icons/Send';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, createRef } from 'react';
 import MenuDropdown from '../menuDropdown/MenuDropdown';
+import Emoji from 'emoji-picker-react';
 import './ChatBox.css';
 
 import { useSelector } from 'react-redux';
@@ -35,12 +36,15 @@ const ChatBox = ({
   const [messages, setMessages] = useState([]);
   const [menuDrop, setMenuDrop] = useState(false);
   const [isGroupAdmin, setIsGroupAdmin] = useState(false);
-  const [addPerson, setPerson] = useState(false);
+  const [chosenEmoji, setChosenEmoji] = useState(null);
+  const [clickEmoji, setClickEmoji] = useState(false);
+
+  const [cursorPosition, setCursorPosition] = useState();
 
   // const [deleteChat, setDeleteChat] = useState(false);
   // const [sender, setSender] = useState('');
   const { currentUser } = useSelector((state) => state.user);
-
+  const inputRef = createRef();
   const scrollRef = useRef();
 
   useEffect(() => {
@@ -111,6 +115,27 @@ const ChatBox = ({
       }
       return;
     });
+  };
+  const handleClickEmoji = () => {
+    inputRef.current.focus();
+    setClickEmoji(!clickEmoji);
+  };
+  const onEmojiClick = (event, { emoji }) => {
+    const ref = inputRef.current;
+    ref.focus();
+    const start = input.substring(0, ref.selectionStart);
+    const end = input.substring(ref.selectionStart);
+    const text = start + emoji + end;
+    setInput(text);
+    setCursorPosition(start.length + emoji.length);
+  };
+
+  useEffect(() => {
+    if (cursorPosition) inputRef.current.selectionEnd = cursorPosition;
+  }, [cursorPosition]);
+
+  const handleChangeInput = (event) => {
+    setInput(event.target.value);
   };
 
   console.log(currentChat);
@@ -192,7 +217,10 @@ const ChatBox = ({
           </div>
           <div className='chat-box-footer'>
             <div className='chat-box-footer-left'>
-              <IconButton>
+              <div className={`chat-box-emoji ${!clickEmoji && 'hidden'}`}>
+                <Emoji onEmojiClick={onEmojiClick} />
+              </div>
+              <IconButton onClick={handleClickEmoji}>
                 <InsertEmoticonIcon />
               </IconButton>
               <IconButton>
@@ -204,7 +232,8 @@ const ChatBox = ({
                 type='text'
                 placeholder='Type a message'
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={handleChangeInput}
+                ref={inputRef}
               />
 
               {!input ? (
