@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import ChatBox from './../chatBox/ChatBox';
 import Sidebar from '../sidebar/Sidebar';
 import Header from '../header/Header';
-import GroupModal from '../groupModal/GroupModal';
-import ChatModal from '../chatModal/ChatModal';
+import MegaMenu from '../megaMenu/MegaMenu';
+
 import BackModal from '../backModal/BackModal';
 
 import './Chat.css';
@@ -16,6 +16,7 @@ const Chat = () => {
   const [addPerson, setAddPerson] = useState(null);
   const [chatModal, setChatModal] = useState(null);
   const [groupModal, setGroupModal] = useState(null);
+  const [clickMenu, setClickMenu] = useState(false);
 
   return (
     <div className='chat'>
@@ -31,6 +32,8 @@ const Chat = () => {
           setGroupModal={setGroupModal}
           groupModal={groupModal}
         />
+        <MegaMenu clickMenu={clickMenu} />
+
         <ChatBox
           currentChat={currentChat}
           userPic={userPic}
@@ -39,6 +42,8 @@ const Chat = () => {
           chatModal={chatModal}
           setGroupModal={setGroupModal}
           setAddPerson={setAddPerson}
+          setClickMenu={setClickMenu}
+          clickMenu={clickMenu}
         />
         <div className={chatModal || groupModal ? 'new-message' : 'hidden'}>
           <div className='chat-body-modal'>
@@ -51,21 +56,6 @@ const Chat = () => {
               groupModal={groupModal}
               setGroupModal={setGroupModal}
             />
-
-            {/* {chatModal ? (
-              <ChatModal
-                currentChat={currentChat}
-                setChatModal={setChatModal}
-                chatModal={chatModal}
-                addPerson={addPerson}
-                setAddPerson={setAddPerson}
-              />
-            ) : (
-              <GroupModal
-                setGroupModal={setGroupModal}
-                groupModal={groupModal}
-              />
-            )} */}
           </div>
         </div>
       </div>

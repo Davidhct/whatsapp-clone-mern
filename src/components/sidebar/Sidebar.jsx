@@ -73,7 +73,7 @@ const Sidebar = ({
     setCurrentChat(msg);
     // console.log(msg, 'ccccccccccccccccccccccccccccccccc');
     if (!msg.isGroup) {
-      msg.userInfo.map((u) => {
+      msg.userInfo.forEach((u) => {
         if (u.userid !== currentUser.uid) {
           setUserPic(u.profilePicture);
           setUserName(u.username);

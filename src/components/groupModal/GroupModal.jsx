@@ -44,7 +44,7 @@ const GroupModal = ({ setGroupModal, groupModal }) => {
     let usersIds = [];
     let isAdmin = [];
     let grName;
-    data.map((usr) => {
+    data.forEach((usr) => {
       usersIds.push(usr.userid);
     });
 

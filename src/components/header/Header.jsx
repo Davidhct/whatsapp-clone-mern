@@ -8,7 +8,7 @@ const Header = () => {
   const { currentUser } = useSelector((state) => state.user);
 
   return (
-    <div className='header-wrapper'>
+    <nav className='header-wrapper'>
       <div className='header'>
         <div>
           Hello, {currentUser.displayName}, id= {currentUser.uid}
@@ -17,7 +17,7 @@ const Header = () => {
           <SignOut uppercase={true} />
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

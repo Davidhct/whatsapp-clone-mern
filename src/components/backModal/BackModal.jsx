@@ -16,9 +16,6 @@ const BackModal = ({
     setChatModal(false);
     setAddPerson(false);
     setGroupModal(false);
-    console.log('====================================');
-    console.log('click');
-    console.log('====================================');
   };
   return (
     <div className='back-modal-body'>

@@ -3,10 +3,14 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SearchIcon from '@material-ui/icons/Search';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
+import CloseIcon from '@material-ui/icons/Close';
+import MenuIcon from '@material-ui/icons/Menu';
+
 import MicIcon from '@material-ui/icons/Mic';
 import SendIcon from '@material-ui/icons/Send';
 import React, { useState, useEffect, useRef, createRef } from 'react';
 import MenuDropdown from '../menuDropdown/MenuDropdown';
+
 import Emoji from 'emoji-picker-react';
 import './ChatBox.css';
 
@@ -29,6 +33,8 @@ const ChatBox = ({
   setChatModal,
   setGroupModal,
   setAddPerson,
+  clickMenu,
+  setClickMenu,
 }) => {
   const classes = useStyles();
   const [input, setInput] = useState('');
@@ -36,7 +42,7 @@ const ChatBox = ({
   const [messages, setMessages] = useState([]);
   const [menuDrop, setMenuDrop] = useState(false);
   const [isGroupAdmin, setIsGroupAdmin] = useState(false);
-  const [chosenEmoji, setChosenEmoji] = useState(null);
+
   const [clickEmoji, setClickEmoji] = useState(false);
 
   const [cursorPosition, setCursorPosition] = useState();
@@ -57,7 +63,7 @@ const ChatBox = ({
     } else {
       setIsGroupAdmin(false);
     }
-  }, [currentChat]);
+  }, [currentChat, currentUser]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -109,7 +115,7 @@ const ChatBox = ({
   };
 
   const findUserName = (sender) => {
-    return currentChat.userInfo.map((usr) => {
+    currentChat.userInfo.forEach((usr) => {
       if (usr.userid === sender) {
         return usr.username;
       }
@@ -132,7 +138,7 @@ const ChatBox = ({
 
   useEffect(() => {
     if (cursorPosition) inputRef.current.selectionEnd = cursorPosition;
-  }, [cursorPosition]);
+  }, [cursorPosition, inputRef]);
 
   const handleChangeInput = (event) => {
     setInput(event.target.value);
@@ -162,6 +168,21 @@ const ChatBox = ({
             </div>
 
             <div className='chat-box-header-right'>
+              {clickMenu ? (
+                <IconButton
+                  className={clickMenu ? classes.moreVert : null}
+                  onClick={() => setClickMenu(!clickMenu)}
+                >
+                  <CloseIcon />
+                </IconButton>
+              ) : (
+                <IconButton
+                  className={clickMenu ? classes.moreVert : null}
+                  onClick={() => setClickMenu(!clickMenu)}
+                >
+                  <MenuIcon />
+                </IconButton>
+              )}
               <IconButton>
                 <SearchIcon />
               </IconButton>
@@ -190,6 +211,8 @@ const ChatBox = ({
                   chatModal={chatModal}
                 />
               </div>
+
+              {/* {clickMenu ?  : null} */}
             </div>
           </div>
 
@@ -215,6 +238,7 @@ const ChatBox = ({
               ) : null
             )}
           </div>
+
           <div className='chat-box-footer'>
             <div className='chat-box-footer-left'>
               <div className={`chat-box-emoji ${!clickEmoji && 'hidden'}`}>
