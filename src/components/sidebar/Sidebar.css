@@ -1,8 +1,8 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  /* flex: 0.3; */
-  width: 300px;
+  flex: 0.3;
+  /* width: 300px; */
   position: relative;
 }
 
@@ -53,6 +53,21 @@
   flex: 1;
   background: white;
   overflow-y: scroll;
+}
+.sidebar-chats::-webkit-scrollbar {
+  width: 20px;
+}
+.sidebar-chats::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.sidebar-chats::-webkit-scrollbar-thumb {
+  background-color: #cbd8dd;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+.sidebar-chats::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
 }
 
 .menu-drop-sidebar {

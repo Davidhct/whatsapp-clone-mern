@@ -115,12 +115,13 @@ const ChatBox = ({
   };
 
   const findUserName = (sender) => {
+    let pName;
     currentChat.userInfo.forEach((usr) => {
       if (usr.userid === sender) {
-        return usr.username;
+        pName = usr.username;
       }
-      return;
     });
+    return pName;
   };
   const handleClickEmoji = () => {
     inputRef.current.focus();

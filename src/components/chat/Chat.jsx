@@ -32,7 +32,7 @@ const Chat = () => {
           setGroupModal={setGroupModal}
           groupModal={groupModal}
         />
-        <MegaMenu clickMenu={clickMenu} />
+        <MegaMenu clickMenu={clickMenu} setClickMenu={setClickMenu} />
 
         <ChatBox
           currentChat={currentChat}

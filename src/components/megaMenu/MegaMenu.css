@@ -6,43 +6,70 @@
 }
 
 .mega-container {
-  width: 300px;
+  width: 100%;
   padding: -1px;
   position: absolute;
-  /* z-index: 50; */
+
   height: 100%;
   transform: translateX(-300%);
-  transition: transform 0.3s ease-out;
+  transition: transform 0.2s ease-out;
   /* border: solid; */
-  background: rgb(248 249 240);
+  /* background: #ededed; */
+  background: rgb(255, 255, 255);
+
+  /* background: rgb(248 249 240); */
 }
 .open {
   transform: translateX(0%);
 }
-.mega-inner-container {
-  margin: 10px;
+
+.mega-menu-header {
+  display: flex;
+  padding: 10px 16px;
+  border-bottom: 1px solid lightgray;
+  justify-content: flex-start;
+  background: #ededed;
+  align-items: center;
 }
-.mega-header {
-  box-shadow: 3px 2px 23px -7px rgb(0 0 0 / 50%);
+.mega-menu-title-header {
+  padding-bottom: 2px;
+  padding-left: 0.5rem;
+}
+/*
+.mega {
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+ 
 }
 .mega-img-name {
-  /* border: solid; */
+  
   display: flex;
   flex-direction: column;
 }
 .mega-img {
-  /* border: solid; */
-  height: 100px;
+  display: flex;
+
+  height: 150px;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid lightgray;
 }
+
+.name-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+
 .mega-name {
-  /* border: solid; */
+  display: flex;
+  
   padding-left: 0.5rem;
-  height: 37px;
 }
-.mega-main {
-  /* border: solid; */
-  height: 55vh;
-}
+
 .mega-friends-list {
   margin-top: 0.5rem;
   display: flex;
@@ -51,14 +78,16 @@
   height: 100%;
   width: 100%;
   justify-content: flex-start;
+  background-color: rgb(255, 255, 255);
+  background-size: auto 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   box-shadow: 3px 4px 35px -3px rgb(0 0 0 / 50%);
+  overflow-y: scroll;
 }
 .mega-list {
   display: flex;
   flex-direction: column;
-  /* border: solid; */
-  overflow-y: scroll;
-  height: 100%;
+  
   width: 100%;
 }
 .mega-title {
@@ -67,12 +96,14 @@
 .mega-friend {
   display: flex;
   align-items: center;
-  /* border: solid; */
+  
+  
 }
 
 .mega-friend > p {
   margin-top: -1%;
-  /* border: solid; */
+  
+  
   width: 100%;
   height: 100%;
   white-space: nowrap;
@@ -86,4 +117,8 @@
 
 .hidden {
   display: none;
-}
+} */
+
+/* margin-bottom: 10px;
+    background-color: rgb(255,255,255);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08); */
