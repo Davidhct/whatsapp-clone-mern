@@ -1,7 +1,7 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  flex: 0.3;
+  flex: 0.35;
   /* width: 300px; */
   position: relative;
 }
@@ -55,7 +55,8 @@
   overflow-y: scroll;
 }
 .sidebar-chats::-webkit-scrollbar {
-  width: 20px;
+  width: 0px;
+  /* width: 20px; */
 }
 .sidebar-chats::-webkit-scrollbar-track {
   background-color: transparent;
@@ -75,7 +76,7 @@
   z-index: 5;
   max-width: 340px;
   width: 175.66px;
-  height: 124px;
+  /* height: 124px; */
   padding: 9px 0;
 
   border-radius: 3px;

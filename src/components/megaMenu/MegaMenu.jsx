@@ -4,9 +4,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import CreateIcon from '@material-ui/icons/Create';
 import { Avatar } from '@material-ui/core';
 import profile from '../../assets/profile.jpg';
-// import DriveFileRenameOutlineIcon from '@material-ui/icons/DriveFileRenameOutline';
-// import ModeEditOutlineOutlinedIcon from '@material-ui/icons/ModeEditOutlineOutlined';
-// import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+
 import './MegaMenu.css';
 
 const useStyles = makeStyles({
@@ -17,145 +17,113 @@ const useStyles = makeStyles({
   closeBtn: {
     backgroundColor: '#d4d4df',
   },
+  createI: {
+    height: '60%',
+    width: '20%',
+  },
 });
 
 const MegaMenu = ({ clickMenu, setClickMenu }) => {
   const classes = useStyles();
   return (
     <div className={`mega-container ${clickMenu ? 'open' : ''}`}>
-      <header className='mega-menu-header'>
-        <div className='mega-menu-close-btn-header'>
-          <IconButton
-            className={classes.closeBtn}
-            onClick={() => setClickMenu(!clickMenu)}
-          >
-            <CloseIcon />
-          </IconButton>
+      <div className='mega-menu-header'>
+        <IconButton
+          className={classes.closeBtn}
+          onClick={() => setClickMenu(!clickMenu)}
+        >
+          <CloseIcon />
+        </IconButton>
+
+        <div className='mega-menu-header-title'>
+          <h2>Group details:</h2>
         </div>
-        <div className='mega-menu-title-header'>
-          <h2>User details:</h2>
-        </div>
-      </header>
-      {/* <div className='mega-inner-container'>
-        <div className='mega'>
-          <div className='mega-img-name'>
-            <div className='mega-img'>
-              <IconButton>
-                <Avatar className={classes.profileImg} src={profile} />
-              </IconButton>
-            </div>
-            <div className='mega-name'>
-              <div className='name-wrapper'>
-                <h4>john due</h4>
-              </div>
-              <IconButton>
-                <CreateIcon />
-              </IconButton>
-            </div>
+      </div>
+      <div className='mega-menu-inner-container'>
+        <div className='mega-menu-profile'>
+          <div className='mega-menu-img'>
+            <IconButton>
+              <Avatar className={classes.profileImg} src={profile} />
+            </IconButton>
+          </div>
+          <div className='mega-menu-name-container'>
+            <p className='mega-menu-name'>Name of the group</p>
+
+            {/*
+             if  is he an admin
+             */}
+            <IconButton className={classes.createI}>
+              <CreateIcon />
+            </IconButton>
           </div>
         </div>
-        <div className='mega-main'>
-          <div className='mega-inner-main'>
-            <div className='mega-friends-list'>
-              <div className='mega-title'>
-                <h2>Friends List:</h2>
+        <div className='mega-menu-files-container'>
+          <div className='mega-menu-title'>
+            <p>Fils</p>
+            <IconButton>
+              <ArrowForwardIosIcon />
+            </IconButton>
+          </div>
+          <div></div>
+        </div>
+        <div className='mega-menu-friends-list'>
+          <div className='mega-menu-title-friends-list'>
+            <p>Friends List:</p>
+            <p>22 Partcipants</p>
+          </div>
+          <div className='mega-menu-add-person'>
+            <IconButton>
+              <PersonAddIcon />
+            </IconButton>
+            <p>Adding participants</p>
+          </div>
+
+          <div className='mega-menu-list'>
+            <div className='mega-menu-friend'>
+              <div className='mega-menu-friend-left'>
+                <IconButton>
+                  <CloseIcon />
+                </IconButton>
+                <p className='mega-menu-friend-name'>User Name</p>
               </div>
-              <div className='mega-list'>
-                <div className='mega-friend'>
-                  <IconButton>
-                    <CloseIcon />
-                  </IconButton>
-                  <p>example@ex.ple</p>
-                </div>
-                <div className='mega-friend'>
-                  <IconButton>
-                    <CloseIcon />
-                  </IconButton>
-                  <p>example@ex.ple</p>
-                </div>
-                <div className='mega-friend'>
-                  <IconButton>
-                    <CloseIcon />
-                  </IconButton>
-                  <p>example@ex.ple</p>
-                </div>
-                <div className='mega-friend'>
-                  <IconButton>
-                    <CloseIcon />
-                  </IconButton>
-                  <p>example@ex.ple</p>
-                </div>
-                <div className='mega-friend'>
-                  <IconButton>
-                    <CloseIcon />
-                  </IconButton>
-                  <p>example@ex.ple</p>
-                </div>
-                <div className='mega-friend'>
-                  <IconButton>
-                    <CloseIcon />
-                  </IconButton>
-                  <p>example@ex.ple</p>
-                </div>
-                <div className='mega-friend'>
-                  <IconButton>
-                    <CloseIcon />
-                  </IconButton>
-                  <p>example@ex.ple</p>
-                </div>
-                <div className='mega-friend'>
-                  <IconButton>
-                    <CloseIcon />
-                  </IconButton>
-                  <p>example@ex.ple</p>
-                </div>
-                <div className='mega-friend'>
-                  <IconButton>
-                    <CloseIcon />
-                  </IconButton>
-                  <p>example@ex.ple</p>
-                </div>
-                <div className='mega-friend'>
-                  <IconButton>
-                    <CloseIcon />
-                  </IconButton>
-                  <p>example@ex.ple</p>
-                </div>
-                <div className='mega-friend'>
-                  <IconButton>
-                    <CloseIcon />
-                  </IconButton>
-                  <p>example@ex.ple</p>
-                </div>
-                <div className='mega-friend'>
-                  <IconButton>
-                    <CloseIcon />
-                  </IconButton>
-                  <p>example@ex.ple</p>
-                </div>
-                <div className='mega-friend'>
-                  <IconButton>
-                    <CloseIcon />
-                  </IconButton>
-                  <p>example@ex.ple</p>
-                </div>
-                <div className='mega-friend'>
-                  <IconButton>
-                    <CloseIcon />
-                  </IconButton>
-                  <p>example@ex.ple</p>
-                </div>
-                <div className='mega-friend'>
-                  <IconButton>
-                    <CloseIcon />
-                  </IconButton>
-                  <p>example@ex.ple</p>
-                </div>
+              <p className='mega-menu-manager'>manager</p>
+            </div>
+            <div className='mega-menu-friend'>
+              <div className='mega-menu-friend-left'>
+                <IconButton>
+                  <CloseIcon />
+                </IconButton>
+                <p className='mega-menu-friend-name'>User Name</p>
+              </div>
+              <p className='mega-menu-manager'>manager</p>
+            </div>
+            <div className='mega-menu-friend'>
+              <div className='mega-menu-friend-left'>
+                <IconButton>
+                  <CloseIcon />
+                </IconButton>
+                <p className='mega-menu-friend-name'>User Name</p>
+              </div>
+            </div>
+            <div className='mega-menu-friend'>
+              <div className='mega-menu-friend-left'>
+                <IconButton>
+                  <CloseIcon />
+                </IconButton>
+                <p className='mega-menu-friend-name'>User Name</p>
+              </div>
+            </div>
+            <div className='mega-menu-friend'>
+              <div className='mega-menu-friend-left'>
+                <IconButton>
+                  <CloseIcon />
+                </IconButton>
+                <p className='mega-menu-friend-name'>User Name</p>
               </div>
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

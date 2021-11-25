@@ -87,7 +87,10 @@ const MenuDropdown = ({
               </div>
             </li>
             <li>
-              <div className='menu-list' onClick={handleDeleteClick}>
+              <div
+                className={!chatGroup ? 'delete' : 'menu-list'}
+                onClick={handleDeleteClick}
+              >
                 Delete chat
               </div>
             </li>

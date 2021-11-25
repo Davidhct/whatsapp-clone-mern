@@ -9,6 +9,7 @@
 .chat-body {
   display: flex;
   background: #ededed;
+
   /* height: 90vh;
   width: 90vw; */
   /* width: 1000px; */
@@ -16,7 +17,15 @@
   height: 90vh;
   box-shadow: 5px 4px 35px -3px rgb(0 0 0 / 70%);
 }
-
+.chat-body-left {
+  display: flex;
+  position: relative;
+  /* flex: 0.35 1; */
+}
+.mega-menu {
+  /* width: 300px; */
+  /* position: relative; */
+}
 /* .chat-body-modal {
   background: rgb(218, 219, 211);
   display: flex;
