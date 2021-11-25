@@ -69,13 +69,27 @@
 .chat-box-body {
   flex: 1;
   /* width: 900px; */
-  background: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+  background: url('../../assets/whatsapp_wallpaper.png');
   background-repeat: repeat;
   background-position: center;
   padding: 30px;
   overflow-y: scroll;
 }
-
+.chat-box-body::-webkit-scrollbar {
+  width: 20px;
+}
+.chat-box-body::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.chat-box-body::-webkit-scrollbar-thumb {
+  background-color: #cbd8dd;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+.chat-box-body::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}
 .chat-box-message {
   position: relative;
   /* font-size: 16px; */

@@ -35,8 +35,24 @@
   height: 175px;
 
   overflow-y: scroll;
-  overflow-x: hidden;
+
   /* border: solid; */
+}
+
+.new-group-msg-input::-webkit-scrollbar {
+  width: 20px;
+}
+.new-group-msg-input::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.new-group-msg-input::-webkit-scrollbar-thumb {
+  background-color: #cbd8dd;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+.new-group-msg-input::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
 }
 .new-input-mail {
   display: flex;

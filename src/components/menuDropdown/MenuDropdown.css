@@ -11,21 +11,24 @@ ul {
   text-overflow: ellipsis;
   white-space: nowrap;
   box-sizing: border-box;
-  display: block;
-  height: 40px;
+  display: flex;
+  height: 32px;
   font-size: 14.5px;
-  line-height: 14.5px;
-
+  line-height: 0.5px;
   white-space: nowrap;
   cursor: pointer;
   color: #4a4a4a;
-  padding-right: 58px;
-  padding-left: 24px;
-  padding-top: 13px;
+  padding: 13px 68px 6px 24px;
 }
 
 .menu-list:hover {
   background: rgb(245, 245, 245);
+}
+.delete {
+  position: relative;
+  padding: 13px 58px 13px 24px;
+
+  line-height: 7.5px;
 }
 
 .hidden {

@@ -23,17 +23,18 @@ const Chat = () => {
       <Header />
 
       <div className='chat-body'>
-        <Sidebar
-          setCurrentChat={setCurrentChat}
-          setUserPic={setUserPic}
-          setUserName={setUserName}
-          setChatModal={setChatModal}
-          chatModal={chatModal}
-          setGroupModal={setGroupModal}
-          groupModal={groupModal}
-        />
-        <MegaMenu clickMenu={clickMenu} />
-
+        <div className='chat-body-left'>
+          <MegaMenu clickMenu={clickMenu} setClickMenu={setClickMenu} />
+          <Sidebar
+            setCurrentChat={setCurrentChat}
+            setUserPic={setUserPic}
+            setUserName={setUserName}
+            setChatModal={setChatModal}
+            chatModal={chatModal}
+            setGroupModal={setGroupModal}
+            groupModal={groupModal}
+          />
+        </div>
         <ChatBox
           currentChat={currentChat}
           userPic={userPic}
