@@ -20,9 +20,11 @@
 .chat-body-left {
   display: flex;
   position: relative;
-  /* flex: 0.35 1; */
+  flex: 0.35 1;
 }
-.mega-menu {
+.chat-mega {
+  /* transform: translateX(0%);
+  transition: transform 0.2s ease-out; */
   /* width: 300px; */
   /* position: relative; */
 }

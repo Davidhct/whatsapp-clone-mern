@@ -16,7 +16,7 @@
   z-index: 50;
   height: 100%;
   transform: translateX(-300%);
-  transition: transform 0.2s ease-out;
+  transition: transform 0.4s ease;
   /* border: solid; */
   /* background: #ededed; */
   background: rgb(255, 255, 255);
@@ -152,7 +152,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding-right: 0.2rem;
+  padding-right: 1rem;
 }
 .mega-menu-friend-left {
   display: flex;

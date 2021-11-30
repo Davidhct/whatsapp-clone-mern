@@ -6,6 +6,7 @@ import { Avatar } from '@material-ui/core';
 import profile from '../../assets/profile.jpg';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import GroupGetails from '../groupDetails/GroupDetails';
 
 import './MegaMenu.css';
 
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-const MegaMenu = ({ clickMenu, setClickMenu }) => {
+const MegaMenu = ({ clickMenu, setClickMenu, currentChat }) => {
   const classes = useStyles();
   return (
     <div className={`mega-container ${clickMenu ? 'open' : ''}`}>
@@ -39,7 +40,8 @@ const MegaMenu = ({ clickMenu, setClickMenu }) => {
           <h2>Group details:</h2>
         </div>
       </div>
-      <div className='mega-menu-inner-container'>
+      <GroupGetails currentChat={currentChat} />
+      {/* <div className='mega-menu-inner-container'>
         <div className='mega-menu-profile'>
           <div className='mega-menu-img'>
             <IconButton>
@@ -49,9 +51,7 @@ const MegaMenu = ({ clickMenu, setClickMenu }) => {
           <div className='mega-menu-name-container'>
             <p className='mega-menu-name'>Name of the group</p>
 
-            {/*
-             if  is he an admin
-             */}
+          
             <IconButton className={classes.createI}>
               <CreateIcon />
             </IconButton>
@@ -123,7 +123,7 @@ const MegaMenu = ({ clickMenu, setClickMenu }) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
