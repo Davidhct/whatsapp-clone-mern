@@ -1,0 +1,56 @@
+.groupPart-friend {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  line-height: 3rem;
+
+  padding-right: 1rem;
+}
+.toSeeInfo {
+  border-bottom: 0.1px solid lightgray;
+}
+.groupPart-friend-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.groupPart-friend-left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  line-height: 3em;
+}
+.groupPart-friend-name {
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  margin-top: -1%;
+}
+.groupPart-friend-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.groupPart-manager {
+  border: 1px solid red;
+  padding: 0.2rem;
+  color: red;
+  line-height: 0.8em;
+  border-radius: 5px;
+}
+.groupPart-info {
+  display: flex;
+  align-items: center;
+  padding-left: 0.3rem;
+}
+.groupPart-email {
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  padding-left: 0.5rem;
+}
+.hidden {
+  display: none;
+}

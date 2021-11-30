@@ -55,7 +55,7 @@ const MenuDropdown = ({
       setAddPerson(true);
     }
   };
-  console.log(currentChat);
+
   return (
     <div className='menu-dropdown'>
       {isSidebar ? (

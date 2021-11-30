@@ -24,7 +24,12 @@ const Chat = () => {
 
       <div className='chat-body'>
         <div className='chat-body-left'>
-          <MegaMenu clickMenu={clickMenu} setClickMenu={setClickMenu} />
+          <MegaMenu
+            clickMenu={clickMenu}
+            setClickMenu={setClickMenu}
+            currentChat={currentChat}
+          />
+
           <Sidebar
             setCurrentChat={setCurrentChat}
             setUserPic={setUserPic}
