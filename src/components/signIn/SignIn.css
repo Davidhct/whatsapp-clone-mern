@@ -20,9 +20,13 @@
   /* margin-bottom: 15px; */
 }
 
-.sign-in-text {
-  margin-bottom: 1.5rem;
+.sign-in-text,
+.line {
+  margin-bottom: 1rem;
 }
+/* .sign-in-google-button {
+  margin-bottom: 0.5rem;
+} */
 /* .title {
   margin: 10px 0;
 } */
@@ -31,6 +35,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 0.5rem;
 }
 .line {
   display: flex;
@@ -45,6 +50,9 @@
   border: 0;
   border-bottom: 2px solid;
   width: 100%;
+}
+.sign-in-button {
+  margin-bottom: 1rem;
 }
 
 .to-sign-up {

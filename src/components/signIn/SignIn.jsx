@@ -93,16 +93,19 @@ const SignIn = () => {
             required
           />
           <div className='buttons'>
-            <CustomButton type='submit'>Sign in</CustomButton>
+            <div className='sign-in-button'>
+              <CustomButton type='submit'>Sign in</CustomButton>
+            </div>
             <div className='line'>
               <div className='line-1'></div>
               <p>OR</p>
               <div className='line-2'></div>
             </div>
-
-            <CustomButton onClick={handleGoogleSignIn} isGoogleSignIn>
-              Sign in with Google
-            </CustomButton>
+            <div className='sign-in-google-button'>
+              <CustomButton onClick={handleGoogleSignIn} isGoogleSignIn>
+                Sign in with Google
+              </CustomButton>
+            </div>
           </div>
           <div className='to-sign-up'>
             <p>Don't have an account?</p>

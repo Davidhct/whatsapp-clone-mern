@@ -110,7 +110,7 @@ exports.updatePerson = async (req, res) => {
 
   try {
     ConversationModel.syncIndexes();
-    let members, status;
+    let members, statusCode;
     if (req.body.delId) {
       members = await ConversationModel.findByIdAndUpdate(
         req.query.chatId,
@@ -185,7 +185,28 @@ exports.updatePerson = async (req, res) => {
         }
       );
       statusCode = 200;
+    } else if (req.body.delAdmin) {
+      members = await ConversationModel.findByIdAndUpdate(
+        req.query.chatId,
+        { $pull: { admin: req.body.members } },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+
+      statusCode = 200;
+    } else if (req.body.newAdmin) {
+      members = await ConversationModel.findByIdAndUpdate(
+        req.query.chatId,
+        { $push: { admin: req.body.members } },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
     }
+    statusCode = 200;
     // console.log('members:::::::', members);
 
     res.status(statusCode).json({
