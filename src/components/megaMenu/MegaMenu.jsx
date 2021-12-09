@@ -24,7 +24,14 @@ const useStyles = makeStyles({
   },
 });
 
-const MegaMenu = ({ clickMenu, setClickMenu, currentChat }) => {
+const MegaMenu = ({
+  clickMenu,
+  setClickMenu,
+  currentChat,
+  setChatModal,
+  setGroupModal,
+  setAddPerson,
+}) => {
   const classes = useStyles();
   return (
     <div className={`mega-container ${clickMenu ? 'open' : ''}`}>
@@ -40,7 +47,12 @@ const MegaMenu = ({ clickMenu, setClickMenu, currentChat }) => {
           <h2>Group details:</h2>
         </div>
       </div>
-      <GroupGetails currentChat={currentChat} />
+      <GroupGetails
+        currentChat={currentChat}
+        setChatModal={setChatModal}
+        setGroupModal={setGroupModal}
+        setAddPerson={setAddPerson}
+      />
       {/* <div className='mega-menu-inner-container'>
         <div className='mega-menu-profile'>
           <div className='mega-menu-img'>

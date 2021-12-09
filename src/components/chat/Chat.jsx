@@ -18,6 +18,8 @@ const Chat = () => {
   const [groupModal, setGroupModal] = useState(null);
   const [clickMenu, setClickMenu] = useState(false);
 
+  console.log(currentChat);
+
   return (
     <div className='chat'>
       <Header />
@@ -28,6 +30,9 @@ const Chat = () => {
             clickMenu={clickMenu}
             setClickMenu={setClickMenu}
             currentChat={currentChat}
+            setChatModal={setChatModal}
+            setGroupModal={setGroupModal}
+            setAddPerson={setAddPerson}
           />
 
           <Sidebar

@@ -72,10 +72,19 @@
   padding: 0.2rem;
   line-height: 2rem;
 }
-.groupDetails-edit-icon {
+.change-groupDetails-name {
+  width: 89%;
+  display: flex;
+  flex-direction: row;
+}
+.groupDetails-create-icon {
   display: flex;
   /* align-items: center; */
   justify-content: center;
+}
+.groupDetails-edit-icon {
+  width: 20px;
+  height: 20px;
 }
 
 .groupDetails-files-container {
