@@ -11,6 +11,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import GroupParticipant from '../groupParticipant/GroupParticipant';
 import { useSelector } from 'react-redux';
 import editting from '../../assets/rename_icon.png';
+import axios from '../../axios';
 import './GroupDetails.css';
 
 const useStyles = makeStyles({
@@ -71,6 +72,13 @@ const GroupGetails = ({
     setChangeName(!changeName);
 
     try {
+      console.log(currentChat?._id);
+      const res = await axios.patch(
+        '/api/v1/conversations/' + currentChat?._id,
+        {
+          groupName: newGroupName,
+        }
+      );
     } catch (err) {
       console.error(err.message);
     }
