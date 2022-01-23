@@ -76,26 +76,48 @@ exports.getAllMessages = async (req, res) => {
   }
 };
 
-exports.updateMesssages = async (req, res) => {
+exports.updateConversations = async (req, res) => {
   console.log(req.params);
   console.log(req.body);
 
   try {
+    let conversation;
     ConversationModel.syncIndexes();
-    let message = await ConversationModel.findByIdAndUpdate(
-      req.params.id,
-      {
-        $push: { messages: req.body.messages },
-      },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    if (req.body.messages) {
+      // push the new message in to the array of messages
+      const message = await ConversationModel.findByIdAndUpdate(
+        req.params.id,
+        {
+          $push: { messages: req.body.messages },
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+      conversation = message;
+    } else if (req.body.groupName) {
+      // capitalize the first letter in the new name
+      let strTmp = req.body.groupName;
+      strTmp = strTmp.toLowerCase();
+      let groupNameCapital = strTmp.charAt(0).toUpperCase() + strTmp.slice(1);
+
+      const gName = await ConversationModel.findByIdAndUpdate(
+        req.params.id,
+        {
+          groupName: groupNameCapital,
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+      conversation = gName;
+    }
 
     res.status(200).json({
       status: 'success',
-      data: message,
+      data: conversation,
     });
   } catch (err) {
     res.status(400).json({
@@ -132,15 +154,13 @@ exports.updatePerson = async (req, res) => {
               userInfo: {
                 userid: userid,
                 username: username,
-                profilePicture: profilePicture || '',
+                profilePicture: profilePicture || '' || null,
                 useremail: useremail,
               },
             },
           },
           {
-            upsert: false,
             multi: true,
-            new: true,
             runValidators: true,
           }
         );
@@ -188,25 +208,25 @@ exports.updatePerson = async (req, res) => {
     } else if (req.body.delAdmin) {
       members = await ConversationModel.findByIdAndUpdate(
         req.query.chatId,
-        { $pull: { admin: req.body.members } },
+        { $pull: { admin: req.body.admin } },
         {
           new: true,
           runValidators: true,
         }
       );
+      if (req.body.newAdmin) {
+        members = await ConversationModel.findByIdAndUpdate(
+          req.query.chatId,
+          { $push: { admin: req.body.newAdmin } },
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+      }
 
       statusCode = 200;
-    } else if (req.body.newAdmin) {
-      members = await ConversationModel.findByIdAndUpdate(
-        req.query.chatId,
-        { $push: { admin: req.body.members } },
-        {
-          new: true,
-          runValidators: true,
-        }
-      );
     }
-    statusCode = 200;
     // console.log('members:::::::', members);
 
     res.status(statusCode).json({

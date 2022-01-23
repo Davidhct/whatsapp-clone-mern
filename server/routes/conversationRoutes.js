@@ -12,7 +12,7 @@ router
 router
   .route('/:id')
   .get(conversationController.getConversation)
-  .patch(conversationController.updateMesssages)
+  .patch(conversationController.updateConversations)
   .delete(conversationController.deleteChat);
 
 module.exports = router;
