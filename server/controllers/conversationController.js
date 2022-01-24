@@ -126,120 +126,104 @@ exports.updateConversations = async (req, res) => {
     });
   }
 };
-exports.updatePerson = async (req, res) => {
-  console.log(req.params);
-  console.log(req.body);
+// exports.updatePerson = async (req, res) => {
+//   console.log(req.params);
+//   console.log(req.body);
 
-  try {
-    ConversationModel.syncIndexes();
-    let members, statusCode;
-    if (req.body.delId) {
-      members = await ConversationModel.findByIdAndUpdate(
-        req.query.chatId,
-        { $pull: { members: req.body.delId } },
-        {
-          new: true,
-          runValidators: true,
-        }
-      );
-      if (req.body.isGroup) {
-        const { userid, username, profilePicture, useremail } = {
-          ...req.body.userInfo,
-        };
-        console.log(userid, username, profilePicture, useremail);
-        members = await ConversationModel.findByIdAndUpdate(
-          req.query.chatId,
-          {
-            $pull: {
-              userInfo: {
-                userid: userid,
-                username: username,
-                profilePicture: profilePicture || '' || null,
-                useremail: useremail,
-              },
-            },
-          },
-          {
-            multi: true,
-            runValidators: true,
-          }
-        );
-      }
-      statusCode = 200;
-      if (members.members.length === 0) {
-        await ConversationModel.findByIdAndDelete(req.query.chatId);
-        members = null;
-        statusCode = 204;
-      }
-    } else if (req.body.addPerson) {
-      members = await ConversationModel.findByIdAndUpdate(
-        req.query.chatId,
-        {
-          $push: { members: req.body.members },
-        },
+//   try {
+//     ConversationModel.syncIndexes();
+//     let members, statusCode;
+// if (req.body.delId) {
+//   console.log('hay from row 137 in delId');
+//   members = await ConversationModel.findByIdAndUpdate(
+//     req.query.chatId,
+//     { $pull: { members: req.body.delId } },
+//     {
+//       new: true,
+//       runValidators: true,
+//     }
+//   );
+//   if (req.body.isGroup) {
+//     console.log('hallllllllooooooooo');
+//     const { userid, username, profilePicture, useremail } = {
+//       ...req.body.userInfo,
+//     };
+//     console.log(userid, username, profilePicture, useremail);
+//     members = await ConversationModel.findByIdAndUpdate(
+//       req.query.chatId,
+//       {
+//         $pull: {
+//           userInfo: {
+//             userid,
+//             username,
+//             profilePicture,
+//             useremail,
+//           },
+//         },
+//       },
+//       {
+//         multi: true,
+//         runValidators: true,
+//       }
+//     );
+//   }
+//   statusCode = 200;
+//   if (members.members.length === 0) {
+//     await ConversationModel.findByIdAndDelete(req.query.chatId);
+//     members = null;
+//     statusCode = 204;
+//   }
+// } else
+// if (req.body.addPerson) {
+//   members = await ConversationModel.findByIdAndUpdate(
+//     req.query.chatId,
+//     {
+//       $push: { members: req.body.members },
+//     },
 
-        {
-          new: true,
-          runValidators: true,
-        }
-      );
-      members = await ConversationModel.findByIdAndUpdate(
-        req.query.chatId,
-        {
-          $push: { userInfo: req.body.userInfo },
-        },
+//     {
+//       new: true,
+//       runValidators: true,
+//     }
+//   );
+//   members = await ConversationModel.findByIdAndUpdate(
+//     req.query.chatId,
+//     {
+//       $push: { userInfo: req.body.userInfo },
+//     },
 
-        {
-          new: true,
-          runValidators: true,
-        }
-      );
-      statusCode = 200;
-    } else if (req.body.reconnect) {
-      members = await ConversationModel.findByIdAndUpdate(
-        req.query.chatId,
-        { $push: { members: req.body.members } },
-        {
-          new: true,
-          runValidators: true,
-        }
-      );
-      statusCode = 200;
-    } else if (req.body.delAdmin) {
-      members = await ConversationModel.findByIdAndUpdate(
-        req.query.chatId,
-        { $pull: { admin: req.body.admin } },
-        {
-          new: true,
-          runValidators: true,
-        }
-      );
-      if (req.body.newAdmin) {
-        members = await ConversationModel.findByIdAndUpdate(
-          req.query.chatId,
-          { $push: { admin: req.body.newAdmin } },
-          {
-            new: true,
-            runValidators: true,
-          }
-        );
-      }
+//     {
+//       new: true,
+//       runValidators: true,
+//     }
+//   );
+//   statusCode = 200;
+// } else
+// if (req.body.reconnect) {
+//   members = await ConversationModel.findByIdAndUpdate(
+//     req.query.chatId,
+//     { $push: { members: req.body.members } },
+//     {
+//       new: true,
+//       runValidators: true,
+//     }
+//   );
+//   statusCode = 200;
+// }
 
-      statusCode = 200;
-    }
-    // console.log('members:::::::', members);
+// console.log('members:::::::', members);
 
-    res.status(statusCode).json({
-      status: 'success',
-      data: members,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: 'fail',
-      message: err.message,
-    });
-  }
-};
+//     res.status(statusCode).json({
+//       status: 'success',
+//       data: members,
+//     });
+//   } catch (err) {
+//     res.status(400).json({
+//       status: 'fail',
+//       message: err.message,
+//     });
+//   }
+// };
 
 exports.deleteChat = async (req, res) => {
   try {

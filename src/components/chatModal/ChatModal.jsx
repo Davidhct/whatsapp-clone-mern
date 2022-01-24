@@ -71,10 +71,13 @@ const ChatModal = ({
     const addPersonToGroup = async () => {
       try {
         const resUser = await checkAndGetUser();
-        await axios.patch('/api/v1/conversations/?chatId=' + currentChat?._id, {
-          addPerson: true,
-          members: [resUser[0].userid],
-          userInfo: [...resUser],
+        await axios.patch('/api/v1/members/?chatId=' + currentChat?._id, {
+          addPerson: [resUser[0].userid],
+          // members: [resUser[0].userid],
+          // userInfo: [...resUser],
+        });
+        await axios.patch('/api/v1/userInfo/?chatId=' + currentChat?._id, {
+          addPerson: [...resUser],
         });
       } catch (err) {
         console.error(err.message);
@@ -112,10 +115,9 @@ const ChatModal = ({
                 // connct to old conversation
                 friend &&
                   (await axios.patch(
-                    '/api/v1/conversations/?chatId=' + convers[i]._id,
+                    '/api/v1/members/?chatId=' + convers[i]._id,
                     {
-                      reconnect: true,
-                      members: [currentUser.uid],
+                      addPerson: [currentUser.uid],
                     }
                   ));
                 return;

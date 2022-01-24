@@ -44,15 +44,21 @@ const MegaMenu = ({
         </IconButton>
 
         <div className='mega-menu-header-title'>
-          <h2>Group details:</h2>
+          {currentChat?.isGroup ? (
+            <h2>Group details:</h2>
+          ) : (
+            <h2>Personal details:</h2>
+          )}
         </div>
       </div>
-      <GroupGetails
-        currentChat={currentChat}
-        setChatModal={setChatModal}
-        setGroupModal={setGroupModal}
-        setAddPerson={setAddPerson}
-      />
+      {currentChat?.isGroup ? (
+        <GroupGetails
+          currentChat={currentChat}
+          setChatModal={setChatModal}
+          setGroupModal={setGroupModal}
+          setAddPerson={setAddPerson}
+        />
+      ) : null}
       {/* <div className='mega-menu-inner-container'>
         <div className='mega-menu-profile'>
           <div className='mega-menu-img'>

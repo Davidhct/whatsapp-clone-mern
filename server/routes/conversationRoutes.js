@@ -6,8 +6,8 @@ const router = express.Router();
 router
   .route('/')
   .get(conversationController.getAllMessages)
-  .post(conversationController.createConversation)
-  .patch(conversationController.updatePerson);
+  .post(conversationController.createConversation);
+// .patch(conversationController.updatePerson);
 
 router
   .route('/:id')

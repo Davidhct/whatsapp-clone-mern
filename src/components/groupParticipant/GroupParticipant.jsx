@@ -41,33 +41,22 @@ const GroupParticipant = ({
           );
 
           console.log(newAdmin);
-          await axios.patch(
-            '/api/v1/conversations/?chatId=' + currentChat?._id,
-            {
-              delAdmin: true,
-              admin: currentUser.uid,
-              newAdmin: newAdmin,
-            }
-          );
-          // await axios.patch(
-          //   '/api/v1/conversations/?chatId=' + currentChat?._id,
-          //   {
-
-          //     admin: [newAdmin],
-          //   }
-          // );
+          await axios.patch('/api/v1/admin/?chatId=' + currentChat?._id, {
+            deleteAdminId: currentUser.uid,
+          });
+          await axios.patch('/api/v1/admin/?chatId=' + currentChat?._id, {
+            addAdminId: newAdmin,
+          });
         }
       });
       const { userid, username, profilePicture, useremail } = { ...userInfo };
-      console.log(userid, username, profilePicture, useremail);
 
-      await axios.patch('/api/v1/conversations/?chatId=' + currentChat?._id, {
-        isGroup: currentChat?.isGroup,
-        delId: userid,
-        userInfo: { userid, username, profilePicture, useremail },
+      await axios.patch('/api/v1/members/?chatId=' + currentChat?._id, {
+        deleteMemberId: userid,
       });
-
-      // console.log(res.data);
+      await axios.patch('/api/v1/userInfo/?chatId=' + currentChat?._id, {
+        deleteUserInfo: { userid, username, profilePicture, useremail },
+      });
     } catch (err) {
       console.error(err.message);
     }

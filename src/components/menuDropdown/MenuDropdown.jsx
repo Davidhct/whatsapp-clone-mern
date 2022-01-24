@@ -26,13 +26,17 @@ const MenuDropdown = ({
           user = info;
         }
       });
-      const { userid, username, profilePicture, useremail } = { ...user };
 
-      await axios.patch('/api/v1/conversations/?chatId=' + currentChat?._id, {
-        isGroup: currentChat?.isGroup,
-        delId: currentUser.uid,
-        userInfo: { userid, username, profilePicture, useremail },
+      await axios.patch('/api/v1/members/?chatId=' + currentChat?._id, {
+        deleteMemberId: currentUser.uid,
       });
+
+      if (currentChat?.isGroup) {
+        const { userid, username, profilePicture, useremail } = { ...user };
+        await axios.patch('/api/v1/userInfo/?chatId=' + currentChat?._id, {
+          deleteUserInfo: { userid, username, profilePicture, useremail },
+        });
+      }
       // console.log(res.data);
     } catch (err) {
       console.error(err.message);
