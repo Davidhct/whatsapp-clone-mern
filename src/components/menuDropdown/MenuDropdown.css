@@ -27,7 +27,7 @@ ul {
 .delete {
   position: relative;
   padding: 13px 58px 13px 24px;
-
+  cursor: pointer;
   line-height: 7.5px;
 }
 
