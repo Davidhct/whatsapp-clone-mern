@@ -11,7 +11,7 @@ import './Chat.css';
 
 const Chat = () => {
   const [currentChat, setCurrentChat] = useState(null);
-  const [userPic, setUserPic] = useState([]);
+  const [userPic, setUserPic] = useState(null);
   const [userNam, setUserName] = useState([]);
   const [addPerson, setAddPerson] = useState(null);
   const [chatModal, setChatModal] = useState(null);
