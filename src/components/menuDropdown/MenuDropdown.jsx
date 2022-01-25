@@ -21,17 +21,16 @@ const MenuDropdown = ({
     event.preventDefault();
     let user;
     try {
-      currentChat?.userInfo.forEach((info, i) => {
-        if (info.userid === currentUser.uid) {
-          user = info;
-        }
-      });
-
       await axios.patch('/api/v1/members/?chatId=' + currentChat?._id, {
         deleteMemberId: currentUser.uid,
       });
 
       if (currentChat?.isGroup) {
+        currentChat?.userInfo.forEach((info) => {
+          if (info.userid === currentUser.uid) {
+            user = info;
+          }
+        });
         const { userid, username, profilePicture, useremail } = { ...user };
         await axios.patch('/api/v1/userInfo/?chatId=' + currentChat?._id, {
           deleteUserInfo: { userid, username, profilePicture, useremail },
