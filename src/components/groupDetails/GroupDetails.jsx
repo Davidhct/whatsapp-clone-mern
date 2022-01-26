@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-import { IconButton, makeStyles } from '@material-ui/core';
+import { IconButton, makeStyles, Avatar } from '@material-ui/core';
 // import CloseIcon from '@material-ui/icons/Close';
 import CreateIcon from '@material-ui/icons/Create';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-import { Avatar } from '@material-ui/core';
 // import profile from '../../assets/profile.jpg';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import GroupParticipant from '../groupParticipant/GroupParticipant';
+import UploadFile from '../uploadFile/UploadFile';
 import { useSelector } from 'react-redux';
 import editting from '../../assets/rename_icon.png';
 import axios from '../../axios';
 import './GroupDetails.css';
+import '../megaMenu/MegaMenu.css';
 
 const useStyles = makeStyles({
   profileImg: {
@@ -22,10 +24,9 @@ const useStyles = makeStyles({
   closeBtn: {
     backgroundColor: '#d4d4df',
   },
-  //   createI: {
-  //     height: '60%',
-  //     width: '20%',
-  //   },
+  deleteChat: {
+    color: 'red',
+  },
 });
 
 const GroupGetails = ({
@@ -35,6 +36,7 @@ const GroupGetails = ({
   setAddPerson,
 }) => {
   const classes = useStyles();
+  const inputFile = useRef(null);
   const { currentUser } = useSelector((state) => state.user);
   const [adminFeatures, setAdminFeatures] = useState(false);
   const [newGroupName, setNewGroupName] = useState('');
@@ -84,6 +86,21 @@ const GroupGetails = ({
     }
   };
 
+  const handleDeleteChat = async (event) => {
+    event.preventDefault();
+    try {
+      await axios.patch('/api/v1/members/?chatId=' + currentChat?._id, {
+        deleteMemberId: currentUser.uid,
+      });
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+  const handleUploadFile = () => {
+    // `current` points to the mounted file input element
+    inputFile.current.click();
+  };
+
   const handleInputChange = (event) => {
     event.preventDefault();
     setNewGroupName(event.target.value);
@@ -94,11 +111,15 @@ const GroupGetails = ({
     <div className='groupDetails-inner-container'>
       <div className='groupDetails-profile'>
         <div className='groupDetails-img'>
-          <IconButton>
+          <IconButton onClick={handleUploadFile}>
             <Avatar
               className={classes.profileImg}
               src={currentChat?.profilePicture}
             />
+            <UploadFile currentChat={currentChat} inputFile={inputFile} />
+            {/* {clickUploadFile ? (
+              
+            ) : null} */}
           </IconButton>
         </div>
         <div className='groupDetails-name-container'>
@@ -175,6 +196,16 @@ const GroupGetails = ({
           ))}
         </div>
       </div>
+      <div className='mega-menu-delete-friend'>
+        <div className='mega-menu-title-delete-friend'>
+          <IconButton className={classes.deleteChat} onClick={handleDeleteChat}>
+            <DeleteIcon />
+          </IconButton>
+
+          <p>Delete chat</p>
+        </div>
+      </div>
+      <div className='OptionDoAdd'></div>
     </div>
   );
 };

@@ -7,6 +7,7 @@ const conversationRouter = require('./routes/conversationRoutes');
 const adminRouter = require('./routes/adminRoutes');
 const membersRouter = require('./routes/membersRoutes');
 const userInfoRouter = require('./routes/userInfoRoutes');
+const filesRouter = require('./routes/filesRoutes');
 // const messageRouter = require('./routes/messageRoutes');
 // const privateConvRouter = require('./routes/privateConvRoutes');
 const app = express();
@@ -33,6 +34,7 @@ app.use('/api/v1/conversations', conversationRouter);
 app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/members', membersRouter);
 app.use('/api/v1/userInfo', userInfoRouter);
+app.use('/api/v1/files', filesRouter);
 // app.use('/api/v1/messages', messageRouter);
 // app.use('/api/v1/private', privateConvRouter);
 
