@@ -9,13 +9,23 @@ const UploadFile = ({ currentChat, inputFile }) => {
     if (newFile !== null) {
       try {
         const uploadFileToDB = async () => {
-          const fd = new FormData();
-          fd.append('image', newFile);
+          // let baseURL;
 
-          console.log(fd);
-          //   await axios.patch('/api/v1/files/?chatId=' + currentChat?._id, {
-          //     image: tmp,
+          // const fd = new FormData();
+          // fd.append('image', newFile, newFile.name);
+          // console.log(fd);
+          // let reader = new FileReader();
+          // reader.onload = () => {
+          //   baseURL = reader.result;
+          //   // console.log(baseURL);
+          //   axios.patch('/api/v1/files/?chatId=' + currentChat?._id, {
+          //     image: reader.result,
           //   });
+          // };
+          // baseURL = reader.readAsDataURL(newFile);
+          await axios.post('/api/v1/files/?chatId=' + currentChat?._id, {
+            image: newFile,
+          });
         };
 
         uploadFileToDB();
