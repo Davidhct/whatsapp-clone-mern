@@ -3,7 +3,7 @@ const express = require('express');
 const filesController = require('../controllers/filesController');
 const router = express.Router();
 
-router.route('/').post(filesController.updateFiles);
+router.route('/').patch(filesController.updateFiles);
 //   .get(adminController.getAllMessages)
 //   .post(adminController.createConversation)
 
