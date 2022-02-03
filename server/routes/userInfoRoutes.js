@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 
-const userInfoController = require('../controllers/userInfoController');
+import userInfoController from '../controllers/userInfoController.js';
 const router = express.Router();
 
 router.route('/').patch(userInfoController.updateUserInfo);
@@ -13,4 +13,5 @@ router.route('/').patch(userInfoController.updateUserInfo);
 //   .patch(userInfoController.updateConversations)
 //   .delete(userInfoController.deleteChat);
 
-module.exports = router;
+// module.exports = router;
+export default router;

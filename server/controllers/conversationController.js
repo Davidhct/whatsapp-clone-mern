@@ -1,6 +1,6 @@
-const ConversationModel = require('../models/conversationModel');
+import ConversationModel from '../models/conversationModel.js';
 
-exports.createConversation = async (req, res) => {
+export const createConversation = async (req, res) => {
   try {
     ConversationModel.syncIndexes();
     if (req.body.isGroup === false) {
@@ -36,7 +36,7 @@ exports.createConversation = async (req, res) => {
   }
 };
 
-exports.getConversation = async (req, res) => {
+export const getConversation = async (req, res) => {
   try {
     ConversationModel.syncIndexes();
     // const messages = await ConversationModel.find({
@@ -59,7 +59,7 @@ exports.getConversation = async (req, res) => {
   }
 };
 
-exports.getAllMessages = async (req, res) => {
+export const getAllMessages = async (req, res) => {
   try {
     ConversationModel.syncIndexes();
     const messages = await ConversationModel.find();
@@ -76,7 +76,7 @@ exports.getAllMessages = async (req, res) => {
   }
 };
 
-exports.updateConversations = async (req, res) => {
+export const updateConversations = async (req, res) => {
   console.log(req.params);
   console.log(req.body);
 
@@ -126,7 +126,7 @@ exports.updateConversations = async (req, res) => {
     });
   }
 };
-// exports.updatePerson = async (req, res) => {
+// export const updatePerson = async (req, res) => {
 //   console.log(req.params);
 //   console.log(req.body);
 
@@ -225,7 +225,7 @@ exports.updateConversations = async (req, res) => {
 //   }
 // };
 
-exports.deleteChat = async (req, res) => {
+export const deleteChat = async (req, res) => {
   try {
     ConversationModel.syncIndexes();
     await ConversationModel.findByIdAndDelete(req.params.id);
@@ -241,4 +241,11 @@ exports.deleteChat = async (req, res) => {
       message: err.message,
     });
   }
+};
+export default {
+  createConversation,
+  getConversation,
+  getAllMessages,
+  updateConversations,
+  deleteChat,
 };

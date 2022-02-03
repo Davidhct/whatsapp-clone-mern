@@ -1,9 +1,9 @@
-const express = require('express');
+import express from 'express';
 
-const filesController = require('../controllers/filesController');
+import filesController from '../controllers/filesController.js';
 const router = express.Router();
 
-router.route('/').patch(filesController.updateFiles);
+router.route('/').post(filesController.updateFiles);
 //   .get(adminController.getAllMessages)
 //   .post(adminController.createConversation)
 
@@ -13,4 +13,5 @@ router.route('/').patch(filesController.updateFiles);
 //   .patch(adminController.updateConversations)
 //   .delete(adminController.deleteChat);
 
-module.exports = router;
+// module.exports = router;
+export default router;

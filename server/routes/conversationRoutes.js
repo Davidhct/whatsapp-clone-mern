@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 
-const conversationController = require('../controllers/conversationController');
+import conversationController from '../controllers/conversationController.js';
 const router = express.Router();
 
 router
@@ -15,4 +15,4 @@ router
   .patch(conversationController.updateConversations)
   .delete(conversationController.deleteChat);
 
-module.exports = router;
+export default router;
