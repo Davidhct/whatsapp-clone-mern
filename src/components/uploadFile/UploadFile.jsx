@@ -1,25 +1,21 @@
 import { React, useState, useEffect, useRef } from 'react';
-import FileBase64 from 'react-file-base64';
+
 import axios from '../../axios';
 const fs = require('fs');
 const UploadFile = ({ currentChat, inputFile }) => {
   //   const inputFile = useRef(null);
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
     if (file !== null) {
+      console.log('====================================');
+      console.log(file);
+      console.log('====================================');
       try {
         const uploadFileToDB = async () => {
-          const toBase64 = (file) =>
-            new Promise((resolve, reject) => {
-              const reader = new FileReader();
-              reader.readAsDataURL(file);
-              reader.onload = () => resolve(reader.result);
-              reader.onerror = (error) => reject(error);
-            });
-          console.log(await toBase64(file));
-          await axios.patch('/api/v1/files/?chatId=' + currentChat?._id, {
-            image: await toBase64(file),
+          console.log(file);
+          await axios.post('/api/v1/files/?chatId=' + currentChat?._id, {
+            image: 'file',
           });
         };
 
@@ -27,6 +23,10 @@ const UploadFile = ({ currentChat, inputFile }) => {
       } catch (err) {
         console.log(err.message);
       }
+    } else {
+      console.log('====================================');
+      console.log('empty!!!!!!!!!!');
+      console.log('====================================');
     }
   }, [file]);
 

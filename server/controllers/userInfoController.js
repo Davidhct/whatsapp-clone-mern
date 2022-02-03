@@ -1,6 +1,6 @@
-const ConversationModel = require('../models/conversationModel');
+import ConversationModel from '../models/conversationModel.js';
 
-exports.updateUserInfo = async (req, res) => {
+export const updateUserInfo = async (req, res) => {
   try {
     ConversationModel.syncIndexes();
     let userinfo, statusCode;
@@ -57,3 +57,4 @@ exports.updateUserInfo = async (req, res) => {
     });
   }
 };
+export default { updateUserInfo };

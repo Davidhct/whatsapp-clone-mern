@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 
-const membersController = require('../controllers/membersController');
+import membersController from '../controllers/membersController.js';
 const router = express.Router();
 
 router.route('/').patch(membersController.updateMembers);
@@ -13,4 +13,5 @@ router.route('/').patch(membersController.updateMembers);
 //   .patch(membersController.updateConversations)
 //   .delete(membersController.deleteChat);
 
-module.exports = router;
+// module.exports = router;
+export default router;

@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 
-const adminController = require('../controllers/adminController');
+import adminController from '../controllers/adminController.js';
 const router = express.Router();
 
 router.route('/').patch(adminController.updateAdmin);
@@ -13,4 +13,5 @@ router.route('/').patch(adminController.updateAdmin);
 //   .patch(adminController.updateConversations)
 //   .delete(adminController.deleteChat);
 
-module.exports = router;
+// module.exports = router;
+export default router;

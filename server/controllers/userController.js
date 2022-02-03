@@ -1,10 +1,10 @@
-const User = require('./../models/userModel');
+import UserModel from './../models/userModel.js';
 
-exports.createUser = async (req, res) => {
+export const createUser = async (req, res) => {
   try {
-    await User.syncIndexes();
+    await UserModel.syncIndexes();
     // console.log(req.body);
-    const newUser = await User.create(req.body);
+    const newUser = await UserModel.create(req.body);
 
     res.status(201).json(newUser);
     // console.log(req.body);
@@ -17,13 +17,13 @@ exports.createUser = async (req, res) => {
 };
 
 //get a user
-exports.getUser = async (req, res) => {
+export const getUser = async (req, res) => {
   try {
-    await User.syncIndexes();
+    await UserModel.syncIndexes();
 
     const userId = req.query.userId;
     // console.log('---->', userId);
-    const user = await User.find();
+    const user = await UserModel.find();
     // console.log(user);
     let targetUser;
     user.map((resId) => {
@@ -42,12 +42,12 @@ exports.getUser = async (req, res) => {
   }
 };
 //get a user
-exports.checkAndGetUser = async (req, res) => {
+export const checkAndGetUser = async (req, res) => {
   try {
-    await User.syncIndexes();
+    await UserModel.syncIndexes();
     let targetUser;
 
-    const user = await User.find();
+    const user = await UserModel.find();
 
     user.map((m) => {
       if (m.email === req.params.email) {
@@ -74,13 +74,13 @@ const createUserInfo = (user) => {
   };
   return userInfo;
 };
-exports.checkAndGetGroupUsers = async (req, res) => {
+export const checkAndGetGroupUsers = async (req, res) => {
   try {
-    await User.syncIndexes();
+    await UserModel.syncIndexes();
     let targetUser;
     let list = [];
     // console.log(req.body);
-    const user = await User.find();
+    const user = await UserModel.find();
 
     user.map((m) => {
       if (req.body.group === true) {
@@ -114,3 +114,5 @@ exports.checkAndGetGroupUsers = async (req, res) => {
     });
   }
 };
+
+export default { createUser, getUser, checkAndGetUser, checkAndGetGroupUsers };

@@ -1,21 +1,27 @@
-const express = require('express');
-const morgan = require('morgan');
-const cors = require('cors');
+// const express = require('express');
+// const morgan = require('morgan');
+// const cors = require('cors');
+import express from 'express';
+import morgan from 'morgan';
+import cors from 'cors';
 
-const userRouter = require('./routes/userRoutes');
-const conversationRouter = require('./routes/conversationRoutes');
-const adminRouter = require('./routes/adminRoutes');
-const membersRouter = require('./routes/membersRoutes');
-const userInfoRouter = require('./routes/userInfoRoutes');
-const filesRouter = require('./routes/filesRoutes');
+import userRouter from './routes/userRoutes.js';
+import conversationRouter from './routes/conversationRoutes.js';
+import adminRouter from './routes/adminRoutes.js';
+import membersRouter from './routes/membersRoutes.js';
+import userInfoRouter from './routes/userInfoRoutes.js';
+import filesRouter from './routes/filesRoutes.js';
+// import storage from './multerStorage.js';
 // const messageRouter = require('./routes/messageRoutes');
 // const privateConvRouter = require('./routes/privateConvRoutes');
+import upload from './server.js';
 const app = express();
 
 // 1) MIDDLEWARES
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
 app.use(cors());
 app.use(express.json());
 app.use((req, res, next) => {
@@ -39,5 +45,5 @@ app.use('/api/v1/files', filesRouter);
 // app.use('/api/v1/private', privateConvRouter);
 
 // 4) START SERVER
-
-module.exports = app;
+export default app;
+// module.exports = app;
