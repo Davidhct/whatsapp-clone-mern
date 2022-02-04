@@ -14,7 +14,6 @@ import filesRouter from './routes/filesRoutes.js';
 // import storage from './multerStorage.js';
 // const messageRouter = require('./routes/messageRoutes');
 // const privateConvRouter = require('./routes/privateConvRoutes');
-import upload from './server.js';
 const app = express();
 
 // 1) MIDDLEWARES

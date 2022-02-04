@@ -8,25 +8,22 @@ const UploadFile = ({ currentChat, inputFile }) => {
 
   useEffect(() => {
     if (file !== null) {
-      console.log('====================================');
-      console.log(file);
-      console.log('====================================');
       try {
         const uploadFileToDB = async () => {
           console.log(file);
-          await axios.post('/api/v1/files/?chatId=' + currentChat?._id, {
-            image: 'file',
-          });
+          let tmpurl = URL.createObjectURL(file);
+          console.log(tmpurl);
+          await axios.patch(
+            '/api/v1/files/?chatId=' + currentChat?._id,
+            tmpurl
+          );
         };
 
         uploadFileToDB();
+        setFile(null);
       } catch (err) {
         console.log(err.message);
       }
-    } else {
-      console.log('====================================');
-      console.log('empty!!!!!!!!!!');
-      console.log('====================================');
     }
   }, [file]);
 

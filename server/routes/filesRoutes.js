@@ -1,9 +1,9 @@
 import express from 'express';
-
+// import upload from '../server.js';
 import filesController from '../controllers/filesController.js';
 const router = express.Router();
 
-router.route('/').post(filesController.updateFiles);
+router.route('/').patch(filesController.updateFiles);
 //   .get(adminController.getAllMessages)
 //   .post(adminController.createConversation)
 
