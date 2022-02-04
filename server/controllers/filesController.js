@@ -1,4 +1,5 @@
 import ConversationModel from '../models/conversationModel.js';
+
 // const express = require('express');
 // const multer = require('multer');
 // const mongoose = require('mongoose');
@@ -7,16 +8,17 @@ import ConversationModel from '../models/conversationModel.js';
 // const DIR = '../../public';
 // const fs = require('fs');
 
+// import upload from '../server.js';
+
 export const updateFiles = async (req, res, next) => {
-  console.log('update data');
-  console.log('ddd', req.body);
+  // console.log('update data');
+  console.log('---------------', req.body);
   try {
     let upFile;
     ConversationModel.syncIndexes();
 
     if (req.body.image) {
       // patch new image to the profile picture
-      console.log('---------------', req.body);
       // upFile = await ConversationModel.findByIdAndUpdate(
       //   req.query.chatId,
       //   {
