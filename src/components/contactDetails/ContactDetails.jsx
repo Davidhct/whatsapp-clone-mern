@@ -56,9 +56,9 @@ const ContactDetails = ({ currentChat }) => {
 
   console.log(friend);
   return (
-    <div className='mega-menu-inner-container'>
-      <div className='mega-menu-profile'>
-        <div className='mega-menu-img'>
+    <div className='contactDetails-inner-container'>
+      <div className='contactDetails-profile'>
+        <div className='contactDetails-img'>
           <IconButton>
             <Avatar
               className={classes.profileImg}
@@ -66,12 +66,12 @@ const ContactDetails = ({ currentChat }) => {
             />
           </IconButton>
         </div>
-        <div className='mega-menu-name-container'>
-          <p className='mega-menu-name'>{friend?.username}</p>
-          <p className='mega-menu-email'>{friend?.useremail}</p>
+        <div className='contactDetails-name-container'>
+          <p className='contactDetails-name'>{friend?.username}</p>
+          <p className='contactDetails-email'>{friend?.useremail}</p>
         </div>
       </div>
-      <div className='mega-menu-files-container'>
+      <div className='contactDetails-files-container'>
         <div className='mega-menu-title'>
           <p>Fils</p>
           <IconButton>

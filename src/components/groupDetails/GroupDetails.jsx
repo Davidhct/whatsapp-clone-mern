@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { IconButton, makeStyles, Avatar } from '@material-ui/core';
 // import CloseIcon from '@material-ui/icons/Close';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-// import profile from '../../assets/profile.jpg';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import GroupParticipant from '../groupParticipant/GroupParticipant';
-import UploadFile from '../uploadFile/UploadFile';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { useSelector } from 'react-redux';
 import editting from '../../assets/rename_icon.png';
+import EditGroupManagers from '../editGroupManagers/EditGroupManagers';
 import axios from '../../axios';
 import './GroupDetails.css';
 import '../megaMenu/MegaMenu.css';
@@ -36,11 +36,12 @@ const GroupGetails = ({
   setAddPerson,
 }) => {
   const classes = useStyles();
-  const inputFile = useRef(null);
+
   const { currentUser } = useSelector((state) => state.user);
   const [adminFeatures, setAdminFeatures] = useState(false);
   const [newGroupName, setNewGroupName] = useState('');
   const [changeName, setChangeName] = useState(false);
+  const [editGroup, setEditGroup] = useState(false);
 
   useEffect(() => {
     currentChat?.admin.forEach((id) => {
@@ -50,14 +51,11 @@ const GroupGetails = ({
 
   const isAdmin = (id) => {
     // console.log(id);
-    let flag;
+    let flag = false;
     currentChat?.admin.forEach((admin) => {
-      //   console.log(admin === id);
+      console.log(admin === id);
       if (admin === id) {
         flag = true;
-        return;
-      } else {
-        flag = false;
       }
     });
     return flag;
@@ -96,10 +94,6 @@ const GroupGetails = ({
       console.error(err.message);
     }
   };
-  const handleUploadFile = () => {
-    // `current` points to the mounted file input element
-    inputFile.current.click();
-  };
 
   const handleInputChange = (event) => {
     event.preventDefault();
@@ -111,15 +105,11 @@ const GroupGetails = ({
     <div className='groupDetails-inner-container'>
       <div className='groupDetails-profile'>
         <div className='groupDetails-img'>
-          <IconButton onClick={handleUploadFile}>
+          <IconButton>
             <Avatar
               className={classes.profileImg}
               src={currentChat?.profilePicture}
             />
-            <UploadFile currentChat={currentChat} inputFile={inputFile} />
-            {/* {clickUploadFile ? (
-              
-            ) : null} */}
           </IconButton>
         </div>
         <div className='groupDetails-name-container'>
@@ -196,6 +186,29 @@ const GroupGetails = ({
           ))}
         </div>
       </div>
+      {adminFeatures ? (
+        <div className='groupDetails-editing-group-managers'>
+          <div className='groupDetails-title-editing-group-managers'>
+            <p>Editing group managers</p>
+            <IconButton onClick={() => setEditGroup(!editGroup)}>
+              <KeyboardArrowDownIcon />
+            </IconButton>
+          </div>
+          {editGroup ? (
+            <div>
+              {currentChat?.userInfo.map((user, i) => (
+                // console.log(isAdmin);
+                <EditGroupManagers
+                  key={i}
+                  userInfo={user}
+                  isAdmin={isAdmin(user.userid)}
+                  currentChat={currentChat}
+                />
+              ))}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
       <div className='mega-menu-delete-friend'>
         <div className='mega-menu-title-delete-friend'>
           <IconButton className={classes.deleteChat} onClick={handleDeleteChat}>

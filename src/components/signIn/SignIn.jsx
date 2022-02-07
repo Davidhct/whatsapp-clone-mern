@@ -31,13 +31,14 @@ const SignIn = () => {
   useEffect(() => {
     const createUser = async () => {
       try {
-        await axios.post('/api/v1/users/', {
-          userid: currentUser.uid,
-          username: currentUser.displayName,
-          email: currentUser.email,
-          profilePicture: currentUser.photoURL,
-        });
-        // setConversations(res.data);
+        if (currentUser) {
+          await axios.post('/api/v1/users/', {
+            userid: currentUser.uid,
+            username: currentUser.displayName,
+            email: currentUser.email,
+            profilePicture: currentUser.photoURL,
+          });
+        } // setConversations(res.data);
         // console.log(user);
       } catch (err) {
         console.error(err);

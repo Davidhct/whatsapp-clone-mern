@@ -1,4 +1,4 @@
-.mega-menu-profile {
+.contactDetails-profile {
   display: flex;
   flex-direction: column;
   background: white;
@@ -10,7 +10,7 @@
     align-items: center; */
 }
 
-.mega-menu-img {
+.contactDetails-img {
   display: flex;
   flex-direction: column;
   /* border-bottom: 8px solid lightgray; */
@@ -18,7 +18,7 @@
   align-items: center;
   justify-content: center;
 }
-.mega-menu-name-container {
+.contactDetails-name-container {
   /* margin-top: 8px; */
   display: flex;
   align-items: center;
@@ -28,7 +28,7 @@
   flex-direction: column;
 }
 
-.mega-menu-name {
+.contactDetails-name {
   /* display: flex; */
   /* flex-wrap: wrap; */
   /* width: 80%; */
@@ -44,14 +44,14 @@
   /* padding: 0.2rem;*/
 }
 
-.mega-menu-email {
+.contactDetails-email {
   margin-bottom: 1rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 16px;
   color: rgba(0, 0, 0, 0.45);
 }
 
-.mega-menu-files-container {
+.contactDetails-files-container {
   margin-top: 8px;
   padding-left: 0.2rem;
   box-shadow: 0 10px 3px rgb(0 0 0 / 8%);

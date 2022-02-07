@@ -36,8 +36,12 @@ const Sidebar = ({
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const res = await axios.get('/api/v1/conversations/' + currentUser.uid);
-        setConversations(res.data?.data.slice().reverse());
+        if (currentUser) {
+          const res = await axios.get(
+            '/api/v1/conversations/' + currentUser.uid
+          );
+          setConversations(res.data?.data.slice().reverse());
+        }
       } catch (err) {
         console.error(err);
       }
