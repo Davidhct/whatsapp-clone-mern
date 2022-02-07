@@ -75,9 +75,8 @@ const ChatBox = ({
         (el) => el.userid !== currentUser.uid
       );
 
-      await axios.patch('/api/v1/conversations/?chatId=' + currentChat?._id, {
-        reconnect: true,
-        members: [friendId.userid],
+      await axios.patch('/api/v1/members/?chatId=' + currentChat?._id, {
+        addPerson: [friendId.userid],
       });
     } catch (err) {
       console.error(err.message);

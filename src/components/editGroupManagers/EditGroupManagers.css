@@ -1,0 +1,14 @@
+.editManagers-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  border-bottom: 0.1px solid lightgray;
+}
+.editManagers-right,
+.editManagers-left {
+  display: flex;
+  align-items: center;
+}
+/* .editManagers-right {
+
+} */

@@ -36,16 +36,18 @@ const GroupParticipant = ({
       // currentChat?.admin.length === 1 &&
       currentChat?.admin.forEach(async (admin) => {
         if (admin === userInfo.userid) {
-          newAdmin = currentChat?.members.find(
-            (member) => member !== currentUser.uid
-          );
+          if (currentChat?.admin.length === 1) {
+            newAdmin = currentChat?.members.find(
+              (member) => member !== userInfo.userid
+            );
+            await axios.patch('/api/v1/admin/?chatId=' + currentChat?._id, {
+              addAdminId: newAdmin,
+            });
+          }
 
           console.log(newAdmin);
           await axios.patch('/api/v1/admin/?chatId=' + currentChat?._id, {
-            deleteAdminId: currentUser.uid,
-          });
-          await axios.patch('/api/v1/admin/?chatId=' + currentChat?._id, {
-            addAdminId: newAdmin,
+            deleteAdminId: admin,
           });
         }
       });

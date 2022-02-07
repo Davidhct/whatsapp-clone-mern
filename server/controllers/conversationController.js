@@ -98,14 +98,14 @@ export const updateConversations = async (req, res) => {
       conversation = message;
     } else if (req.body.groupName) {
       // capitalize the first letter in the new name
-      let strTmp = req.body.groupName;
-      strTmp = strTmp.toLowerCase();
-      let groupNameCapital = strTmp.charAt(0).toUpperCase() + strTmp.slice(1);
+      let newName = req.body.groupName;
+      // strTmp = strTmp.toLowerCase();
+      // let groupNameCapital = strTmp.charAt(0).toUpperCase() + strTmp.slice(1);
 
       const gName = await ConversationModel.findByIdAndUpdate(
         req.params.id,
         {
-          groupName: groupNameCapital,
+          groupName: newName,
         },
         {
           new: true,
