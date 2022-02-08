@@ -50,6 +50,22 @@ const ChatModal = ({
       messages: [{ sender: null, text: null, isRead: false }],
     });
   };
+  const isExistsMember = async (id, chatId) => {
+    let isMember = false;
+    try {
+      const res = await axios.get('/api/v1/members/?chatId=' + chatId);
+      const members = [...res?.data.data];
+      console.log(members);
+      members.forEach((mbr) => {
+        if (mbr === id) {
+          isMember = true;
+        }
+      });
+    } catch (err) {
+      console.error(err.message);
+    }
+    return isMember;
+  };
   const checkAndGetUser = async () => {
     let res;
     try {
@@ -71,14 +87,20 @@ const ChatModal = ({
     const addPersonToGroup = async () => {
       try {
         const resUser = await checkAndGetUser();
-        await axios.patch('/api/v1/members/?chatId=' + currentChat?._id, {
-          addPerson: [resUser[0].userid],
-          // members: [resUser[0].userid],
-          // userInfo: [...resUser],
-        });
-        await axios.patch('/api/v1/userInfo/?chatId=' + currentChat?._id, {
-          addPerson: [...resUser],
-        });
+        const memberExists = await isExistsMember(
+          resUser[0].userid,
+          currentChat?._id
+        );
+        if (!memberExists) {
+          await axios.patch('/api/v1/members/?chatId=' + currentChat?._id, {
+            addPerson: [resUser[0].userid],
+            // members: [resUser[0].userid],
+            // userInfo: [...resUser],
+          });
+          await axios.patch('/api/v1/userInfo/?chatId=' + currentChat?._id, {
+            addPerson: [...resUser],
+          });
+        }
       } catch (err) {
         console.error(err.message);
       }

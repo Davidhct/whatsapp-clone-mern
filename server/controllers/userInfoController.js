@@ -6,11 +6,11 @@ export const updateUserInfo = async (req, res) => {
     let userinfo, statusCode;
 
     if (req.body.deleteUserInfo) {
-      console.log('hallllllllooooooooo');
       const { userid, username, profilePicture, useremail } = {
         ...req.body.deleteUserInfo,
       };
-      console.log(userid, username, profilePicture, useremail);
+
+      // console.log(userid, username, profilePicture, useremail);
       userinfo = await ConversationModel.findByIdAndUpdate(
         req.query.chatId,
         {

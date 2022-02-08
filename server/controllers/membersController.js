@@ -1,5 +1,24 @@
 import ConversationModel from '../models/conversationModel.js';
+export const getAllMembers = async (req, res, next) => {
+  let members;
 
+  try {
+    ConversationModel.syncIndexes();
+
+    members = await ConversationModel.findById(req.query.chatId);
+    members = members.members;
+
+    res.status(200).json({
+      status: 'success',
+      data: members,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
 export const updateMembers = async (req, res) => {
   try {
     ConversationModel.syncIndexes();
@@ -49,4 +68,4 @@ export const updateMembers = async (req, res) => {
     });
   }
 };
-export default { updateMembers };
+export default { updateMembers, getAllMembers };
