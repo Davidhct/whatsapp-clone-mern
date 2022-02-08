@@ -3,7 +3,10 @@ import express from 'express';
 import membersController from '../controllers/membersController.js';
 const router = express.Router();
 
-router.route('/').patch(membersController.updateMembers);
+router
+  .route('/')
+  .get(membersController.getAllMembers)
+  .patch(membersController.updateMembers);
 //   .get(membersController.getAllMessages)
 //   .post(membersController.createConversation)
 

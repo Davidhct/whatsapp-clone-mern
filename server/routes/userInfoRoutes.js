@@ -1,6 +1,7 @@
 import express from 'express';
 
 import userInfoController from '../controllers/userInfoController.js';
+
 const router = express.Router();
 
 router.route('/').patch(userInfoController.updateUserInfo);
