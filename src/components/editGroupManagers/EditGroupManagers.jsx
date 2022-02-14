@@ -19,6 +19,7 @@ const useStyles = makeStyles({
 const EditGroupManagers = ({ userInfo, isAdmin, currentChat }) => {
   const classes = useStyles();
   const { currentUser } = useSelector((state) => state.user);
+
   const handleAddManager = (event) => {
     event.preventDefault();
     let newManager = userInfo.userid;

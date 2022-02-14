@@ -1,6 +1,7 @@
 import React from 'react';
 import SignOut from '../signOut/SignOut';
 import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 import axios from '../../axios';
 import './MenuDropdown.css';
 
@@ -17,8 +18,23 @@ const MenuDropdown = ({
 }) => {
   const { currentUser } = useSelector((state) => state.user);
 
-  const handleDeleteClick = async (event) => {
-    event.preventDefault();
+  const beforeDeleteChat = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Delete chat',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDeleteClick();
+      }
+    });
+  };
+
+  const handleDeleteClick = async () => {
     let user;
     try {
       await axios.patch('/api/v1/members/?chatId=' + currentChat?._id, {
@@ -92,7 +108,7 @@ const MenuDropdown = ({
             <li>
               <div
                 className={!chatGroup ? 'delete' : 'menu-list'}
-                onClick={handleDeleteClick}
+                onClick={beforeDeleteChat}
               >
                 Delete chat
               </div>
