@@ -57,18 +57,8 @@
   box-shadow: 0 10px 3px rgb(0 0 0 / 8%);
   line-height: 3em;
 }
-.mega-menu-delete-friend {
-  display: flex;
-  justify-content: flex-start;
-  cursor: pointer;
-  color: rgb(255, 0, 0);
-  margin-top: 8px;
-  padding-left: 0.2rem;
-  box-shadow: 0 10px 3px rgb(0 0 0 / 8%);
-}
 
-.mega-menu-title,
-.mega-menu-title-delete-friend {
+.mega-menu-title {
   display: flex;
   padding-left: 0.2rem;
   justify-content: space-between;

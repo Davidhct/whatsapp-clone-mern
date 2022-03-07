@@ -11,6 +11,9 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 // import GroupParticipant from '../groupParticipant/GroupParticipant';
 import { useSelector } from 'react-redux';
 // import editting from '../../assets/rename_icon.png';
+import Swal from 'sweetalert2';
+
+import DeleteChatBtn from '../deleteChatBtn/DeleteChatBtn';
 import axios from '../../axios';
 import './ContactDetails.css';
 
@@ -22,13 +25,6 @@ const useStyles = makeStyles({
   deleteChat: {
     color: 'red',
   },
-  //   closeBtn: {
-  //     backgroundColor: '#d4d4df',
-  //   },
-  //   createI: {
-  //     height: '60%'
-  //     width: '20%',
-  //   },
 });
 
 const ContactDetails = ({ currentChat }) => {
@@ -42,17 +38,6 @@ const ContactDetails = ({ currentChat }) => {
     );
     setFriend(friendDetails);
   }, [currentChat]);
-
-  const handleDeleteChat = async (event) => {
-    event.preventDefault();
-    try {
-      await axios.patch('/api/v1/members/?chatId=' + currentChat?._id, {
-        deleteMemberId: currentUser.uid,
-      });
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
 
   console.log(friend);
   return (
@@ -80,15 +65,8 @@ const ContactDetails = ({ currentChat }) => {
         </div>
         <div></div>
       </div>
-      <div className='mega-menu-delete-friend'>
-        <div className='mega-menu-title-delete-friend'>
-          <IconButton className={classes.deleteChat} onClick={handleDeleteChat}>
-            <DeleteIcon />
-          </IconButton>
 
-          <p>Delete chat</p>
-        </div>
-      </div>
+      <DeleteChatBtn currentChat={currentChat} />
       <div className='OptionDoAdd'></div>
     </div>
   );

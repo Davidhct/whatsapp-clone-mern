@@ -12,6 +12,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { useSelector } from 'react-redux';
 import editting from '../../assets/rename_icon.png';
 import EditGroupManagers from '../editGroupManagers/EditGroupManagers';
+import DeleteChatBtn from '../deleteChatBtn/DeleteChatBtn';
 import axios from '../../axios';
 import './GroupDetails.css';
 import '../megaMenu/MegaMenu.css';
@@ -49,8 +50,22 @@ const GroupGetails = ({
     });
   }, [currentUser?.uid, currentChat?.admin]);
 
+  const getUserInfo = () => {
+    let userInfo;
+    let users = currentChat?.userInfo;
+
+    let flag = true;
+    for (let i = 0; i < users.length || flag; i++) {
+      if (users[i].userid === currentUser.uid) {
+        userInfo = users[i];
+        flag = false;
+      }
+    }
+
+    return userInfo;
+  };
+
   const isAdmin = (id) => {
-    // console.log(id);
     let flag = false;
     currentChat?.admin.forEach((admin) => {
       console.log(admin === id);
@@ -72,24 +87,12 @@ const GroupGetails = ({
     setChangeName(!changeName);
 
     try {
-      console.log(currentChat?._id);
       const res = await axios.patch(
         '/api/v1/conversations/' + currentChat?._id,
         {
           groupName: newGroupName,
         }
       );
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
-  const handleDeleteChat = async (event) => {
-    event.preventDefault();
-    try {
-      await axios.patch('/api/v1/members/?chatId=' + currentChat?._id, {
-        deleteMemberId: currentUser.uid,
-      });
     } catch (err) {
       console.error(err.message);
     }
@@ -209,15 +212,8 @@ const GroupGetails = ({
           ) : null}
         </div>
       ) : null}
-      <div className='mega-menu-delete-friend'>
-        <div className='mega-menu-title-delete-friend'>
-          <IconButton className={classes.deleteChat} onClick={handleDeleteChat}>
-            <DeleteIcon />
-          </IconButton>
 
-          <p>Delete chat</p>
-        </div>
-      </div>
+      <DeleteChatBtn currentChat={currentChat} userInfo={getUserInfo()} />
       <div className='OptionDoAdd'></div>
     </div>
   );
