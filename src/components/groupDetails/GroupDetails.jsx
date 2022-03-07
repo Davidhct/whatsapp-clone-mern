@@ -50,6 +50,21 @@ const GroupGetails = ({
     });
   }, [currentUser?.uid, currentChat?.admin]);
 
+  const getUserInfo = () => {
+    let userInfo;
+    let users = currentChat?.userInfo;
+
+    let flag = true;
+    for (let i = 0; i < users.length || flag; i++) {
+      if (users[i].userid === currentUser.uid) {
+        userInfo = users[i];
+        flag = false;
+      }
+    }
+
+    return userInfo;
+  };
+
   const isAdmin = (id) => {
     let flag = false;
     currentChat?.admin.forEach((admin) => {
@@ -198,7 +213,7 @@ const GroupGetails = ({
         </div>
       ) : null}
 
-      <DeleteChatBtn currentChat={currentChat} />
+      <DeleteChatBtn currentChat={currentChat} userInfo={getUserInfo()} />
       <div className='OptionDoAdd'></div>
     </div>
   );

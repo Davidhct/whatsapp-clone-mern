@@ -25,7 +25,7 @@ export const updateMembers = async (req, res) => {
     let members, statusCode;
 
     if (req.body.deleteMemberId) {
-      console.log('hay from row 8 in deleteMember');
+      console.log('hay from row 8 in deleteMember', req.query.chatId);
       members = await ConversationModel.findByIdAndUpdate(
         req.query.chatId,
         { $pull: { members: req.body.deleteMemberId } },

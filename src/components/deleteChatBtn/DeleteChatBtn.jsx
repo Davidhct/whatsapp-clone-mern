@@ -5,17 +5,17 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { useSelector } from 'react-redux';
 import axios from '../../axios';
 import './DeleteChatBtn.css';
-
+import deleteUser from '../../apiCalls';
 const useStyles = makeStyles({
   deleteChat: {
     color: 'red',
   },
 });
-const DeleteChatBtn = ({ currentChat }) => {
+const DeleteChatBtn = ({ currentChat, userInfo = undefined }) => {
   const classes = useStyles();
   const { currentUser } = useSelector((state) => state.user);
 
-  const beforeDeleteChat = () => {
+  const beforeDeleteChat = (e) => {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -26,7 +26,12 @@ const DeleteChatBtn = ({ currentChat }) => {
       confirmButtonText: 'Delete chat',
     }).then((result) => {
       if (result.isConfirmed) {
-        handleDeleteChat();
+        if (userInfo) {
+          console.log(userInfo);
+          deleteUser(e, currentChat, userInfo);
+        } else {
+          handleDeleteChat(e);
+        }
       }
     });
   };
@@ -45,7 +50,10 @@ const DeleteChatBtn = ({ currentChat }) => {
   return (
     <div className='delete-chat-container'>
       <div className='delete-chat-title'>
-        <IconButton className={classes.deleteChat} onClick={beforeDeleteChat}>
+        <IconButton
+          className={classes.deleteChat}
+          onClick={(e) => beforeDeleteChat(e)}
+        >
           <DeleteIcon />
         </IconButton>
 
