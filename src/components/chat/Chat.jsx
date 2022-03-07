@@ -40,9 +40,7 @@ const Chat = () => {
             setUserPic={setUserPic}
             setUserName={setUserName}
             setChatModal={setChatModal}
-            chatModal={chatModal}
             setGroupModal={setGroupModal}
-            groupModal={groupModal}
           />
         </div>
         <ChatBox

@@ -21,10 +21,7 @@ const Sidebar = ({
   setCurrentChat,
   setUserPic,
   setUserName,
-
-  groupModal,
   setGroupModal,
-  chatModal,
   setChatModal,
 }) => {
   const classes = useStyles();
@@ -47,7 +44,7 @@ const Sidebar = ({
       }
     };
     getConversations();
-  }, [currentUser.uid]);
+  }, [currentUser]);
 
   const findeLastMessage = (msg) => {
     // console.log(msg);
