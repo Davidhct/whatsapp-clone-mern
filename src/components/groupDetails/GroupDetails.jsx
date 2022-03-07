@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 import { IconButton, makeStyles, Avatar } from '@material-ui/core';
-// import CloseIcon from '@material-ui/icons/Close';
+
 import CreateIcon from '@material-ui/icons/Create';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';

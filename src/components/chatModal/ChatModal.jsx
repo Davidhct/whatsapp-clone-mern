@@ -30,10 +30,7 @@ const ChatModal = ({
   const { currentUser } = useSelector((state) => state.user);
   const [input, setinput] = useState('');
 
-  //       //joun@example.com
-
   const createFreindship = async (data) => {
-    // console.log('data: ', data.username);
     await axios.post('/api/v1/conversations/', {
       groupName: data[0].username,
       isGroup: false,

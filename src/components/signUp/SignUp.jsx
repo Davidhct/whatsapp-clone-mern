@@ -49,7 +49,7 @@ const SignUp = () => {
             profilePicture: currentUser.photoURL,
           });
         }
-        // setConversations(res.data);
+
         // console.log(user);
       } catch (err) {
         console.error(err);

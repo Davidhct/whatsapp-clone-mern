@@ -2,11 +2,6 @@ import React from 'react';
 import { IconButton, makeStyles } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
-import CreateIcon from '@material-ui/icons/Create';
-import { Avatar } from '@material-ui/core';
-import profile from '../../assets/profile.jpg';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import GroupDetails from '../groupDetails/GroupDetails';
 import ContactDetails from '../contactDetails/ContactDetails';
 

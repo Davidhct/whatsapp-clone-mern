@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
 import { IconButton, makeStyles, Avatar } from '@material-ui/core';
-// import CloseIcon from '@material-ui/icons/Close';
-// import CreateIcon from '@material-ui/icons/Create';
-import DeleteIcon from '@material-ui/icons/Delete';
-// import {  } from '@material-ui/core';
-import profile from '../../assets/profile.jpg';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-// import PersonAddIcon from '@material-ui/icons/PersonAdd';
-// import GroupParticipant from '../groupParticipant/GroupParticipant';
 import { useSelector } from 'react-redux';
-// import editting from '../../assets/rename_icon.png';
-import Swal from 'sweetalert2';
-
 import DeleteChatBtn from '../deleteChatBtn/DeleteChatBtn';
-import axios from '../../axios';
+
 import './ContactDetails.css';
 
 const useStyles = makeStyles({

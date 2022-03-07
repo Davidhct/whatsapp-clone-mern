@@ -47,8 +47,6 @@ const ChatBox = ({
 
   const [cursorPosition, setCursorPosition] = useState();
 
-  // const [deleteChat, setDeleteChat] = useState(false);
-  // const [sender, setSender] = useState('');
   const { currentUser } = useSelector((state) => state.user);
   const inputRef = createRef();
   const scrollRef = useRef();

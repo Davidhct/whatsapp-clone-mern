@@ -1,6 +1,3 @@
-// const express = require('express');
-// const morgan = require('morgan');
-// const cors = require('cors');
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -10,10 +7,7 @@ import conversationRouter from './routes/conversationRoutes.js';
 import adminRouter from './routes/adminRoutes.js';
 import membersRouter from './routes/membersRoutes.js';
 import userInfoRouter from './routes/userInfoRoutes.js';
-import filesRouter from './routes/filesRoutes.js';
-// import storage from './multerStorage.js';
-// const messageRouter = require('./routes/messageRoutes');
-// const privateConvRouter = require('./routes/privateConvRoutes');
+
 const app = express();
 
 // 1) MIDDLEWARES
@@ -39,9 +33,6 @@ app.use('/api/v1/conversations', conversationRouter);
 app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/members', membersRouter);
 app.use('/api/v1/userInfo', userInfoRouter);
-// app.use('/api/v1/files', filesRouter);
-// app.use('/api/v1/messages', messageRouter);
-// app.use('/api/v1/private', privateConvRouter);
 
 // 4) START SERVER
 export default app;
