@@ -18,6 +18,7 @@ import { useSelector } from 'react-redux';
 
 import axios from '../../axios';
 import { format } from 'timeago.js';
+import { io } from 'socket.io-client';
 
 const useStyles = makeStyles({
   moreVert: {
@@ -35,8 +36,10 @@ const ChatBox = ({
   setAddPerson,
   clickMenu,
   setClickMenu,
+  socket,
 }) => {
   const classes = useStyles();
+
   const [input, setInput] = useState('');
 
   const [messages, setMessages] = useState([]);
@@ -50,6 +53,14 @@ const ChatBox = ({
   const { currentUser } = useSelector((state) => state.user);
   const inputRef = createRef();
   const scrollRef = useRef();
+
+  useEffect(() => {
+    // client-side
+    socket.current.emit('addUser', currentUser.uid);
+    socket.current.on('getUsers', (users) => {
+      console.log(users);
+    });
+  }, [currentUser]);
 
   useEffect(() => {
     if (currentChat?.isGroup) {
