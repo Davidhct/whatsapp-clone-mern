@@ -54,13 +54,13 @@ const ChatBox = ({
   const inputRef = createRef();
   const scrollRef = useRef();
 
-  useEffect(() => {
-    // client-side
-    socket.current.emit('addUser', currentUser.uid);
-    socket.current.on('getUsers', (users) => {
-      console.log(users);
-    });
-  }, [currentUser]);
+  // useEffect(() => {
+  //   // client-side
+  //   socket.current.emit('addUser', currentUser.uid);
+  //   socket.current.on('getUsers', (users) => {
+  //     console.log(users);
+  //   });
+  // }, [currentUser]);
 
   useEffect(() => {
     if (currentChat?.isGroup) {
