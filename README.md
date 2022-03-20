@@ -10,4 +10,4 @@ The Whatsapp clone is a chat that simulates the WhatsApp just for self project.
 
 To making big full stack project.
 
-![Uploading img_1.png…](https://github.com/Davidhct/whatsapp-clone-mern/tree/master/public/img_1.png)
+![Uploading img_1.png…](/public/img_1.png)
