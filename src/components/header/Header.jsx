@@ -10,9 +10,7 @@ const Header = () => {
   return (
     <nav className='header-wrapper'>
       <div className='header'>
-        <div>
-          Hello, {currentUser.displayName}, id= {currentUser.uid}
-        </div>
+        <div>Hello, {currentUser.displayName}</div>
         <div>
           <SignOut uppercase={true} />
         </div>
