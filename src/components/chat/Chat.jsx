@@ -11,7 +11,7 @@ import './Chat.css';
 
 const Chat = () => {
   // socket state
-  const socket = useRef();
+  // const socket = useRef();
   const [currentChat, setCurrentChat] = useState(null);
   const [userPic, setUserPic] = useState(null);
   const [userNam, setUserName] = useState([]);
@@ -20,9 +20,9 @@ const Chat = () => {
   const [groupModal, setGroupModal] = useState(null);
   const [clickMenu, setClickMenu] = useState(false);
 
-  useEffect(() => {
-    socket.current = io('ws://localhost:8900');
-  }, []);
+  // useEffect(() => {
+  //   socket.current = io('ws://localhost:8900');
+  // }, []);
 
   console.log(currentChat);
 
@@ -50,7 +50,7 @@ const Chat = () => {
           />
         </div>
         <ChatBox
-          socket={socket}
+          // socket={socket}
           currentChat={currentChat}
           userPic={userPic}
           userNam={userNam}
