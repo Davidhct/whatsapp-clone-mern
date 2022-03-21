@@ -2,7 +2,7 @@ import { Server } from 'socket.io';
 
 const io = new Server(8900, {
   cors: {
-    origin: 'http://localhost:3000/chat',
+    origin: 'http://localhost:3000',
   },
 });
 
@@ -17,8 +17,11 @@ const removeUser = (socketId) => {
   users = users.filter((user) => user.socketId !== socketId);
 };
 
+const getUser = (userId) => users.find((user) => user.userId === userId);
+
 // server-side
 io.on('connection', (socket) => {
+  // whene connect
   console.log('a user connected.');
 
   socket.on('addUser', (userId) => {
@@ -26,7 +29,17 @@ io.on('connection', (socket) => {
     io.emit('getUsers', users);
   });
 
+  // send and get message
+  socket.on('sendMessage', ({ senderId, receiverId, text }) => {
+    const user = getUser(receiverId);
+    io.to(user.socketId).emit('getMessage', {
+      senderId,
+      text,
+    });
+  });
+
   socket.on('disconnect', () => {
+    // whene diconnect
     console.log('a user disconnected!');
     removeUser(socket.id);
     io.emit('getUsers', users);
