@@ -55,39 +55,28 @@ const ChatBox = ({
     socket.current = io('ws://localhost:8900');
     socket.current.on('getMessage', (data) => {
       setGotMessage({
-        sender: data.senderId,
+        sender: data.sender,
         text: data.text,
-        createdAt: Date.now(),
-      });
-    });
-  }, []);
-  useEffect(() => {
-    socket.current.on('getMessage', (data) => {
-      setGotMessage({
-        sender: data.senderId,
-        text: data.text,
-        createdAt: Date.now(),
+        isRead: data.isRead,
+        date: data.date,
       });
     });
   }, []);
 
   useEffect(() => {
-    let t = false;
-    gotMessage &&
-      currentChat?.members.map((id) => {
-        console.log('bbbbb', id === gotMessage.sender);
-        if (id === gotMessage.sender) {
-          t = true;
-          return;
+    console.log(gotMessage);
+    if (gotMessage && currentChat) {
+      let flag = false;
+      let mbrs = currentChat?.members;
+      for (let i = 0; i < mbrs.length || !flag; i++) {
+        console.log(mbrs[i], ',,,,', gotMessage.sender);
+        if (mbrs[i] === gotMessage.sender) {
+          setMessages((prev) => [...prev, gotMessage]);
+          flag = true;
         }
-      });
-    t && setMessages([...messages, gotMessage]);
-    console.log(
-      '..........',
-
-      t
-    );
-  }, [gotMessage, currentChat, messages]);
+      }
+    }
+  }, [gotMessage, currentChat]);
 
   useEffect(() => {
     //client - side;
@@ -131,6 +120,16 @@ const ChatBox = ({
     event.preventDefault();
 
     try {
+      const receiverId = currentChat?.members.find(
+        (mbr) => mbr !== currentUser.uid
+      );
+
+      socket.current.emit('sendMessage', {
+        senderId: currentUser.uid,
+        receiverId: receiverId,
+        text: input,
+      });
+
       const res = await axios.patch(
         '/api/v1/conversations/' + currentChat?._id,
         {
@@ -144,16 +143,6 @@ const ChatBox = ({
           ],
         }
       );
-
-      const receiverId = currentChat.members.find(
-        (mbr) => mbr !== currentUser.uid
-      );
-
-      socket.current.emit('sendMessage', {
-        senderId: currentUser.uid,
-        receiverId: receiverId,
-        text: input,
-      });
 
       setInput('');
       let lastMsg = res.data?.data.messages;
@@ -270,7 +259,7 @@ const ChatBox = ({
           </div>
 
           <div className='chat-box-body'>
-            {currentChat.messages.map((message, i) =>
+            {currentChat?.messages.map((message, i) =>
               message.sender ? (
                 <div key={i} ref={scrollRef}>
                   <p
