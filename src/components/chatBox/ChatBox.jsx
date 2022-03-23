@@ -65,18 +65,13 @@ const ChatBox = ({
 
   useEffect(() => {
     console.log(gotMessage);
-    if (gotMessage && currentChat) {
-      let flag = false;
-      let mbrs = currentChat?.members;
-      for (let i = 0; i < mbrs.length || !flag; i++) {
-        console.log(mbrs[i], ',,,,', gotMessage.sender);
-        if (mbrs[i] === gotMessage.sender) {
-          setMessages((prev) => [...prev, gotMessage]);
-          flag = true;
-        }
-      }
-    }
-  }, [gotMessage, currentChat]);
+
+    gotMessage &&
+      currentChat?.members.includes(gotMessage.sender) &&
+      setMessages([...messages, gotMessage]);
+
+    setGotMessage(null);
+  }, [gotMessage, currentChat, messages]);
 
   useEffect(() => {
     //client - side;
