@@ -26,20 +26,29 @@ io.on('connection', (socket) => {
   // whene connect
   console.log('a user connected.');
 
-  socket.on('addUser', (userId) => {
-    addUser(userId, socket.id);
+  socket.on('addUser', (roomId) => {
+    addUser(roomId, socket.id);
     io.emit('getUsers', users);
   });
+  /////////////////
+  // socket.on('join_room', (data) => {
+  //   socket.join(data);
+  //   console.log(`User with ID: ${socket.id} joined room: ${data}`);
+  // });
+
+  ///////////////
 
   // send and get message
-  socket.on('sendMessage', ({ senderId, receiverId, text }) => {
-    const user = getUser(receiverId);
-    io.to(user.socketId).emit('getMessage', {
-      sender: senderId,
-      text: text,
-      isRead: false,
-      date: new Date().toISOString(),
-    });
+  socket.on('sendMessage', ({ senderId, text, date, room }) => {
+    const user = getUser(room);
+    console.log('user99', user);
+    user &&
+      io.to(user.socketId).emit('getMessage', {
+        sender: senderId,
+        text: text,
+        isRead: false,
+        date: date,
+      });
   });
 
   socket.on('disconnect', () => {

@@ -9,6 +9,8 @@ import BackModal from '../backModal/BackModal';
 import { io } from 'socket.io-client';
 import './Chat.css';
 
+const socket = io.connect('http://localhost:8900');
+
 const Chat = () => {
   // socket state
   // const socket = useRef();
@@ -50,7 +52,7 @@ const Chat = () => {
           />
         </div>
         <ChatBox
-          // socket={socket}
+          socket={socket}
           currentChat={currentChat}
           userPic={userPic}
           userNam={userNam}

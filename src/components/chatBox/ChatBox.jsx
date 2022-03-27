@@ -18,7 +18,7 @@ import { useSelector } from 'react-redux';
 
 import axios from '../../axios';
 import { format } from 'timeago.js';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 
 const useStyles = makeStyles({
   moreVert: {
@@ -36,10 +36,10 @@ const ChatBox = ({
   setAddPerson,
   clickMenu,
   setClickMenu,
-  // socket,
+  socket,
 }) => {
   const classes = useStyles();
-  const socket = useRef();
+  // const socket = useRef();
   const [input, setInput] = useState('');
 
   const [messages, setMessages] = useState([]);
@@ -51,35 +51,24 @@ const ChatBox = ({
   const { currentUser } = useSelector((state) => state.user);
   const inputRef = createRef();
   const scrollRef = useRef();
+
   useEffect(() => {
-    socket.current = io('ws://localhost:8900');
-    socket.current.on('getMessage', (data) => {
-      setGotMessage({
-        sender: data.sender,
-        text: data.text,
-        isRead: data.isRead,
-        date: data.date,
-      });
+    socket.on('getMessage', (data) => {
+      if (currentChat?.members.includes(data.sender)) {
+        setMessages((prev) => [...prev, data]);
+      }
     });
-  }, []);
-
-  useEffect(() => {
-    console.log(gotMessage);
-
-    gotMessage &&
-      currentChat?.members.includes(gotMessage.sender) &&
-      setMessages([...messages, gotMessage]);
-
-    setGotMessage(null);
-  }, [gotMessage, currentChat, messages]);
+  }, [socket]);
 
   useEffect(() => {
     //client - side;
-    socket.current.emit('addUser', currentUser.uid);
-    socket.current.on('getUsers', (users) => {
+    currentChat && setMessages(currentChat?.messages);
+    socket.emit('addUser', currentChat?._id);
+    socket.on('getUsers', (users) => {
       console.log(users);
     });
-  }, [currentUser]);
+    // socket.emit('join_room', currentChat?._id);
+  }, [currentChat]);
 
   useEffect(() => {
     if (currentChat?.isGroup) {
@@ -115,27 +104,26 @@ const ChatBox = ({
     event.preventDefault();
 
     try {
-      const receiverId = currentChat?.members.find(
-        (mbr) => mbr !== currentUser.uid
-      );
-
-      socket.current.emit('sendMessage', {
-        senderId: currentUser.uid,
-        receiverId: receiverId,
+      const messageObj = {
+        sender: currentUser.uid,
         text: input,
-      });
+        isRead: false,
+        date: new Date().toISOString(),
+      };
+
+      const messageData = {
+        senderId: currentUser.uid,
+        text: input,
+        date: new Date().toISOString(),
+        room: currentChat?._id,
+      };
+      socket.emit('sendMessage', messageData);
+      // setMessages((prev) => [...prev, messageObj]);
 
       const res = await axios.patch(
         '/api/v1/conversations/' + currentChat?._id,
         {
-          messages: [
-            {
-              sender: currentUser.uid,
-              text: input,
-              isRead: false,
-              date: new Date().toISOString(),
-            },
-          ],
+          messages: [messageObj],
         }
       );
 
@@ -143,7 +131,6 @@ const ChatBox = ({
       let lastMsg = res.data?.data.messages;
       console.log(lastMsg);
 
-      setMessages([...messages, lastMsg]);
       if (!currentChat?.isGroup && currentChat?.members.length === 1) {
         reconnectMember();
       }
@@ -254,26 +241,27 @@ const ChatBox = ({
           </div>
 
           <div className='chat-box-body'>
-            {currentChat?.messages.map((message, i) =>
-              message.sender ? (
-                <div key={i} ref={scrollRef}>
-                  <p
-                    className={`chat-box-message 
+            {messages &&
+              messages.map((message, i) =>
+                message.sender ? (
+                  <div key={i} ref={scrollRef}>
+                    <p
+                      className={`chat-box-message 
                 ${message.sender === currentUser.uid && 'chat-box-reciever'}`}
-                  >
-                    <span className='chat-box-name'>
-                      {findUserName(message.sender)}
-                    </span>
+                    >
+                      <span className='chat-box-name'>
+                        {findUserName(message.sender)}
+                      </span>
 
-                    {message.text}
+                      {message.text}
 
-                    <span className='chat-box-timestamp'>
-                      {format(message.date)}
-                    </span>
-                  </p>
-                </div>
-              ) : null
-            )}
+                      <span className='chat-box-timestamp'>
+                        {format(message.date)}
+                      </span>
+                    </p>
+                  </div>
+                ) : null
+              )}
           </div>
 
           <div className='chat-box-footer'>
