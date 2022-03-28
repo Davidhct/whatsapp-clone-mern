@@ -54,20 +54,22 @@ const ChatBox = ({
 
   useEffect(() => {
     socket.on('getMessage', (data) => {
-      if (currentChat?.members.includes(data.sender)) {
-        setMessages((prev) => [...prev, data]);
+      let conversation = {
+        sender: data.sender,
+        text: data.text,
+        isRead: data.isRead,
+        date: data.date,
+      };
+      if (currentChat?._id === data.room) {
+        setMessages((prev) => [...prev, conversation]);
       }
     });
-  }, [socket]);
+  }, [currentChat]);
 
   useEffect(() => {
     //client - side;
     currentChat && setMessages(currentChat?.messages);
-    socket.emit('addUser', currentChat?._id);
-    socket.on('getUsers', (users) => {
-      console.log(users);
-    });
-    // socket.emit('join_room', currentChat?._id);
+    socket.emit('join_room', currentChat?._id);
   }, [currentChat]);
 
   useEffect(() => {
