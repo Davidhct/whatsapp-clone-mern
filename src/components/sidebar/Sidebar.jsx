@@ -23,28 +23,29 @@ const Sidebar = ({
   setUserName,
   setGroupModal,
   setChatModal,
+  conversations,
 }) => {
   const classes = useStyles();
-  const [conversations, setConversations] = useState([]);
+  // const [conversations, setConversations] = useState([]);
   const [menuDrop, setMenuDrop] = useState(false);
 
   const { currentUser } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    const getConversations = async () => {
-      try {
-        if (currentUser) {
-          const res = await axios.get(
-            '/api/v1/conversations/' + currentUser.uid
-          );
-          setConversations(res.data?.data.slice().reverse());
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getConversations();
-  }, [currentUser]);
+  // useEffect(() => {
+  //   const getConversations = async () => {
+  //     try {
+  //       if (currentUser) {
+  //         const res = await axios.get(
+  //           '/api/v1/conversations/' + currentUser.uid
+  //         );
+  //         setConversations(res.data?.data.slice().reverse());
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
+  //   getConversations();
+  // }, [currentUser]);
 
   const findeLastMessage = (msg) => {
     // console.log(msg);

@@ -4,6 +4,8 @@ import ChatBox from './../chatBox/ChatBox';
 import Sidebar from '../sidebar/Sidebar';
 import Header from '../header/Header';
 import MegaMenu from '../megaMenu/MegaMenu';
+import { useSelector } from 'react-redux';
+import axios from '../../axios';
 
 import BackModal from '../backModal/BackModal';
 import { io } from 'socket.io-client';
@@ -21,6 +23,23 @@ const Chat = () => {
   const [chatModal, setChatModal] = useState(null);
   const [groupModal, setGroupModal] = useState(null);
   const [clickMenu, setClickMenu] = useState(false);
+  const [conversations, setConversations] = useState([]);
+  const { currentUser } = useSelector((state) => state.user);
+  useEffect(() => {
+    const getConversations = async () => {
+      try {
+        if (currentUser) {
+          const res = await axios.get(
+            '/api/v1/conversations/' + currentUser.uid
+          );
+          setConversations(res.data?.data.slice().reverse());
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getConversations();
+  }, [currentUser]);
 
   // useEffect(() => {
   //   socket.current = io('ws://localhost:8900');
@@ -49,6 +68,7 @@ const Chat = () => {
             setUserName={setUserName}
             setChatModal={setChatModal}
             setGroupModal={setGroupModal}
+            conversations={conversations}
           />
         </div>
         <ChatBox
