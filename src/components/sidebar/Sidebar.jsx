@@ -24,12 +24,18 @@ const Sidebar = ({
   setGroupModal,
   setChatModal,
   conversations,
+  currentChat,
 }) => {
   const classes = useStyles();
   // const [conversations, setConversations] = useState([]);
   const [menuDrop, setMenuDrop] = useState(false);
-
+  const [messages, setMessages] = useState([]);
+  const [lastMessages, setLastMessages] = useState('');
   const { currentUser } = useSelector((state) => state.user);
+
+  // useEffect(() => {
+
+  // })
 
   // useEffect(() => {
   //   const getConversations = async () => {
@@ -45,11 +51,35 @@ const Sidebar = ({
   //     }
   //   };
   //   getConversations();
+
   // }, [currentUser]);
 
+  // useEffect(() => {
+  //   const getMessages = async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         '/api/v1/messages/?chatId=' + currentChat?._id
+  //       );
+
+  //       setMessages(res?.data.data);
+  //       let msg = res?.data.data;
+  //       setLastMessages(msg[msg.length - 1].text);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+  //   getMessages();
+  // }, [currentChat]);
+
+  // const findeLastMessage = (msg) => {
+  //   // console.log(msg);
+  //   let lastMsg = messages[messages.length - 1];
+  //   console.log();
+  //   return lastMsg.text;
+  // };
   const findeLastMessage = (msg) => {
-    // console.log(msg);
     let lastMsg = msg.messages[msg.messages.length - 1];
+
     return lastMsg.text;
   };
 

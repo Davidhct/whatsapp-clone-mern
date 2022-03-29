@@ -7,6 +7,7 @@ import conversationRouter from './routes/conversationRoutes.js';
 import adminRouter from './routes/adminRoutes.js';
 import membersRouter from './routes/membersRoutes.js';
 import userInfoRouter from './routes/userInfoRoutes.js';
+import messagesRouter from './routes/messagesRoutes.js';
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use('/api/v1/conversations', conversationRouter);
 app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/members', membersRouter);
 app.use('/api/v1/userInfo', userInfoRouter);
+app.use('/api/v1/messages', messagesRouter);
 
 // 4) START SERVER
 export default app;
