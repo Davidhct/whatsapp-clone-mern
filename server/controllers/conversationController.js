@@ -83,20 +83,7 @@ export const updateConversations = async (req, res) => {
   try {
     let conversation;
     ConversationModel.syncIndexes();
-    if (req.body.messages) {
-      // push the new message in to the array of messages
-      const message = await ConversationModel.findByIdAndUpdate(
-        req.params.id,
-        {
-          $push: { messages: req.body.messages },
-        },
-        {
-          new: true,
-          runValidators: true,
-        }
-      );
-      conversation = message;
-    } else if (req.body.groupName) {
+    if (req.body.groupName) {
       // capitalize the first letter in the new name
       let newName = req.body.groupName;
       // strTmp = strTmp.toLowerCase();

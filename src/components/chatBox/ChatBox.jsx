@@ -37,6 +37,7 @@ const ChatBox = ({
   clickMenu,
   setClickMenu,
   socket,
+  setCurrentChat,
 }) => {
   const classes = useStyles();
   // const socket = useRef();
@@ -60,16 +61,47 @@ const ChatBox = ({
         isRead: data.isRead,
         date: data.date,
       };
-      if (currentChat?._id === data.room) {
-        setMessages((prev) => [...prev, conversation]);
-      }
+      const room = data.room;
+      setGotMessage({ conversation, room });
+
+      // if (currentChat?._id === data.room) {
+      //   setMessages((prev) => [...prev, conversation]);
+      // }
     });
+  }, []);
+  useEffect(() => {
+    //client - side;
+
+    if (currentChat && gotMessage) {
+      if (currentChat?._id === gotMessage.room) {
+        console.log('33333');
+        setMessages((prev) => [...prev, gotMessage.conversation]);
+      }
+    }
+
+    // socket.emit('join_room', currentChat?._id);
+  }, [gotMessage, currentChat]);
+  useEffect(() => {
+    const getMessages = async () => {
+      try {
+        const res = await axios.get(
+          '/api/v1/messages/?chatId=' + currentChat?._id
+        );
+
+        setMessages(res?.data.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMessages();
   }, [currentChat]);
 
   useEffect(() => {
-    //client - side;
-    currentChat && setMessages(currentChat?.messages);
-    socket.emit('join_room', currentChat?._id);
+    socket.emit('addChat', currentChat?._id);
+
+    socket.on('getChats', (chats) => {
+      console.log(chats);
+    });
   }, [currentChat]);
 
   useEffect(() => {
@@ -120,15 +152,14 @@ const ChatBox = ({
         room: currentChat?._id,
       };
       socket.emit('sendMessage', messageData);
-      // setMessages((prev) => [...prev, messageObj]);
 
       const res = await axios.patch(
-        '/api/v1/conversations/' + currentChat?._id,
+        '/api/v1/messages/?chatId=' + currentChat?._id,
         {
           messages: [messageObj],
         }
       );
-
+      setMessages((prev) => [...prev, res.data?.data.messages]);
       setInput('');
       let lastMsg = res.data?.data.messages;
       console.log(lastMsg);
@@ -243,27 +274,26 @@ const ChatBox = ({
           </div>
 
           <div className='chat-box-body'>
-            {messages &&
-              messages.map((message, i) =>
-                message.sender ? (
-                  <div key={i} ref={scrollRef}>
-                    <p
-                      className={`chat-box-message 
+            {messages.map((message, i) =>
+              message.sender ? (
+                <div key={i} ref={scrollRef}>
+                  <p
+                    className={`chat-box-message 
                 ${message.sender === currentUser.uid && 'chat-box-reciever'}`}
-                    >
-                      <span className='chat-box-name'>
-                        {findUserName(message.sender)}
-                      </span>
+                  >
+                    <span className='chat-box-name'>
+                      {findUserName(message.sender)}
+                    </span>
 
-                      {message.text}
+                    {message.text}
 
-                      <span className='chat-box-timestamp'>
-                        {format(message.date)}
-                      </span>
-                    </p>
-                  </div>
-                ) : null
-              )}
+                    <span className='chat-box-timestamp'>
+                      {format(message.date)}
+                    </span>
+                  </p>
+                </div>
+              ) : null
+            )}
           </div>
 
           <div className='chat-box-footer'>

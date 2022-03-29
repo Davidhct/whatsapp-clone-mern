@@ -41,9 +41,9 @@ const Chat = () => {
     getConversations();
   }, [currentUser]);
 
-  // useEffect(() => {
-  //   socket.current = io('ws://localhost:8900');
-  // }, []);
+  useEffect(() => {
+    currentChat && socket.emit('join_room', currentChat?._id);
+  }, [currentChat]);
 
   console.log(currentChat);
 
@@ -69,6 +69,7 @@ const Chat = () => {
             setChatModal={setChatModal}
             setGroupModal={setGroupModal}
             conversations={conversations}
+            currentChat={currentChat}
           />
         </div>
         <ChatBox
@@ -82,6 +83,7 @@ const Chat = () => {
           setAddPerson={setAddPerson}
           setClickMenu={setClickMenu}
           clickMenu={clickMenu}
+          setCurrentChat={setCurrentChat}
         />
         <div className={chatModal || groupModal ? 'new-message' : 'hidden'}>
           <div className='chat-body-modal'>
