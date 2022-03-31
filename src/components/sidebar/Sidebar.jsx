@@ -25,13 +25,36 @@ const Sidebar = ({
   setChatModal,
   conversations,
   currentChat,
+  socket,
 }) => {
   const classes = useStyles();
   // const [conversations, setConversations] = useState([]);
   const [menuDrop, setMenuDrop] = useState(false);
-  const [messages, setMessages] = useState([]);
-  const [lastMessages, setLastMessages] = useState('');
+  // const [messages, setMessages] = useState([]);
+  // const [lastMessages, setLastMessages] = useState('');
   const { currentUser } = useSelector((state) => state.user);
+
+  const [gotLastMessage, setGotLastMessage] = useState(null);
+  const [lastMsg, setLastMsg] = useState(null);
+  useEffect(() => {
+    socket.on('getLastMessage', (data) => {
+      console.log(data);
+      const lamsg = {
+        lastMessage: data.lastMessage,
+        room: data.room,
+      };
+      setGotLastMessage(lamsg);
+    });
+  }, []);
+
+  useEffect(() => {
+    // console.log(currentChat);
+    if (gotLastMessage && currentChat) {
+      // if (gotLastMessage.room === currentChat._id) {
+      setLastMsg(gotLastMessage.lastMessage);
+      // }
+    }
+  }, [gotLastMessage, currentChat]);
 
   // useEffect(() => {
 
@@ -78,9 +101,9 @@ const Sidebar = ({
   //   return lastMsg.text;
   // };
   const findeLastMessage = (msg) => {
-    let lastMsg = msg.messages[msg.messages.length - 1];
+    let lastMsg = msg.messages[msg.messages.length - 1].text;
 
-    return lastMsg.text;
+    return lastMsg;
   };
 
   const findUserInfo = (msg) => {
@@ -118,6 +141,7 @@ const Sidebar = ({
     }
   };
   console.log(conversations);
+
   return (
     <div className='sidebar'>
       <div className='sidebar-header'>
@@ -158,7 +182,11 @@ const Sidebar = ({
               <SidebarChat
                 key={i}
                 userInfo={findUserInfo(msg)}
-                lastMessage={findeLastMessage(msg)}
+                lastMessage={
+                  gotLastMessage && gotLastMessage.room === msg._id
+                    ? lastMsg
+                    : findeLastMessage(msg)
+                }
               />
             </div>
           ))

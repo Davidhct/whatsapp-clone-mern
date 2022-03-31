@@ -70,6 +70,7 @@ const Chat = () => {
             setGroupModal={setGroupModal}
             conversations={conversations}
             currentChat={currentChat}
+            socket={socket}
           />
         </div>
         <ChatBox

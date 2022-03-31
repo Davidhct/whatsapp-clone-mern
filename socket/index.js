@@ -48,6 +48,15 @@ io.on('connection', (socket) => {
       room: room,
     });
   });
+
+  socket.on('lastMessage', ({ text, room }) => {
+    // const chat = getChat(room);
+    console.log('lasssssssst = ', room, ' text = ', text);
+    io.in(room).emit('getLastMessage', {
+      lastMessage: text,
+      room: room,
+    });
+  });
   // socket.on('sendMessage', ({ senderId, text, date, room }) => {
   //   io.in(room).emit('getMessage', {
   //     sender: senderId,

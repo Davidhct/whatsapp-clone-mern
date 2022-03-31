@@ -151,7 +151,13 @@ const ChatBox = ({
         date: new Date().toISOString(),
         room: currentChat?._id,
       };
+
+      const lastMessage = {
+        text: input,
+        room: currentChat?._id,
+      };
       socket.emit('sendMessage', messageData);
+      socket.emit('lastMessage', lastMessage);
 
       const res = await axios.patch(
         '/api/v1/messages/?chatId=' + currentChat?._id,
